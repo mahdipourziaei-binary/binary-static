@@ -13023,13 +13023,20 @@ var isEuCountry = function isEuCountry() {
     return financial_shortcode || gaming_shortcode ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode) : eu_excluded_regex.test(clients_country);
 };
 
+var isFrance = function isFrance() {
+    var clients_country = Client.get('residence') || State.getResponse('website_status.clients_country');
+    return (/^fr$/.test(clients_country)
+    );
+};
+
 var isIndonesia = function isIndonesia() {
     return State.getResponse('website_status.clients_country') === 'id';
 };
 
 module.exports = {
     isEuCountry: isEuCountry,
-    isIndonesia: isIndonesia
+    isIndonesia: isIndonesia,
+    isFrance: isFrance
 };
 
 /***/ }),
@@ -35042,6 +35049,9 @@ module.exports = Platforms;
 "use strict";
 
 
+var isFrance = __webpack_require__(/*! ../../app/common/country_base */ "./src/javascript/app/common/country_base.js").isFrance;
+var BinarySocket = __webpack_require__(/*! ../../app/base/socket */ "./src/javascript/app/base/socket.js");
+
 var Regulation = function () {
     var onLoad = function onLoad() {
         $(function () {
@@ -35063,6 +35073,13 @@ var Regulation = function () {
                 // if EU passport rights tab is active, call relocateLinks to initialize map coordinates
                 if (!$accordion.accordion('option', 'active')) {
                     relocateLinks();
+                }
+            });
+
+            BinarySocket.wait('website_status').then(function () {
+                if (isFrance()) {
+                    var $cfd_selector = $('#cfd_fillbox');
+                    $cfd_selector.remove();
                 }
             });
         });
