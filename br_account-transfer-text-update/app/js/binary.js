@@ -20466,7 +20466,7 @@ var getExpiryType = exports.getExpiryType = function getExpiryType(store) {
     var server_time = store.root_store.common.server_time;
 
     var duration_is_day = expiry_type === 'duration' && duration_unit === 'd';
-    var expiry_is_after_today = expiry_type === 'endtime' && (0, _Date.toMoment)(expiry_date).isAfter((0, _Date.toMoment)(server_time), 'day') || !hasIntradayDurationUnit(duration_units_list);
+    var expiry_is_after_today = expiry_type === 'endtime' && ((0, _Date.toMoment)(expiry_date).isAfter((0, _Date.toMoment)(server_time), 'day') || !hasIntradayDurationUnit(duration_units_list));
 
     var contract_expiry_type = 'daily';
     if (!duration_is_day && !expiry_is_after_today) {
