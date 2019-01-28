@@ -35631,7 +35631,7 @@ var Regulation = function () {
                 }
             });
 
-            BinarySocket.wait('website_status').then(function () {
+            BinarySocket.wait('website_status', 'authorize').then(function () {
                 if (isExcludedFromCfd()) {
                     var el_cfd_fillbox = getElementById('cfd_fillbox');
                     el_cfd_fillbox.nextSibling.classList.remove('margin-left-0');
