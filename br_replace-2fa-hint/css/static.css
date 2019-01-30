@@ -1735,9 +1735,9 @@ body #not_authenticated_financial ul.checked > li {
       .two_factor_auth .steps.steps-vertical .step .content p {
         margin: 0; }
         .two_factor_auth .steps.steps-vertical .step .content p:last-child, .two_factor_auth .steps.steps-vertical .step .content p:nth-child(3) {
-          padding: 15px 0; }
+          padding-bottom: 15px; }
       .two_factor_auth .steps.steps-vertical .step .content #qrcode {
-        padding-top: 40px; }
+        padding: 15px 0; }
         @media (max-width: 480px) {
           .two_factor_auth .steps.steps-vertical .step .content #qrcode {
             padding: 10px 0; } }
