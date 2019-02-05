@@ -808,7 +808,7 @@ module.exports = {
 var ClientBase = __webpack_require__(/*! ./client_base */ "./src/javascript/_common/base/client_base.js");
 var GTM = __webpack_require__(/*! ./gtm */ "./src/javascript/_common/base/gtm.js");
 var BinarySocket = __webpack_require__(/*! ./socket_base */ "./src/javascript/_common/base/socket_base.js");
-var languageFromUrl = __webpack_require__(/*! ../language */ "./src/javascript/_common/language.js").urlLang;
+var getLanguage = __webpack_require__(/*! ../language */ "./src/javascript/_common/language.js").get;
 var localize = __webpack_require__(/*! ../localize */ "./src/javascript/_common/localize.js").localize;
 var createElement = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").createElement;
 
@@ -818,7 +818,7 @@ var Elevio = function () {
         window._elev.on('load', function (elev) {
             // eslint-disable-line no-underscore-dangle
             var available_elev_languages = ['es', 'id', 'pt', 'ru'];
-            var current_language = languageFromUrl().toLowerCase();
+            var current_language = getLanguage().toLowerCase();
             if (available_elev_languages.indexOf(current_language) !== -1) {
                 window._elev.setLanguage(current_language); // eslint-disable-line no-underscore-dangle
             } else {
@@ -35001,7 +35001,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = ''; // you can insert Application ID of your registered application here
+    var user_app_id = '15863'; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
