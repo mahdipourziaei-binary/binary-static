@@ -19320,6 +19320,7 @@ var addComma = __webpack_require__(/*! ../../../common/currency */ "./src/javasc
 var localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var State = __webpack_require__(/*! ../../../../_common/storage */ "./src/javascript/_common/storage.js").State;
 var getPropertyValue = __webpack_require__(/*! ../../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
+var isEmptyObject = __webpack_require__(/*! ../../../../_common/utility */ "./src/javascript/_common/utility.js").isEmptyObject;
 
 var Highchart = function () {
     var chart = void 0,
@@ -19432,7 +19433,7 @@ var Highchart = function () {
             return null;
         }
 
-        HighchartUI.updateLabels(chart, getHighchartLabelParams());
+        HighchartUI.updateLabels(chart, getHighchartLabelParams(null, !isEmptyObject(init_options.history)));
 
         var display_decimals = (history ? history.prices[0] : candles[0].open).split('.')[1].length || 3;
 
@@ -19577,7 +19578,7 @@ var Highchart = function () {
 
                         // don't draw start time for contracts that are sold before contract starts
                         if (sell_time < start_time) {
-                            HighchartUI.updateLabels(chart, getHighchartLabelParams(null, !!history));
+                            HighchartUI.updateLabels(chart, getHighchartLabelParams(null, !isEmptyObject(history)));
                         } else {
                             drawLineX({ value: start_time });
                         }
