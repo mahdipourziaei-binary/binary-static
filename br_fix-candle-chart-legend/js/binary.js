@@ -19351,13 +19351,14 @@ var Highchart = function () {
         is_history_send = void 0,
         is_entry_tick_barrier_selected = void 0,
         is_response_id_set = void 0,
+        is_tick_type = void 0,
         prev_barriers = void 0; // For checking if barrier was updated
 
     var initOnce = function initOnce() {
         chart = options = response_id = request = min_point = max_point = '';
         lines_drawn = new Set();
 
-        is_initialized = is_chart_delayed = is_chart_subscribed = stop_streaming = is_response_id_set = is_contracts_for_send = is_history_send = is_entry_tick_barrier_selected = false;
+        is_initialized = is_chart_delayed = is_chart_subscribed = stop_streaming = is_response_id_set = is_contracts_for_send = is_history_send = is_entry_tick_barrier_selected = is_tick_type = false;
     };
 
     var initializeValues = function initializeValues() {
@@ -19433,7 +19434,7 @@ var Highchart = function () {
             return null;
         }
 
-        HighchartUI.updateLabels(chart, getHighchartLabelParams(null, !isEmptyObject(init_options.history)));
+        HighchartUI.updateLabels(chart, getHighchartLabelParams());
 
         var display_decimals = (history ? history.prices[0] : candles[0].open).split('.')[1].length || 3;
 
@@ -19473,7 +19474,7 @@ var Highchart = function () {
         });
     };
 
-    var getHighchartLabelParams = function getHighchartLabelParams(is_reset_barrier, is_tick_type) {
+    var getHighchartLabelParams = function getHighchartLabelParams(is_reset_barrier) {
         return {
             is_chart_delayed: is_chart_delayed,
             is_reset_barrier: is_reset_barrier,
@@ -19527,6 +19528,7 @@ var Highchart = function () {
             var tick = response.tick;
             var ohlc = response.ohlc;
             response_id = response[type].id;
+            is_tick_type = !isEmptyObject(history);
             // send view popup the response ID so view popup can forget the calls if it's closed before contract ends
             if (response_id && !is_response_id_set) {
                 if (State.get('is_trading') || State.get('is_mb_trading')) {
@@ -19578,7 +19580,7 @@ var Highchart = function () {
 
                         // don't draw start time for contracts that are sold before contract starts
                         if (sell_time < start_time) {
-                            HighchartUI.updateLabels(chart, getHighchartLabelParams(null, !isEmptyObject(history)));
+                            HighchartUI.updateLabels(chart, getHighchartLabelParams());
                         } else {
                             drawLineX({ value: start_time });
                         }
