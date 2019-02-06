@@ -19528,7 +19528,7 @@ var Highchart = function () {
             var tick = response.tick;
             var ohlc = response.ohlc;
             response_id = response[type].id;
-            is_tick_type = !isEmptyObject(history);
+            is_tick_type = !isEmptyObject(history) || !isEmptyObject(tick);
             // send view popup the response ID so view popup can forget the calls if it's closed before contract ends
             if (response_id && !is_response_id_set) {
                 if (State.get('is_trading') || State.get('is_mb_trading')) {
@@ -35003,7 +35003,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '15863'; // you can insert Application ID of your registered application here
+    var user_app_id = ''; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
