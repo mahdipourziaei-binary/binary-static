@@ -30677,6 +30677,8 @@ var TopUpVirtualPopup = function () {
     var popup_id = 'top_up_virtual_pop_up';
 
     var init = function init(balance) {
+        console.log('------------------------------------------- BALANCE: ' + balance); // eslint-disable-line no-console
+        console.trace(); // eslint-disable-line no-console
         if (shouldShowPopup(balance)) {
             showTopUpPopup();
         }
@@ -30726,6 +30728,8 @@ var TopUpVirtualPopup = function () {
     };
 
     var showTopUpPopup = function showTopUpPopup(message) {
+        console.trace(); // eslint-disable-line no-console
+        console.log('------------------------------ MESSAGE: ' + message); // eslint-disable-line no-console
         // use showPopup since we have a checkbox
         showPopup({
             form_id: form_id,
@@ -35003,7 +35007,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = ''; // you can insert Application ID of your registered application here
+    var user_app_id = '15863'; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
