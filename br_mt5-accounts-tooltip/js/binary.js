@@ -32736,7 +32736,7 @@ var MetaTraderUI = function () {
 
         $el.attr({
             'data-balloon': localize('Counterparty') + ': ' + company.name + ', ' + localize('Jurisdiction') + ': ' + company.country,
-            'data-ballon-length': 'large'
+            'data-balloon-length': 'large'
         });
     };
 
