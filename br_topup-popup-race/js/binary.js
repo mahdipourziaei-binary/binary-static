@@ -30689,7 +30689,7 @@ var TopUpVirtualPopup = function () {
         }
         // this is only applicable to clients who have less than 1k balance and have not set popup to remain hidden
         var hide_virtual_top_up_until = should_ignore_hide ? 0 : Client.get('hide_virtual_top_up_until');
-        if (+balance >= 1000 || hide_virtual_top_up_until && moment.utc().diff(moment.unix(hide_virtual_top_up_until).utc(), 'day') < 1) {
+        if (+balance > 1000 || hide_virtual_top_up_until && moment.utc().diff(moment.unix(hide_virtual_top_up_until).utc(), 'day') < 1) {
             return false;
         }
 
@@ -33884,11 +33884,7 @@ var updateBalance = function updateBalance(response) {
         var view = formatMoney(currency, balance);
         updateContractBalance(balance);
         $('.topMenuBalance, .binary-balance').html(view).css('visibility', 'visible');
-        BinarySocket.send({ portfolio: 1 }).then(function (res) {
-            if (res.portfolio.contracts.length === 0) {
-                TopUpVirtualPopup.init(balance);
-            }
-        });
+        TopUpVirtualPopup.init(balance);
     });
 };
 
