@@ -25084,28 +25084,21 @@ var Purchase = function () {
                         confirmation_error.setVisibility(1);
                         var message = error.message;
                         if (/NoMFProfessionalClient/.test(error.code)) {
-                            var has_professional_requested = (getPropertyValue(response, ['get_account_status', 'status']) || []).includes('professional_requested');
-                            var has_professional_rejected = (getPropertyValue(response, ['get_account_status', 'status']) || []).includes('professional_rejected');
+                            var account_status = getPropertyValue(response, ['get_account_status', 'status']) || [];
+                            var has_professional_requested = account_status.includes('professional_requested');
+                            var has_professional_rejected = account_status.includes('professional_rejected');
                             if (has_professional_requested) {
                                 message = localize('Your application to be treated as a professional client is being processed.');
                             } else if (has_professional_rejected) {
-                                message = localize('Your request to be treated as a professional client is not approved.') + '&nbsp;' + localize('Please check your inbox for more details.') + '<br /><br />' + localize('Your account remains under the retail client category. You are welcome to reapply as a professional client at any time.');
+                                var message_text = localize('Your request to be treated as a professional client is not approved.') + '&nbsp;' + localize('Please check your inbox for more details.') + '<br /><br />' + localize('Your account remains under the retail client category. You are welcome to reapply as a professional client at any time.');
+                                var button_text = localize('Apply now as a professional investor');
+
+                                message = prepareConfirmationErrorCta(message_text, button_text);
                             } else {
-                                var row_element = createElement('div', { class: 'gr-row font-style-normal' });
-                                var columnElement = function columnElement() {
-                                    var extra_attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-                                    return createElement('div', _extends({ class: 'gr-12 gr-padding-20' }, extra_attributes));
-                                };
-                                var message_element = columnElement({ text: localize('In the EU, financial binary options are only available to professional investors.') });
-                                var button_element = createElement('a', { class: 'button', href: urlFor('user/settings/professional') });
-                                var cta_element = columnElement();
+                                var _message_text = localize('In the EU, financial binary options are only available to professional investors.');
+                                var _button_text = localize('Apply now as a professional investor');
 
-                                button_element.appendChild(createElement('span', { text: localize('Apply now as a professional investor') }));
-                                cta_element.appendChild(button_element);
-                                row_element.appendChild(message_element);
-                                row_element.appendChild(cta_element);
-
-                                message = row_element.outerHTML;
+                                message = prepareConfirmationErrorCta(_message_text, _button_text);
                             }
                         } else if (/RestrictedCountry/.test(error.code)) {
                             var additional_message = '';
@@ -25279,6 +25272,24 @@ var Purchase = function () {
 
     var makeBold = function makeBold(d) {
         return '<strong>' + d + '</strong>';
+    };
+
+    var prepareConfirmationErrorCta = function prepareConfirmationErrorCta(message_text, button_text) {
+        var row_element = createElement('div', { class: 'gr-row font-style-normal' });
+        var columnElement = function columnElement() {
+            var extra_attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+            return createElement('div', _extends({ class: 'gr-12 gr-padding-20' }, extra_attributes));
+        };
+        var message_element = columnElement({ text: message_text });
+        var button_element = createElement('a', { class: 'button', href: urlFor('user/settings/professional') });
+        var cta_element = columnElement();
+
+        button_element.appendChild(createElement('span', { text: button_text }));
+        cta_element.appendChild(button_element);
+        row_element.appendChild(message_element);
+        row_element.appendChild(cta_element);
+
+        return row_element.outerHTML;
     };
 
     var loginOnClick = function loginOnClick(e) {
