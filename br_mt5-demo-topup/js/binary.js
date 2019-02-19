@@ -32109,10 +32109,12 @@ var MetaTrader = function () {
         BinarySocket.send(req).then(function (response) {
             if (response.error) {
                 MetaTraderUI.displayPageError(response.error.message);
-                MetaTraderUI.setTopupLoading(false, false);
+                MetaTraderUI.setTopupLoading(false);
             } else {
                 MetaTraderUI.displayMainMessage(localize('[_1] has been credited into your MT5 Demo Account: [_2].', [MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00', login.toString()]));
-                MetaTraderUI.setTopupLoading(false, true);
+                BinarySocket.send({ mt5_login_list: 1 }).then(function () {
+                    return MetaTraderUI.setTopupLoading(false);
+                });
             }
         });
     };
@@ -32436,7 +32438,6 @@ var MetaTraderUI = function () {
             _$form.find('.binary-balance').html('' + Currency.formatMoney(client_currency, Client.get('balance')));
             _$form.find('.mt5-account').text('' + localize('[_1] Account [_2]', [accounts_info[acc_type].title, accounts_info[acc_type].info.login]));
             _$form.find('.mt5-balance').html('' + Currency.formatMoney(mt_currency, accounts_info[acc_type].info.balance));
-            _$form.find('.symbols.mt-currency').addClass(mt_currency.toLowerCase());
             _$form.find('label[for="txt_amount_deposit"]').append(' ' + client_currency);
             _$form.find('label[for="txt_amount_withdrawal"]').append(' ' + mt_currency);
 
@@ -32757,8 +32758,6 @@ var MetaTraderUI = function () {
     };
 
     var setDemoTopupStatus = function setDemoTopupStatus() {
-        var is_topped_up = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
         var el_demo_topup_btn = getElementById('demo_topup_btn');
         var el_demo_topup_info = el_demo_topup_btn.previousSibling;
         var el_loading = el_demo_topup_btn.parentElement.firstChild;
@@ -32775,46 +32774,36 @@ var MetaTraderUI = function () {
             var balance = +accounts_info[acc_type].info.balance;
             var min_balance = 1000;
 
-            if (balance < min_balance && !is_topped_up) {
-                enableDemoTopup();
+            if (balance < min_balance) {
+                enableDemoTopup(true);
             } else {
-                disableDemoTopup();
+                enableDemoTopup(false);
             }
         }
     };
 
-    var disableDemoTopup = function disableDemoTopup() {
+    var enableDemoTopup = function enableDemoTopup(is_enabled) {
         var el_demo_topup_btn = getElementById('demo_topup_btn');
 
-        el_demo_topup_btn.removeEventListener('click', topup_demo);
-        el_demo_topup_btn.classList.add('button-disabled');
-        el_demo_topup_btn.classList.remove('button');
-        el_demo_topup_btn.previousSibling.setVisibility(1);
+        var function_to_call = is_enabled ? 'addEventListener' : 'removeEventListener';
+        el_demo_topup_btn[function_to_call]('click', topup_demo);
+
+        el_demo_topup_btn.classList.add(is_enabled ? 'button' : 'button-disabled');
+        el_demo_topup_btn.classList.remove(is_enabled ? 'button-disabled' : 'button');
+        el_demo_topup_btn.previousSibling.setVisibility(!is_enabled);
     };
 
-    var enableDemoTopup = function enableDemoTopup() {
+    var setTopupLoading = function setTopupLoading(is_loading) {
         var el_demo_topup_btn = getElementById('demo_topup_btn');
+        var el_demo_topup_info = getElementById('demo_topup_info');
+        var el_loading = getElementById('demo_topup_loading');
 
-        el_demo_topup_btn.addEventListener('click', topup_demo);
-        el_demo_topup_btn.classList.add('button');
-        el_demo_topup_btn.classList.remove('button-disabled');
-        el_demo_topup_btn.previousSibling.setVisibility(0);
-    };
+        el_demo_topup_btn.setVisibility(!is_loading);
+        el_demo_topup_info.setVisibility(!is_loading);
+        el_loading.setVisibility(is_loading);
 
-    var setTopupLoading = function setTopupLoading(state, is_topped_up) {
-        var el_demo_topup_btn = getElementById('demo_topup_btn');
-        var el_demo_topup_info = el_demo_topup_btn.previousSibling;
-        var el_loading = el_demo_topup_btn.parentElement.firstChild;
-
-        if (state) {
-            el_demo_topup_btn.setVisibility(0);
-            el_demo_topup_info.setVisibility(0);
-            el_loading.setVisibility(1);
-        } else {
-            el_demo_topup_btn.setVisibility(1);
-            el_demo_topup_info.setVisibility(1);
-            el_loading.setVisibility(0);
-            setDemoTopupStatus(is_topped_up);
+        if (!is_loading) {
+            setDemoTopupStatus();
         }
     };
 
