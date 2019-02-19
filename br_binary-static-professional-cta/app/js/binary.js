@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio":"portfolio","self_exclusion":"self_exclusion","settings":"settings","statement":"statement","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"1f20d1cb6ffbf53419ed","account_password":"67c66084bc424d34b10b","api_toke":"7c72ca04a060c6e8363d","authorized_application":"97635409ac3488b8a4dc","cashier_password":"0061f340e2203b85c4de","contract":"d5ff3abe544011cd2843","financial_assessment":"fa615b65ab7d51a072e8","limits":"6122a66075b7120f5152","login_history":"f73b0e94430bafb6dff4","personal_details":"8c2c516db1200e2e67f1","portfolio":"dcfcf75f0048e5d379cb","self_exclusion":"10c70715aab8e89cdf0f","settings":"b65a79071afa6712cab7","statement":"df0f87e87ef416986955","vendors~smart_chart":"90a0463c2d7edd3d8556","smart_chart":"7332318ac688f4c6e8d5"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio":"portfolio","self_exclusion":"self_exclusion","settings":"settings","statement":"statement","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"1f20d1cb6ffbf53419ed","account_password":"67c66084bc424d34b10b","api_toke":"7c72ca04a060c6e8363d","authorized_application":"97635409ac3488b8a4dc","cashier_password":"0061f340e2203b85c4de","contract":"c3b74a127c727ed8b4fd","financial_assessment":"fa615b65ab7d51a072e8","limits":"6122a66075b7120f5152","login_history":"f73b0e94430bafb6dff4","personal_details":"8c2c516db1200e2e67f1","portfolio":"dcfcf75f0048e5d379cb","self_exclusion":"10c70715aab8e89cdf0f","settings":"b65a79071afa6712cab7","statement":"df0f87e87ef416986955","vendors~smart_chart":"4ef1863eda19bb87af24","smart_chart":"7332318ac688f4c6e8d5"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -4167,6 +4167,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -4181,6 +4185,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Money = function Money(_ref) {
     var amount = _ref.amount,
+        className = _ref.className,
         _ref$currency = _ref.currency,
         currency = _ref$currency === undefined ? 'USD' : _ref$currency,
         has_sign = _ref.has_sign,
@@ -4199,13 +4204,14 @@ var Money = function Money(_ref) {
         _react2.default.Fragment,
         null,
         sign,
-        _react2.default.createElement('span', { className: 'symbols ' + currency.toLowerCase() }),
+        _react2.default.createElement('span', { className: (0, _classnames2.default)(className, 'symbols', currency.toLowerCase()) }),
         final_amount
     );
 };
 
 Money.propTypes = {
     amount: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    className: _propTypes2.default.string,
     currency: _propTypes2.default.string,
     has_sign: _propTypes2.default.bool,
     is_formatted: _propTypes2.default.bool
@@ -4293,23 +4299,27 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Tooltip = function Tooltip(_ref) {
-    var message = _ref.message,
-        alignment = _ref.alignment,
+    var alignment = _ref.alignment,
         children = _ref.children,
-        icon = _ref.icon;
+        className = _ref.className,
+        classNameIcon = _ref.classNameIcon,
+        icon = _ref.icon,
+        message = _ref.message;
 
     var icon_name = icon === 'question' || icon === 'info' || icon === 'dot' ? icon : 'question';
     var icon_class = (0, _classnames2.default)(icon_name);
     return _react2.default.createElement(
         'span',
-        { className: 'tooltip', 'data-tooltip': message, 'data-tooltip-pos': alignment },
-        icon ? _react2.default.createElement('i', { className: icon_class }) : children
+        { className: (0, _classnames2.default)(className, 'tooltip'), 'data-tooltip': message, 'data-tooltip-pos': alignment },
+        icon ? _react2.default.createElement('i', { className: (0, _classnames2.default)(classNameIcon, icon_class) }) : children
     );
 };
 
 Tooltip.propTypes = {
     alignment: _propTypes2.default.string,
     children: _propTypes2.default.node,
+    className: _propTypes2.default.string,
+    classNameIcon: _propTypes2.default.string,
     icon: _propTypes2.default.string,
     message: _propTypes2.default.string
 };
@@ -4347,12 +4357,14 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var UILoader = function UILoader(_ref) {
-    var className = _ref.className;
+    var className = _ref.className,
+        classNameBlock = _ref.classNameBlock;
 
     var loading_class = (0, _classnames2.default)('loading', className);
+    var block_class = (0, _classnames2.default)(classNameBlock, 'block-ui');
     return _react2.default.createElement(
         'div',
-        { className: 'block-ui' },
+        { className: block_class },
         _react2.default.createElement(
             'div',
             { className: loading_class },
@@ -4370,7 +4382,8 @@ var UILoader = function UILoader(_ref) {
 };
 
 UILoader.propTypes = {
-    className: _propTypes2.default.string
+    className: _propTypes2.default.string,
+    classNameBlock: _propTypes2.default.string
 };
 
 exports.default = UILoader;
@@ -4547,6 +4560,7 @@ var DatePicker = function (_React$Component) {
 
             return _react2.default.createElement(_input_field2.default, {
                 className: 'datepicker__input',
+                classNameInput: 'trade-container__input',
                 'data-tip': false,
                 'data-value': _this.state.value,
                 error_messages: validation_errors,
@@ -4652,7 +4666,7 @@ var DatePicker = function (_React$Component) {
                     _react2.default.createElement('input', {
                         id: this.props.name,
                         name: this.props.name,
-                        className: 'datepicker__input',
+                        className: 'trade-container__input datepicker__input',
                         type: 'date',
                         value: this.state.value,
                         min: this.props.min_date,
@@ -5407,10 +5421,10 @@ var NativeSelect = function NativeSelect(_ref) {
         onChange = _ref.onChange;
     return _react2.default.createElement(
         'div',
-        { className: 'select-wrapper' },
+        { className: 'native-select native-select__wrapper' },
         _react2.default.createElement(
             'select',
-            { name: name, value: value, onChange: onChange },
+            { className: 'native-select__select', name: name, value: value, onChange: onChange },
             Array.isArray(list) ? list.map(function (item, idx) {
                 return _react2.default.createElement(
                     'option',
@@ -5544,7 +5558,7 @@ var RangeSlider = function RangeSlider(_ref) {
             { htmlFor: 'range' },
             _react2.default.createElement('input', {
                 id: 'range',
-                className: 'range-slider__track',
+                className: 'trade-container__input range-slider__track',
                 type: 'range',
                 min: first_tick,
                 max: ticks,
@@ -5567,7 +5581,7 @@ var RangeSlider = function RangeSlider(_ref) {
             ),
             _react2.default.createElement('div', {
                 className: 'range-slider__line',
-                style: { width: 'calc(' + value * 10 + '% - ' + (value < 4 ? '0.8rem' : '0.5rem') + ')' }
+                style: { width: 'calc(' + value * 10 + '% - ' + (value < 4 ? '1.6rem' : '1rem') + ')' }
             })
         ),
         _react2.default.createElement(
@@ -5671,6 +5685,383 @@ exports.default = TickSteps;
 
 /***/ }),
 
+/***/ "./src/javascript/app_2/App/Components/Form/TimePicker/dialog.jsx":
+/*!************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/TimePicker/dialog.jsx ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var Dialog = function Dialog(_ref) {
+    var preClass = _ref.preClass,
+        value = _ref.value,
+        start_time = _ref.start_time,
+        end_time = _ref.end_time,
+        onChange = _ref.onChange,
+        className = _ref.className;
+
+    var start_time_moment = start_time ? (0, _Date.toMoment)(start_time) : (0, _Date.toMoment)();
+    var end_time_moment = end_time ? (0, _Date.toMoment)(end_time) : (0, _Date.toMoment)().hour('23').minute('59').seconds('59').milliseconds('999');
+    var to_compare_moment = (0, _Date.toMoment)();
+
+    var _value$split = value.split(':'),
+        _value$split2 = _slicedToArray(_value$split, 2),
+        hour = _value$split2[0],
+        minute = _value$split2[1];
+
+    var hours = [].concat(_toConsumableArray(Array(24).keys())).map(function (a) {
+        return ('0' + a).slice(-2);
+    });
+    var minutes = [].concat(_toConsumableArray(Array(12).keys())).map(function (a) {
+        return ('0' + a * 5).slice(-2);
+    });
+
+    var selectOption = function selectOption(type, current_value, prev_value) {
+        var is_enabled = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+        if (is_enabled && prev_value) {
+            var _prev_value$split = prev_value.split(':'),
+                _prev_value$split2 = _slicedToArray(_prev_value$split, 2),
+                prev_hour = _prev_value$split2[0],
+                prev_minute = _prev_value$split2[1];
+
+            if (type === 'h' && current_value !== prev_hour || type === 'm' && current_value !== prev_minute) {
+                onChange((type === 'h' ? current_value : prev_hour) + ':' + (type === 'm' ? current_value : prev_minute));
+            }
+        }
+    };
+
+    return _react2.default.createElement(
+        'div',
+        { className: (0, _classnames2.default)(preClass + '-dialog', '' + className) },
+        _react2.default.createElement(
+            'div',
+            { className: preClass + '-selector' },
+            _react2.default.createElement(
+                'div',
+                { className: preClass + '-hours' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-title center-text' },
+                    _react2.default.createElement(
+                        'strong',
+                        null,
+                        (0, _localize.localize)('Hour')
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-container' },
+                    hours.map(function (h, key) {
+                        to_compare_moment.hour(h).minute(minute);
+                        var is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment);
+                        return _react2.default.createElement(
+                            'div',
+                            {
+                                className: (0, _classnames2.default)('list-item', { 'selected': hour === h }, { 'disabled': !is_enabled }),
+                                key: key,
+                                onClick: function onClick() {
+                                    selectOption('h', h, value, is_enabled);
+                                }
+                            },
+                            h
+                        );
+                    })
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: preClass + '-minutes' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-title center-text' },
+                    _react2.default.createElement(
+                        'strong',
+                        null,
+                        (0, _localize.localize)('Minute')
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-container' },
+                    minutes.map(function (mm, key) {
+                        to_compare_moment.hour(hour).minute(mm);
+                        var is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment, 'minute');
+                        return _react2.default.createElement(
+                            'div',
+                            {
+                                className: (0, _classnames2.default)('list-item', { 'selected': minute === mm }, { 'disabled': !is_enabled }),
+                                key: key,
+                                onClick: function onClick() {
+                                    selectOption('m', mm, value, is_enabled);
+                                }
+                            },
+                            mm
+                        );
+                    })
+                )
+            )
+        )
+    );
+};
+
+Dialog.propTypes = {
+    className: _propTypes2.default.string,
+    end_time: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object]),
+    onChange: _propTypes2.default.func,
+    preClass: _propTypes2.default.string,
+    start_time: _propTypes2.default.number,
+    value: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object])
+};
+
+exports.default = Dialog;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Form/TimePicker/index.js":
+/*!**********************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/TimePicker/index.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _time_picker = __webpack_require__(/*! ./time_picker.jsx */ "./src/javascript/app_2/App/Components/Form/TimePicker/time_picker.jsx");
+
+var _time_picker2 = _interopRequireDefault(_time_picker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _time_picker2.default;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Form/TimePicker/time_picker.jsx":
+/*!*****************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/TimePicker/time_picker.jsx ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactTransitionGroup = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/index.js");
+
+var _dialog = __webpack_require__(/*! ./dialog.jsx */ "./src/javascript/app_2/App/Components/Form/TimePicker/dialog.jsx");
+
+var _dialog2 = _interopRequireDefault(_dialog);
+
+var _input_field = __webpack_require__(/*! ../input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
+
+var _input_field2 = _interopRequireDefault(_input_field);
+
+var _icon_clock = __webpack_require__(/*! ../../../../Assets/Common/icon_clock.jsx */ "./src/javascript/app_2/Assets/Common/icon_clock.jsx");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TimePicker = function (_React$Component) {
+    _inherits(TimePicker, _React$Component);
+
+    function TimePicker() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, TimePicker);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimePicker.__proto__ || Object.getPrototypeOf(TimePicker)).call.apply(_ref, [this].concat(args))), _this), _this.state = { is_open: false }, _this.toggleDropDown = function () {
+            _this.setState(function (state) {
+                return { is_open: !state.is_open };
+            });
+        }, _this.handleChange = function (arg) {
+            // To handle nativepicker;
+            var value = (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) === 'object' ? arg.target.value : arg;
+
+            if (value !== _this.props.value) {
+                _this.props.onChange({ target: { name: _this.props.name, value: value } });
+            }
+        }, _this.saveRef = function (node) {
+            if (!node) return;
+            if (node.nodeName === 'INPUT') {
+                _this.target_element = node;
+                return;
+            }
+            _this.wrapper_ref = node;
+        }, _this.handleClickOutside = function (event) {
+            if (_this.wrapper_ref && !_this.wrapper_ref.contains(event.target)) {
+                if (_this.state.is_open) {
+                    _this.setState({ is_open: false });
+                }
+            }
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(TimePicker, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            document.addEventListener('mousedown', this.handleClickOutside);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            document.removeEventListener('mousedown', this.handleClickOutside);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var prefix_class = 'time-picker';
+            var _props = this.props,
+                value = _props.value,
+                name = _props.name,
+                is_nativepicker = _props.is_nativepicker,
+                placeholder = _props.placeholder,
+                start_time = _props.start_time,
+                end_time = _props.end_time,
+                validation_errors = _props.validation_errors;
+
+            return _react2.default.createElement(
+                'div',
+                {
+                    ref: this.saveRef,
+                    className: (0, _classnames2.default)(prefix_class, { 'padding': this.props.padding })
+                },
+                is_nativepicker ? _react2.default.createElement('input', {
+                    type: 'time',
+                    id: prefix_class + '-input',
+                    value: value,
+                    onChange: this.handleChange,
+                    name: name,
+                    min: start_time,
+                    max: end_time
+                }) : _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(_icon_clock.IconClock, { className: 'time-picker-icon' }),
+                    _react2.default.createElement(_input_field2.default, {
+                        error_messages: validation_errors,
+                        type: 'text',
+                        is_read_only: true,
+                        id: prefix_class + '-input',
+                        className: (0, _classnames2.default)(prefix_class + '-input'),
+                        value: value,
+                        onClick: this.toggleDropDown,
+                        name: name,
+                        placeholder: placeholder
+                    }),
+                    _react2.default.createElement(
+                        _reactTransitionGroup.CSSTransition,
+                        {
+                            'in': this.state.is_open,
+                            classNames: {
+                                enter: 'time-picker-dialog-enter',
+                                enterDone: 'time-picker-dialog-enter-done',
+                                exit: 'time-picker-dialog-exit'
+                            },
+                            timeout: 100,
+                            unmountOnExit: true
+                        },
+                        _react2.default.createElement(_dialog2.default, {
+                            className: 'from-left',
+                            onChange: this.handleChange,
+                            preClass: prefix_class,
+                            start_time: start_time,
+                            end_time: end_time,
+                            value: value
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return TimePicker;
+}(_react2.default.Component);
+
+TimePicker.propTypes = {
+    end_time: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object]),
+    is_clearable: _propTypes2.default.bool,
+    is_nativepicker: _propTypes2.default.bool,
+    name: _propTypes2.default.string,
+    onChange: _propTypes2.default.func,
+    padding: _propTypes2.default.string,
+    placeholder: _propTypes2.default.string,
+    start_time: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object]),
+    value: _propTypes2.default.string
+};
+
+exports.default = (0, _mobxReact.observer)(TimePicker);
+
+/***/ }),
+
 /***/ "./src/javascript/app_2/App/Components/Form/button.jsx":
 /*!*************************************************************!*\
   !*** ./src/javascript/app_2/App/Components/Form/button.jsx ***!
@@ -5684,6 +6075,10 @@ exports.default = TickSteps;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -5699,6 +6094,7 @@ var Button = function Button(_ref) {
     var children = _ref.children,
         _ref$className = _ref.className,
         className = _ref$className === undefined ? '' : _ref$className,
+        classNameSpan = _ref.classNameSpan,
         has_effect = _ref.has_effect,
         id = _ref.id,
         is_disabled = _ref.is_disabled,
@@ -5707,7 +6103,7 @@ var Button = function Button(_ref) {
         text = _ref.text,
         wrapperClassName = _ref.wrapperClassName;
 
-    var classes = 'btn' + (has_effect ? ' effect' : '') + ' ' + className;
+    var classes = (0, _classnames2.default)('btn', { effect: has_effect }, className);
     var button = _react2.default.createElement(
         'button',
         {
@@ -5719,7 +6115,7 @@ var Button = function Button(_ref) {
         },
         _react2.default.createElement(
             'span',
-            null,
+            { className: classNameSpan || undefined },
             text
         ),
         children
@@ -5847,45 +6243,30 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _tooltip = __webpack_require__(/*! ../Elements/tooltip.jsx */ "./src/javascript/app_2/App/Components/Elements/tooltip.jsx");
-
-var _tooltip2 = _interopRequireDefault(_tooltip);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Fieldset = function Fieldset(_ref) {
     var children = _ref.children,
         className = _ref.className,
         header = _ref.header,
-        icon = _ref.icon,
         is_center = _ref.is_center,
         onMouseEnter = _ref.onMouseEnter,
-        onMouseLeave = _ref.onMouseLeave,
-        tooltip = _ref.tooltip;
+        onMouseLeave = _ref.onMouseLeave;
 
-    var fieldset_class = (0, _classnames2.default)('fieldset-header', is_center ? 'center-text' : '');
-    var field_left_class = (0, _classnames2.default)('field-info', { icon: icon }, icon, is_center ? 'center' : 'left');
+    var fieldset_header_class = (0, _classnames2.default)('trade-container__fieldset-header', is_center ? 'center-text' : '');
+    var fieldset_info_class = (0, _classnames2.default)('trade-container__fieldset-info', !is_center && 'trade-container__fieldset-info--left');
 
     return _react2.default.createElement(
         'fieldset',
         { className: className, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
         !!header && _react2.default.createElement(
             'div',
-            { className: fieldset_class },
+            { className: fieldset_header_class },
             _react2.default.createElement(
                 'span',
-                { className: field_left_class },
+                { className: fieldset_info_class },
                 header
             )
-        ),
-        !!tooltip && _react2.default.createElement(
-            'span',
-            { className: 'field-info right' },
-            _react2.default.createElement(_tooltip2.default, {
-                alignment: 'left',
-                icon: 'info',
-                message: tooltip || 'Message goes here.'
-            })
         ),
         children
     );
@@ -5899,10 +6280,8 @@ Fieldset.propTypes = {
     children: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
     className: _propTypes2.default.string,
     header: _propTypes2.default.string,
-    icon: _propTypes2.default.string,
     onMouseEnter: _propTypes2.default.func,
-    onMouseLeave: _propTypes2.default.func,
-    tooltip: _propTypes2.default.string
+    onMouseLeave: _propTypes2.default.func
 };
 
 exports.default = Fieldset;
@@ -5954,6 +6333,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var InputField = function InputField(_ref) {
     var checked = _ref.checked,
         className = _ref.className,
+        classNameInput = _ref.classNameInput,
+        classNamePrefix = _ref.classNamePrefix,
         data_tip = _ref.data_tip,
         data_value = _ref.data_value,
         error_messages = _ref.error_messages,
@@ -6053,7 +6434,7 @@ var InputField = function InputField(_ref) {
 
     var input = _react2.default.createElement('input', {
         checked: checked ? 'checked' : '',
-        className: (0, _classnames2.default)({ error: has_error }),
+        className: (0, _classnames2.default)({ error: has_error }, classNameInput),
         disabled: is_disabled,
         'data-for': 'error_tooltip_' + name,
         'data-value': data_value,
@@ -6111,7 +6492,7 @@ var InputField = function InputField(_ref) {
                 { htmlFor: name, className: 'input-label' },
                 label
             ),
-            !!prefix && _react2.default.createElement('span', { className: 'symbols ' + prefix.toLowerCase() }),
+            !!prefix && _react2.default.createElement('span', { className: (0, _classnames2.default)(classNamePrefix, 'symbols', prefix.toLowerCase()) }),
             !!helper && _react2.default.createElement(
                 'span',
                 { className: 'input-helper' },
@@ -6129,6 +6510,8 @@ var InputField = function InputField(_ref) {
 InputField.propTypes = {
     checked: _propTypes2.default.number,
     className: _propTypes2.default.string,
+    classNameInput: _propTypes2.default.string,
+    classNamePrefix: _propTypes2.default.string,
     error_messages: _mobxReact.PropTypes.arrayOrObservableArray,
     fractional_digits: _propTypes2.default.number,
     helper: _propTypes2.default.string,
@@ -6229,398 +6612,6 @@ NumberSelector.propTypes = {
 };
 
 exports.default = NumberSelector;
-
-/***/ }),
-
-/***/ "./src/javascript/app_2/App/Components/Form/time_picker.jsx":
-/*!******************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Form/time_picker.jsx ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js");
-
-var _Common = __webpack_require__(/*! ../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
-
-var _start_date = __webpack_require__(/*! ../../../Stores/Modules/Trading/Helpers/start_date */ "./src/javascript/app_2/Stores/Modules/Trading/Helpers/start_date.js");
-
-var _Date = __webpack_require__(/*! ../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
-
-var _input_field = __webpack_require__(/*! ./input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
-
-var _input_field2 = _interopRequireDefault(_input_field);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TimePickerDropdown = function (_React$Component) {
-    _inherits(TimePickerDropdown, _React$Component);
-
-    function TimePickerDropdown(props) {
-        _classCallCheck(this, TimePickerDropdown);
-
-        var _this = _possibleConstructorReturn(this, (TimePickerDropdown.__proto__ || Object.getPrototypeOf(TimePickerDropdown)).call(this, props));
-
-        _this.selectOption = function (type, value) {
-            var is_enabled = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-            if (is_enabled && _this.props.value) {
-                var _this$props$value$spl = _this.props.value.split(':'),
-                    _this$props$value$spl2 = _slicedToArray(_this$props$value$spl, 2),
-                    prev_hour = _this$props$value$spl2[0],
-                    prev_minute = _this$props$value$spl2[1];
-
-                if (type === 'h' && value !== prev_hour || type === 'm' && value !== prev_minute) {
-                    var is_type_selected = type === 'h' ? 'is_hour_selected' : 'is_minute_selected';
-                    _this.setState(_defineProperty({
-                        last_updated_type: type
-                    }, is_type_selected, true));
-                    _this.props.onChange((type === 'h' ? value : prev_hour) + ':' + (type === 'm' ? value : prev_minute));
-                }
-            }
-        };
-
-        _this.clear = function (event) {
-            event.stopPropagation();
-            _this.resetValues();
-            _this.props.onChange('');
-        };
-
-        _this.hours = [].concat(_toConsumableArray(Array(24).keys())).map(function (a) {
-            return ('0' + a).slice(-2);
-        });
-        _this.minutes = [].concat(_toConsumableArray(Array(12).keys())).map(function (a) {
-            return ('0' + a * 5).slice(-2);
-        });
-        _this.state = {
-            is_hour_selected: false,
-            is_minute_selected: false,
-            last_updated_type: null
-        };
-        return _this;
-    }
-
-    _createClass(TimePickerDropdown, [{
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            var _state = this.state,
-                is_hour_selected = _state.is_hour_selected,
-                is_minute_selected = _state.is_minute_selected;
-
-            if (is_hour_selected && is_minute_selected) {
-                this.resetValues();
-                this.props.toggle();
-            }
-            if (!prevProps.className && this.props.className === 'active') {
-                this.resetValues();
-            }
-            if (prevState.last_updated_type !== this.state.last_updated_type && this.state.last_updated_type) {
-                this.setState({ last_updated_type: null });
-            }
-        }
-    }, {
-        key: 'resetValues',
-        value: function resetValues() {
-            this.setState({
-                is_hour_selected: false,
-                is_minute_selected: false
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var _props = this.props,
-                preClass = _props.preClass,
-                value = _props.value,
-                toggle = _props.toggle,
-                start_date = _props.start_date,
-                sessions = _props.sessions;
-
-            var start_moment = (0, _Date.toMoment)(start_date);
-            var start_moment_clone = start_moment.clone().minute(0).second(0);
-
-            var _value$split = value.split(':'),
-                _value$split2 = _slicedToArray(_value$split, 2),
-                hour = _value$split2[0],
-                minute = _value$split2[1];
-
-            return _react2.default.createElement(
-                'div',
-                { className: preClass + '-dropdown ' + this.props.className },
-                _react2.default.createElement(
-                    'div',
-                    {
-                        className: preClass + '-panel',
-                        onClick: toggle
-                    },
-                    _react2.default.createElement(
-                        'span',
-                        { className: value ? '' : 'placeholder' },
-                        value || (0, _localize.localize)('Select time')
-                    ),
-                    (!('is_clearable' in this.props) || this.props.is_clearable) && _react2.default.createElement('span', {
-                        className: preClass + '-clear',
-                        onClick: this.clear
-                    })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: preClass + '-selector' },
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            ref: this.saveHourRef,
-                            className: preClass + '-hours'
-                        },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-title center-text' },
-                            _react2.default.createElement(
-                                'strong',
-                                null,
-                                (0, _localize.localize)('Hour')
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-container' },
-                            this.hours.map(function (h, key) {
-                                start_moment_clone.hour(h);
-                                var is_enabled = (0, _start_date.isSessionAvailable)(sessions, start_moment_clone, start_moment, true);
-                                return _react2.default.createElement(
-                                    'div',
-                                    {
-                                        className: 'list-item' + (hour === h ? ' selected' : '') + (is_enabled ? '' : ' disabled'),
-                                        key: key,
-                                        onClick: function onClick() {
-                                            _this2.selectOption('h', h, is_enabled);
-                                        }
-                                    },
-                                    h
-                                );
-                            })
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            ref: this.saveMinuteRef,
-                            className: preClass + '-minutes'
-                        },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-title center-text' },
-                            _react2.default.createElement(
-                                'strong',
-                                null,
-                                (0, _localize.localize)('Minute')
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-container' },
-                            this.minutes.map(function (mm, key) {
-                                start_moment_clone.hour(hour).minute(mm);
-                                var is_enabled = (0, _start_date.isSessionAvailable)(sessions, start_moment_clone, start_moment);
-                                return _react2.default.createElement(
-                                    'div',
-                                    {
-                                        className: 'list-item' + (minute === mm ? ' selected' : '') + (is_enabled ? '' : ' disabled'),
-                                        key: key,
-                                        onClick: function onClick() {
-                                            _this2.selectOption('m', mm, is_enabled);
-                                        }
-                                    },
-                                    mm
-                                );
-                            })
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return TimePickerDropdown;
-}(_react2.default.Component);
-
-var TimePicker = function (_React$Component2) {
-    _inherits(TimePicker, _React$Component2);
-
-    function TimePicker(props) {
-        _classCallCheck(this, TimePicker);
-
-        var _this3 = _possibleConstructorReturn(this, (TimePicker.__proto__ || Object.getPrototypeOf(TimePicker)).call(this, props));
-
-        _this3.toggleDropDown = function () {
-            _this3.setState({ is_open: !_this3.state.is_open });
-        };
-
-        _this3.handleChange = function (arg) {
-            // To handle nativepicker;
-            var value = (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) === 'object' ? arg.target.value : arg;
-
-            if (value !== _this3.props.value) {
-                _this3.props.onChange({ target: { name: _this3.props.name, value: value } });
-            }
-        };
-
-        _this3.saveRef = function (node) {
-            if (!node) return;
-            if (node.nodeName === 'INPUT') {
-                _this3.target_element = node;
-                return;
-            }
-            _this3.wrapper_ref = node;
-        };
-
-        _this3.handleClickOutside = function (event) {
-            if (_this3.wrapper_ref && !_this3.wrapper_ref.contains(event.target)) {
-                if (_this3.state.is_open) {
-                    _this3.setState({ is_open: false });
-                }
-            }
-        };
-
-        _this3.state = {
-            is_open: false,
-            value: ''
-        };
-        return _this3;
-    }
-
-    _createClass(TimePicker, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            document.addEventListener('mousedown', this.handleClickOutside);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            document.removeEventListener('mousedown', this.handleClickOutside);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var prefix_class = 'time-picker';
-            var _props2 = this.props,
-                is_nativepicker = _props2.is_nativepicker,
-                value = _props2.value,
-                name = _props2.name,
-                is_align_right = _props2.is_align_right,
-                placeholder = _props2.placeholder,
-                start_date = _props2.start_date,
-                sessions = _props2.sessions,
-                validation_errors = _props2.validation_errors;
-
-            return _react2.default.createElement(
-                'div',
-                {
-                    ref: this.saveRef,
-                    className: '' + prefix_class + (this.props.padding ? ' padding' : '') + (this.state.is_open ? ' active' : '')
-                },
-                is_nativepicker ? _react2.default.createElement('input', {
-                    type: 'time',
-                    id: prefix_class + '-input',
-                    value: value,
-                    onChange: this.handleChange,
-                    name: name
-                }) : _react2.default.createElement(
-                    _react2.default.Fragment,
-                    null,
-                    _react2.default.createElement(_input_field2.default, {
-                        error_messages: validation_errors,
-                        type: 'text',
-                        is_read_only: true,
-                        is_unit_at_right: true,
-                        id: prefix_class + '-input',
-                        className: prefix_class + '-input ' + (this.state.is_open ? 'active' : ''),
-                        value: value,
-                        onClick: this.toggleDropDown,
-                        name: name,
-                        placeholder: placeholder,
-                        unit: 'GMT'
-                    }),
-                    _react2.default.createElement(_Common.IconClock, { className: prefix_class + '-icon' }),
-                    _react2.default.createElement(TimePickerDropdown, {
-                        className: '' + (this.state.is_open ? 'active' : '') + (is_align_right ? ' from-right' : ''),
-                        toggle: this.toggleDropDown,
-                        onChange: this.handleChange,
-                        preClass: prefix_class,
-                        start_date: start_date,
-                        value: value,
-                        sessions: sessions,
-                        is_clearable: this.props.is_clearable
-                    })
-                )
-            );
-        }
-    }]);
-
-    return TimePicker;
-}(_react2.default.Component);
-
-TimePicker.propTypes = {
-    is_align_right: _propTypes2.default.bool,
-    is_clearable: _propTypes2.default.bool,
-    is_nativepicker: _propTypes2.default.bool,
-    name: _propTypes2.default.string,
-    onChange: _propTypes2.default.func,
-    padding: _propTypes2.default.string,
-    placeholder: _propTypes2.default.string,
-    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_date: _propTypes2.default.number,
-    value: _propTypes2.default.string
-};
-
-TimePickerDropdown.propTypes = {
-    className: _propTypes2.default.string,
-    is_clearable: _propTypes2.default.bool,
-    onChange: _propTypes2.default.func,
-    preClass: _propTypes2.default.string,
-    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_date: _propTypes2.default.number,
-    toggle: _propTypes2.default.func,
-    value: _propTypes2.default.string,
-    value_split: _propTypes2.default.bool
-};
-
-exports.default = (0, _mobxReact.observer)(TimePicker);
 
 /***/ }),
 
@@ -9007,67 +8998,6 @@ exports.default = (0, _reactRouter.withRouter)((0, _connect.connect)(function (_
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Containers/Layout/theme_wrapper.jsx":
-/*!**********************************************************************!*\
-  !*** ./src/javascript/app_2/App/Containers/Layout/theme_wrapper.jsx ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouter = __webpack_require__(/*! react-router */ "./node_modules/react-router/es/index.js");
-
-var _connect = __webpack_require__(/*! ../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ThemeWrapper = function ThemeWrapper(_ref) {
-    var children = _ref.children,
-        is_dark_theme = _ref.is_dark_theme;
-
-    var theme_wrapper_class = (0, _classnames2.default)('theme-wrapper', {
-        dark: is_dark_theme,
-        light: !is_dark_theme
-    });
-    return _react2.default.createElement(
-        'div',
-        { id: 'theme_wrapper', className: theme_wrapper_class },
-        children
-    );
-};
-
-ThemeWrapper.propTypes = {
-    children: _propTypes2.default.node,
-    is_dark_theme: _propTypes2.default.bool
-};
-
-exports.default = (0, _reactRouter.withRouter)((0, _connect.connect)(function (_ref2) {
-    var ui = _ref2.ui;
-    return {
-        is_dark_theme: ui.is_dark_mode_on
-    };
-})(ThemeWrapper));
-
-/***/ }),
-
 /***/ "./src/javascript/app_2/App/Containers/Routes/routes.jsx":
 /*!***************************************************************!*\
   !*** ./src/javascript/app_2/App/Containers/Routes/routes.jsx ***!
@@ -9755,10 +9685,6 @@ var _header = __webpack_require__(/*! ./Containers/Layout/header.jsx */ "./src/j
 
 var _header2 = _interopRequireDefault(_header);
 
-var _theme_wrapper = __webpack_require__(/*! ./Containers/Layout/theme_wrapper.jsx */ "./src/javascript/app_2/App/Containers/Layout/theme_wrapper.jsx");
-
-var _theme_wrapper2 = _interopRequireDefault(_theme_wrapper);
-
 var _routes = __webpack_require__(/*! ./Containers/Routes/routes.jsx */ "./src/javascript/app_2/App/Containers/Routes/routes.jsx");
 
 var _routes2 = _interopRequireDefault(_routes);
@@ -9778,11 +9704,11 @@ var App = function App(_ref) {
             _connect.MobxProvider,
             { store: root_store },
             _react2.default.createElement(
-                _theme_wrapper2.default,
+                _react2.default.Fragment,
                 null,
                 _react2.default.createElement(
                     'div',
-                    { id: 'header' },
+                    { className: 'header' },
                     _react2.default.createElement(_header2.default, null)
                 ),
                 _react2.default.createElement(
@@ -9799,7 +9725,7 @@ var App = function App(_ref) {
                 ),
                 _react2.default.createElement(
                     'footer',
-                    { id: 'footer' },
+                    { className: 'footer' },
                     _react2.default.createElement(_footer2.default, null)
                 )
             )
@@ -9830,6 +9756,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IconArrow = undefined;
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -9841,16 +9771,18 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var IconArrow = function IconArrow(_ref) {
-    var className = _ref.className;
+    var className = _ref.className,
+        classNamePath = _ref.classNamePath;
     return _react2.default.createElement(
         'svg',
         { className: className, width: '16', height: '16', xmlns: 'http://www.w3.org/2000/svg' },
-        _react2.default.createElement('path', { className: 'arrow-path', d: 'M13.164 5.13a.5.5 0 1 1 .672.74l-5.5 5a.5.5 0 0 1-.672 0l-5.5-5a.5.5 0 0 1 .672-.74L8 9.824l5.164-4.694z', fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'nonzero' })
+        _react2.default.createElement('path', { className: (0, _classnames2.default)(classNamePath, 'arrow-path'), d: 'M13.164 5.13a.5.5 0 1 1 .672.74l-5.5 5a.5.5 0 0 1-.672 0l-5.5-5a.5.5 0 0 1 .672-.74L8 9.824l5.164-4.694z', fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'nonzero' })
     );
 };
 
 IconArrow.propTypes = {
-    className: _propTypes2.default.string
+    className: _propTypes2.default.string,
+    classNamePath: _propTypes2.default.string
 };
 
 exports.IconArrow = IconArrow;
@@ -14523,7 +14455,7 @@ var FullScreenDialog = function FullScreenDialog(props) {
             { className: 'fullscreen-dialog__content' },
             _react2.default.createElement(
                 'div',
-                { className: '' + (wrapperClassName || 'contracts-modal-list') },
+                { className: '' + (wrapperClassName || 'fullscreen-dialog__contracts-modal-list') },
                 children
             )
         )
@@ -15194,14 +15126,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ErrorBalance = function ErrorBalance() {
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-login-wrapper' },
+        { className: 'purchase-container__error-login' },
         _react2.default.createElement(
             'span',
-            { className: 'info-text' },
+            { className: 'purchase-container__error-info purchase-container__error-login-info' },
             (0, _localize.localize)('You have an insufficient amount of balance.')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'secondary orange',
+            className: 'purchase-container__error-login-btn secondary orange',
+            classNameSpan: 'purchase-container__error-login-btn-span',
             has_effect: true,
             text: (0, _localize.localize)('Deposit')
         })
@@ -15241,10 +15174,10 @@ var ErrorGeneral = function ErrorGeneral(_ref) {
     var message = _ref.message;
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-error-wrapper' },
+        { className: 'purchase-container__error-result' },
         _react2.default.createElement(
             'span',
-            { className: 'info-text' },
+            { className: 'purchase-container__error-info' },
             message
         )
     );
@@ -15290,29 +15223,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ErrorLogin = function ErrorLogin() {
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-login-wrapper' },
+        { className: 'purchase-container__error-login' },
         _react2.default.createElement(
             'span',
-            { className: 'info-text' },
+            { className: 'purchase-container__error-info purchase-container__error-login-info' },
             (0, _localize.localize)('Please log in to purchase the contract')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'secondary orange',
+            className: 'purchase-container__error-login-btn secondary orange',
+            classNameSpan: 'purchase-container__error-login-btn-span',
             has_effect: true,
             text: (0, _localize.localize)('log in'),
             onClick: _login.redirectToLogin
         }),
         _react2.default.createElement(
             'p',
-            null,
+            { className: 'purchase-container__error-login-prompt' },
             (0, _localize.localize)('Don\'t have a [_1] account?', ['Binary.com'])
         ),
         _react2.default.createElement(
             'a',
-            { href: 'javascript:;' },
+            { className: 'purchase-container__error-login-link', href: 'javascript:;' },
             _react2.default.createElement(
                 'span',
-                { className: 'info-text' },
+                { className: 'purchase-container__error-info purchase-container__error-login-info' },
                 (0, _localize.localize)('Create one now')
             )
         )
@@ -15458,11 +15392,11 @@ var MessageBox = function MessageBox(_ref) {
 
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-error' },
+        { className: 'purchase-container__error' },
         _react2.default.createElement(
             'div',
-            { className: 'close-btn-container', onClick: onClick },
-            _react2.default.createElement(_icon_close.IconClose, { className: 'ic-close' })
+            { className: 'purchase-container__error-close-btn', onClick: onClick },
+            _react2.default.createElement(_icon_close.IconClose, { className: 'purchase-container__error-close-btn-ic' })
         ),
         has_error ? ErrorComponent : _react2.default.createElement(_purchase_result2.default, {
             purchase_info: purchase_info.buy,
@@ -15518,13 +15452,13 @@ var PurchaseResult = function PurchaseResult(_ref) {
         purchase_info = _ref.purchase_info;
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-result-wrapper' },
+        { className: 'purchase-container__error-result' },
         _react2.default.createElement(
             'div',
             null,
             _react2.default.createElement(
                 'strong',
-                null,
+                { className: 'purchase-container__error-result-header' },
                 (0, _localize.localize)('Purchase Info')
             )
         ),
@@ -15533,14 +15467,14 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Buy Price'),
                 ':'
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'buy-price' },
-                _react2.default.createElement('i', { className: (0, _classnames2.default)('symbols', currency.toLowerCase()) }),
+                null,
+                _react2.default.createElement('i', { className: (0, _classnames2.default)('purchase-container__error-result-currency', 'symbols', currency.toLowerCase()) }),
                 purchase_info.buy_price
             )
         ),
@@ -15549,14 +15483,14 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Payout'),
                 ':'
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'payout' },
-                _react2.default.createElement('i', { className: (0, _classnames2.default)('symbols', currency.toLowerCase()) }),
+                null,
+                _react2.default.createElement('i', { className: (0, _classnames2.default)('purchase-container__error-result-currency', 'symbols', currency.toLowerCase()) }),
                 purchase_info.payout
             )
         ),
@@ -15565,7 +15499,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Start'),
                 ':'
             ),
@@ -15577,7 +15511,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Contract ID'),
                 ':'
             ),
@@ -15589,7 +15523,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Transaction ID'),
                 ':'
             ),
@@ -15601,7 +15535,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Description'),
                 ':'
             ),
@@ -15681,26 +15615,26 @@ var PurchaseLock = function PurchaseLock(_ref) {
     var onClick = _ref.onClick;
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-lock-container' },
+        { className: 'purchase-container__lock' },
         _react2.default.createElement(
             'div',
-            { className: 'lock-container' },
-            _react2.default.createElement(_icon_lock.IconLock, { className: 'ic-lock' })
+            null,
+            _react2.default.createElement(_icon_lock.IconLock, { className: 'purchase-container__lock-icon' })
         ),
         _react2.default.createElement(
             'h4',
-            null,
+            { className: 'purchase-container__lock-header' },
             (0, _localize.localize)('Purchase Locked')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'flat secondary orange',
+            className: 'purchase-container__lock-button flat secondary orange',
             has_effect: true,
             onClick: onClick,
             text: (0, _localize.localize)('Unlock')
         }),
         _react2.default.createElement(
             'span',
-            { className: 'lock-message' },
+            { className: 'purchase-container__lock-message' },
             (0, _localize.localize)('You can lock/unlock the purchase button from the Settings menu')
         )
     );
@@ -15765,40 +15699,40 @@ var ContractInfo = function ContractInfo(_ref) {
             'div',
             {
                 className: (0, _classnames2.default)({
-                    'error-info-wrapper': proposal_info.has_error
+                    'trade-container__error': proposal_info.has_error
                 })
             },
             proposal_info.message && _react2.default.createElement(
                 'span',
-                null,
+                { className: 'trade-container__error-info' },
                 proposal_info.message
             )
         ) : _react2.default.createElement(
             'div',
-            { className: 'purchase-info-wrapper' },
+            { className: 'trade-container__price' },
             _react2.default.createElement(
                 'div',
-                { className: 'info-wrapper' },
+                { className: 'trade-container__price-info' },
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'trade-container__price-info-basis' },
                     (0, _localize.localize)('[_1]', proposal_info.obj_contract_basis.text)
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'info-wrapper__amount' },
-                    _react2.default.createElement(_money2.default, { amount: proposal_info.obj_contract_basis.value, currency: currency })
+                    null,
+                    _react2.default.createElement(_money2.default, { amount: proposal_info.obj_contract_basis.value, className: 'trade-container__price-info-currency', currency: currency })
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'icon_price_move_container' },
+                    { className: 'trade-container__price-info-movement' },
                     has_increased !== null && _react2.default.createElement(_icon_price_move.IconPriceMove, { type: has_increased ? 'profit' : 'loss' })
                 )
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'purchase-tooltip' },
-                _react2.default.createElement(_tooltip2.default, { alignment: 'left', icon: 'info', message: proposal_info.message })
+                null,
+                _react2.default.createElement(_tooltip2.default, { alignment: 'left', className: 'trade-container__price-tooltip', classNameIcon: 'trade-container__price-tooltip-i', icon: 'info', message: proposal_info.message })
             )
         )
     );
@@ -15844,9 +15778,9 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _time_picker = __webpack_require__(/*! ../../../../../../App/Components/Form/time_picker.jsx */ "./src/javascript/app_2/App/Components/Form/time_picker.jsx");
+var _TimePicker = __webpack_require__(/*! ../../../../../../App/Components/Form/TimePicker */ "./src/javascript/app_2/App/Components/Form/TimePicker/index.js");
 
-var _time_picker2 = _interopRequireDefault(_time_picker);
+var _TimePicker2 = _interopRequireDefault(_TimePicker);
 
 var _DatePicker = __webpack_require__(/*! ../../../../../../App/Components/Form/DatePicker */ "./src/javascript/app_2/App/Components/Form/DatePicker/index.js");
 
@@ -15922,7 +15856,6 @@ var AdvancedDuration = function AdvancedDuration(_ref) {
                 // when the expiry_date is on the next day of the start_date, the session should be close 5 min before the start_time of the contract.
                 close: is_expired_next_day ? (0, _Date.minDate)(expiry_date_time.clone().subtract(10, 'minute'), expiry_date_market_close) : expiry_date_market_close.clone()
             }];
-
             min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
             max_date_duration = moment_contract_start_date_time.clone().add(start_date ? 24 * 3600 : max_daily_duration, 'second');
         } else {
@@ -15978,6 +15911,7 @@ var AdvancedDuration = function AdvancedDuration(_ref) {
                     value: duration_t
                 }, shared_input_props)),
                 advanced_duration_unit !== 't' && _react2.default.createElement(_input_field2.default, _extends({
+                    classNameInput: 'trade-container__input',
                     label: duration_units_list.length === 1 ? duration_units_list[0].text : null,
                     name: 'duration',
                     value: getDurationFromUnit(advanced_duration_unit)
@@ -16005,15 +15939,13 @@ var AdvancedDuration = function AdvancedDuration(_ref) {
                     underlying: symbol
                     // validation_errors={validation_errors.expiry_date} TODO: add validation_errors for expiry date
                 }),
-                is_24_hours_contract && _react2.default.createElement(_time_picker2.default, {
+                is_24_hours_contract && _react2.default.createElement(_TimePicker2.default, {
+                    end_time: expiry_time_sessions[0].close,
                     onChange: onChange,
-                    is_align_right: true,
                     name: 'expiry_time',
                     placeholder: '12:00',
-                    sessions: expiry_time_sessions,
-                    start_date: moment_expiry.unix(),
+                    start_time: expiry_time_sessions[0].open,
                     value: expiry_time || min_date_expiry.format('HH:mm'),
-                    is_clearable: false,
                     is_nativepicker: is_nativepicker
                     // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                 })
@@ -16242,7 +16174,7 @@ var Duration = function Duration(_ref) {
 
     return _react2.default.createElement(
         _fieldset2.default,
-        null,
+        { className: 'trade-container__fieldset' },
         !has_toggle && _react2.default.createElement(_RangeSlider2.default, _extends({
             name: 'duration',
             ticks: 10,
@@ -16374,7 +16306,7 @@ var DurationToggle = function DurationToggle(_ref) {
         _react2.default.createElement(
             'button',
             { className: 'advanced-simple-toggle', onClick: toggle },
-            _react2.default.createElement(_Common.IconArrow, { className: icon_className })
+            _react2.default.createElement(_Common.IconArrow, { className: icon_className, classNamePath: 'advanced-simple-toggle__icon-path' })
         )
     );
 };
@@ -16493,7 +16425,7 @@ var DurationWrapper = function (_React$Component) {
             var current_duration = this.props.getDurationFromUnit(this.props.duration_unit);
             var has_missing_duration_unit = !this.hasDurationUnit(current_duration_unit);
             var simple_is_not_type_duration = !this.props.is_advanced_duration && this.props.expiry_type !== 'duration';
-            var advanced_has_wrong_expiry = this.props.is_advanced_duration && this.props.expiry_type !== this.props.advanced_expiry_type;
+            var advanced_has_wrong_expiry = this.props.is_advanced_duration && this.props.expiry_type !== this.props.advanced_expiry_type && this.props.duration_units_list.length > 1;
 
             // intercept changes to current contracts duration_units_list - if they are missing change duration_unit and value in trade_store and ui_store
             if (has_missing_duration_unit || simple_is_missing_duration_unit) {
@@ -16664,6 +16596,7 @@ var SimpleDuration = function SimpleDuration(_ref) {
             ticks: 10
         }, shared_input_props)),
         simple_duration_unit !== 't' && _react2.default.createElement(_input_field2.default, _extends({
+            classNameInput: 'trade-container__input',
             name: 'duration',
             label: has_label ? duration_units_list[0].text : null,
             value: getDurationFromUnit(simple_duration_unit)
@@ -16727,6 +16660,7 @@ var AllowEquals = function AllowEquals(_ref) {
         'div',
         { className: 'allow-equals' },
         _react2.default.createElement(_input_field2.default, {
+            classNameInput: 'trade-container__input',
             id: 'allow_equals',
             name: 'contract_type',
             onChange: onChange,
@@ -16836,13 +16770,11 @@ var Amount = function Amount(_ref) {
             (0, _currency_base.addComma)(amount, 2)
         );
     }
-    var amount_container_class = (0, _classnames2.default)('amount-container', {
-        'three-columns': !is_single_currency
-    });
+    var amount_container_class = (0, _classnames2.default)({ 'three-columns': !is_single_currency });
 
     return _react2.default.createElement(
         _fieldset2.default,
-        null,
+        { className: 'trade-container__fieldset' },
         _react2.default.createElement(
             'div',
             { className: amount_container_class },
@@ -16852,7 +16784,8 @@ var Amount = function Amount(_ref) {
                 list: basis_list,
                 name: 'basis',
                 value: basis,
-                onChange: onChange
+                onChange: onChange,
+                className: 'no-margin'
             }),
             !is_single_currency && _react2.default.createElement(_DropDown2.default, {
                 is_alignment_left: true,
@@ -16863,6 +16796,8 @@ var Amount = function Amount(_ref) {
                 onChange: onChange
             }),
             _react2.default.createElement(_input_field2.default, {
+                classNameInput: 'trade-container__input',
+                classNamePrefix: 'trade-container__currency',
                 error_messages: validation_errors.amount,
                 fractional_digits: (0, _currency_base.getDecimalPlaces)(currency),
                 is_autocomplete_disabled: true,
@@ -16912,6 +16847,10 @@ exports.default = (0, _mobxReact.observer)(Amount);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
 
@@ -16973,20 +16912,24 @@ var Barrier = function Barrier(_ref) {
             )
         );
     }
+
+    var input_class = barrier_count === 2 ? 'multiple' : 'single';
     return _react2.default.createElement(
         _fieldset2.default,
         {
-            className: 'barriers',
-            header: barrier_title
+            className: 'trade-container__fieldset trade-container__barriers',
+            header: barrier_title,
+            is_center: true
         },
         _react2.default.createElement(
             'div',
-            { className: 'barriers-wrapper' },
+            null,
             _react2.default.createElement(_input_field2.default, {
                 type: 'number',
                 name: 'barrier_1',
                 value: barrier_1,
-                className: barrier_count === 2 ? 'multiple' : 'single',
+                className: 'trade-container__barriers-' + input_class,
+                classNameInput: (0, _classnames2.default)('trade-container__input', 'trade-container__barriers-input', 'trade-container__barriers-' + input_class + '-input'),
                 onChange: onChange,
                 error_messages: validation_errors.barrier_1 || [],
                 is_float: true,
@@ -17000,13 +16943,14 @@ var Barrier = function Barrier(_ref) {
                     name: 'barrier_2',
                     value: barrier_2,
                     className: 'multiple',
+                    classNameInput: 'trade-container__input',
                     onChange: onChange,
                     error_messages: validation_errors.barrier_2,
                     is_float: true,
                     is_signed: true
                 }),
-                _react2.default.createElement(_Barriers.IconBarrierUp, { className: 'up' }),
-                _react2.default.createElement(_Barriers.IconBarrierDown, { className: 'down' })
+                _react2.default.createElement(_Barriers.IconBarrierUp, { className: 'trade-container__barriers--up' }),
+                _react2.default.createElement(_Barriers.IconBarrierDown, { className: 'trade-container__barriers--down' })
             )
         )
     );
@@ -17080,6 +17024,7 @@ var LastDigit = function LastDigit(_ref) {
     return _react2.default.createElement(
         _fieldset2.default,
         {
+            className: 'trade-container__fieldset',
             header: (0, _localize.localize)('Last Digit Prediction'),
             is_center: true
         },
@@ -17261,7 +17206,7 @@ var TradeTypeInfoItem = function TradeTypeInfoItem(_ref) {
                 _ttReactCustomScrollbars.Scrollbars,
                 {
                     autoHide: true,
-                    style: { height: '215px' }
+                    style: { height: '100%' }
                 },
                 _react2.default.createElement(_trade_categories.TradeCategories, { category: item.value })
             )
@@ -17409,6 +17354,10 @@ var _ui_loader = __webpack_require__(/*! ../../../../App/Components/Elements/ui_
 
 var _ui_loader2 = _interopRequireDefault(_ui_loader);
 
+var _fieldset = __webpack_require__(/*! ../../../../App/Components/Form/fieldset.jsx */ "./src/javascript/app_2/App/Components/Form/fieldset.jsx");
+
+var _fieldset2 = _interopRequireDefault(_fieldset);
+
 var _contract_type = __webpack_require__(/*! ../../Containers/contract_type.jsx */ "./src/javascript/app_2/Modules/Trading/Containers/contract_type.jsx");
 
 var _contract_type2 = _interopRequireDefault(_contract_type);
@@ -17436,14 +17385,14 @@ var ScreenLarge = function ScreenLarge(_ref) {
             _react2.default.Fragment,
             null,
             _react2.default.createElement(
-                'fieldset',
-                { className: 'trade-types' },
+                _fieldset2.default,
+                { className: 'trade-container__fieldset trade-types' },
                 _react2.default.createElement(_contract_type2.default, null)
             ),
             _react2.default.createElement(_trade_params2.default, null),
             _react2.default.createElement(
                 'div',
-                { className: 'purchase-wrapper' },
+                { className: 'purchase-container' },
                 _react2.default.createElement(_purchase2.default, null)
             )
         )
@@ -17507,7 +17456,7 @@ var ScreenSmall = function ScreenSmall() {
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'purchase-wrapper' },
+                { className: 'purchase-container' },
                 _react2.default.createElement(_purchase2.default, null)
             )
         )
@@ -17671,12 +17620,11 @@ var Purchase = function Purchase(_ref) {
             {
                 is_disabled: is_disabled,
                 id: 'purchase_' + type,
-                className: 'primary green btn-purchase',
+                className: 'primary btn-purchase',
                 has_effect: true,
                 onClick: function onClick() {
                     onClickPurchase(info.id, info.stake, type);
-                },
-                wrapperClassName: 'submit-section'
+                }
             },
             _react2.default.createElement(
                 _react2.default.Fragment,
@@ -17692,7 +17640,7 @@ var Purchase = function Purchase(_ref) {
                         _react2.default.createElement(_Types.IconTradeType, { type: type.toLowerCase() }),
                         _react2.default.createElement(
                             'span',
-                            null,
+                            { className: 'btn-purchase__trade-type-text' },
                             (0, _localize.localize)('[_1]', trade_types[type])
                         )
                     )
@@ -17708,7 +17656,7 @@ var Purchase = function Purchase(_ref) {
                     _react2.default.createElement(
                         'div',
                         { className: 'btn-purchase__profit' },
-                        is_disabled ? '--,--' : _react2.default.createElement(_money2.default, { amount: info.profit, currency: currency })
+                        is_disabled ? '--,--' : _react2.default.createElement(_money2.default, { amount: info.profit, currency: currency, className: 'btn-purchase__currency' })
                     )
                 )
             )
@@ -17719,7 +17667,7 @@ var Purchase = function Purchase(_ref) {
         return _react2.default.createElement(
             _fieldset2.default,
             {
-                className: 'purchase-option',
+                className: 'trade-container__fieldset purchase-container__option',
                 key: idx,
                 onMouseEnter: function onMouseEnter() {
                     onHoverPurchase(true, type);
@@ -17736,7 +17684,7 @@ var Purchase = function Purchase(_ref) {
             }) : _react2.default.createElement(
                 _react2.default.Fragment,
                 null,
-                !is_purchase_enabled && idx === 0 && _react2.default.createElement(_ui_loader2.default, null),
+                !is_purchase_enabled && idx === 0 && _react2.default.createElement(_ui_loader2.default, { classNameBlock: 'purchase-container__loading' }),
                 _react2.default.createElement(_contract_info2.default, {
                     currency: currency,
                     proposal_info: info,
@@ -18020,7 +17968,7 @@ var Trade = function (_React$Component) {
                 { id: 'trade_container', className: 'trade-container' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'chart-container notice-msg' },
+                    { className: 'chart-container' },
                     this.props.symbol && _react2.default.createElement(
                         _react2.default.Suspense,
                         { fallback: _react2.default.createElement(_ui_loader2.default, null) },
@@ -25268,7 +25216,7 @@ var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _m
 
         window.addEventListener('resize', _this.handleResize);
         (0, _mobx.autorun)(function () {
-            return document.body.classList[_this.is_dark_mode_on ? 'add' : 'remove']('dark');
+            return document.body.classList[_this.is_dark_mode_on ? 'add' : 'remove']('theme--dark');
         });
         return _this;
     }
@@ -26890,7 +26838,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '15863'; // you can insert Application ID of your registered application here
+    var user_app_id = ''; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
