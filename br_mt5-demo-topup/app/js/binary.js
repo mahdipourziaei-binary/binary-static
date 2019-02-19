@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio":"portfolio","self_exclusion":"self_exclusion","settings":"settings","statement":"statement","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"1f20d1cb6ffbf53419ed","account_password":"67c66084bc424d34b10b","api_toke":"7c72ca04a060c6e8363d","authorized_application":"97635409ac3488b8a4dc","cashier_password":"0061f340e2203b85c4de","contract":"d5ff3abe544011cd2843","financial_assessment":"fa615b65ab7d51a072e8","limits":"6122a66075b7120f5152","login_history":"f73b0e94430bafb6dff4","personal_details":"8c2c516db1200e2e67f1","portfolio":"16052a629104e3c26ee7","self_exclusion":"10c70715aab8e89cdf0f","settings":"b65a79071afa6712cab7","statement":"df0f87e87ef416986955","vendors~smart_chart":"e29bce83a9f50024f42a","smart_chart":"3bd5fe29258265801823"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio":"portfolio","self_exclusion":"self_exclusion","settings":"settings","statement":"statement","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"1f20d1cb6ffbf53419ed","account_password":"67c66084bc424d34b10b","api_toke":"7c72ca04a060c6e8363d","authorized_application":"97635409ac3488b8a4dc","cashier_password":"0061f340e2203b85c4de","contract":"c3b74a127c727ed8b4fd","financial_assessment":"fa615b65ab7d51a072e8","limits":"6122a66075b7120f5152","login_history":"f73b0e94430bafb6dff4","personal_details":"8c2c516db1200e2e67f1","portfolio":"dcfcf75f0048e5d379cb","self_exclusion":"10c70715aab8e89cdf0f","settings":"b65a79071afa6712cab7","statement":"df0f87e87ef416986955","vendors~smart_chart":"4ef1863eda19bb87af24","smart_chart":"7332318ac688f4c6e8d5"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -302,56 +302,6 @@ exports.default = function (_ref) {
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Elements/AccountSwitcher/upgrade_button.jsx":
-/*!*****************************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/AccountSwitcher/upgrade_button.jsx ***!
-  \*****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.UpgradeButton = undefined;
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
-
-var _button = __webpack_require__(/*! ../../Form/button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
-
-var _button2 = _interopRequireDefault(_button);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var UpgradeButton = function UpgradeButton(_ref) {
-    var onClick = _ref.onClick;
-    return _react2.default.createElement(_button2.default, {
-        id: 'acc-balance-btn',
-        className: 'primary orange',
-        has_effect: true,
-        text: (0, _localize.localize)('Upgrade'),
-        onClick: onClick
-    });
-};
-
-UpgradeButton.propTypes = {
-    onClick: _propTypes2.default.func
-};
-
-exports.UpgradeButton = UpgradeButton;
-
-/***/ }),
-
 /***/ "./src/javascript/app_2/App/Components/Elements/Calendar/calendar.jsx":
 /*!****************************************************************************!*\
   !*** ./src/javascript/app_2/App/Components/Elements/Calendar/calendar.jsx ***!
@@ -411,12 +361,13 @@ var Calendar = (_temp = _class = function (_React$PureComponent) {
         _initialiseProps.call(_this);
 
         var date_format = props.date_format,
-            start_date = props.start_date;
+            start_date = props.start_date,
+            value = props.value;
 
-        var current_date = (0, _Date.toMoment)(start_date).format(date_format);
+        var current_date = (0, _Date.toMoment)(value || start_date).format(date_format);
         _this.state = {
             calendar_date: current_date, // calendar date reference
-            selected_date: '', // selected date
+            selected_date: value, // selected date
             calendar_view: 'date'
         };
         return _this;
@@ -426,12 +377,12 @@ var Calendar = (_temp = _class = function (_React$PureComponent) {
         key: 'render',
         value: function render() {
             var _props = this.props,
-                children = _props.children,
                 date_format = _props.date_format,
                 footer = _props.footer,
                 has_today_btn = _props.has_today_btn,
-                id = _props.id,
-                start_date = _props.start_date;
+                start_date = _props.start_date,
+                holidays = _props.holidays,
+                weekends = _props.weekends;
             var _state = this.state,
                 calendar_date = _state.calendar_date,
                 calendar_view = _state.calendar_view,
@@ -440,8 +391,7 @@ var Calendar = (_temp = _class = function (_React$PureComponent) {
 
             return _react2.default.createElement(
                 'div',
-                { id: id, className: 'calendar', 'data-value': selected_date },
-                children,
+                { className: 'calendar', 'data-value': selected_date },
                 _react2.default.createElement(_calendar_header2.default, {
                     calendar_date: calendar_date,
                     calendar_view: calendar_view,
@@ -457,7 +407,8 @@ var Calendar = (_temp = _class = function (_React$PureComponent) {
                     start_date: start_date,
                     selected_date: selected_date,
                     updateSelected: this.updateSelected,
-                    sessions: this.props.sessions
+                    holidays: holidays,
+                    weekends: weekends
                 }),
                 _react2.default.createElement(_calendar_footer2.default, {
                     footer: footer,
@@ -477,7 +428,14 @@ var Calendar = (_temp = _class = function (_React$PureComponent) {
     };
 
     this.navigateTo = function (new_date) {
-        _this2.setState({ calendar_date: (0, _Date.toMoment)(new_date).format(_this2.props.date_format) });
+        _this2.setState({
+            calendar_date: (0, _Date.toMoment)(new_date).format(_this2.props.date_format)
+        }, function () {
+            if (_this2.props.onChangeCalendarMonth) {
+                var start_of_month = (0, _Date.getStartOfMonth)(new_date);
+                _this2.props.onChangeCalendarMonth(start_of_month);
+            }
+        });
     };
 
     this.updateSelectedDate = function (e) {
@@ -527,6 +485,11 @@ var Calendar = (_temp = _class = function (_React$PureComponent) {
         _this2.setState({
             calendar_date: date,
             calendar_view: view_map[type]
+        }, function () {
+            if (_this2.props.onChangeCalendarMonth) {
+                var start_of_month = (0, _Date.getStartOfMonth)(date);
+                _this2.props.onChangeCalendarMonth(start_of_month);
+            }
         });
     };
 
@@ -582,16 +545,20 @@ Calendar.defaultProps = {
 };
 
 Calendar.propTypes = {
-    children: _propTypes2.default.object,
     date_format: _propTypes2.default.string,
     footer: _propTypes2.default.string,
     has_today_btn: _propTypes2.default.bool,
-    id: _propTypes2.default.string,
-    is_nativepicker: _propTypes2.default.bool,
+    holidays: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+        dates: _propTypes2.default.array,
+        descrip: _propTypes2.default.string
+    })),
     max_date: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.string]),
     min_date: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.string]),
+    onChangeCalendarMonth: _propTypes2.default.func,
     onSelect: _propTypes2.default.func,
-    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string])
+    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    value: _propTypes2.default.string,
+    weekends: _propTypes2.default.arrayOf(_propTypes2.default.number)
 };
 
 exports.default = Calendar;
@@ -791,13 +758,13 @@ var _react2 = _interopRequireDefault(_react);
 
 var _Common = __webpack_require__(/*! ../../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
 
+var _date_time = __webpack_require__(/*! ../../../../Constants/date_time */ "./src/javascript/app_2/Constants/date_time.js");
+
 var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
 
 var _calendar_button = __webpack_require__(/*! ./calendar_button.jsx */ "./src/javascript/app_2/App/Components/Elements/Calendar/calendar_button.jsx");
 
 var _calendar_button2 = _interopRequireDefault(_calendar_button);
-
-var _constants = __webpack_require__(/*! ./constants */ "./src/javascript/app_2/App/Components/Elements/Calendar/constants.js");
 
 var _helper = __webpack_require__(/*! ./helper */ "./src/javascript/app_2/App/Components/Elements/Calendar/helper.js");
 
@@ -806,10 +773,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var CalendarHeader = function CalendarHeader(_ref) {
     var calendar_date = _ref.calendar_date,
         calendar_view = _ref.calendar_view,
+        disable_month_selector = _ref.disable_month_selector,
+        disable_year_selector = _ref.disable_year_selector,
         isPeriodDisabled = _ref.isPeriodDisabled,
         navigateTo = _ref.navigateTo,
-        switchView = _ref.switchView,
-        disabled_selector = _ref.disabled_selector;
+        switchView = _ref.switchView;
 
     var is_date_view = calendar_view === 'date';
     var is_month_view = calendar_view === 'month';
@@ -829,9 +797,7 @@ var CalendarHeader = function CalendarHeader(_ref) {
     var is_prev_year_disabled = isPeriodDisabled((0, _Date.subYears)(moment_date, num_of_years), 'month');
     var is_next_month_disabled = isPeriodDisabled((0, _Date.addMonths)(moment_date, 1), 'month');
     var is_next_year_disabled = isPeriodDisabled((0, _Date.addYears)(moment_date, num_of_years), 'month');
-    var is_select_year_disabled = isPeriodDisabled(moment_date.clone().year(end_of_decade), 'year') || disabled_selector.some(function (selector) {
-        return selector === 'year';
-    });
+    var is_select_year_disabled = isPeriodDisabled(moment_date.clone().year(end_of_decade), 'year') || disable_year_selector;
 
     return _react2.default.createElement(
         'div',
@@ -867,9 +833,9 @@ var CalendarHeader = function CalendarHeader(_ref) {
             is_date_view && _react2.default.createElement(_calendar_button2.default, {
                 className: 'calendar__btn calendar__btn--select',
                 is_hidden: !is_date_view,
-                label: _constants.month_headers[moment_date.format('MMM')],
+                label: _date_time.month_headers[moment_date.format('MMM')],
                 onClick: function onClick() {
-                    return switchView('month');
+                    return disable_month_selector ? undefined : switchView('month');
                 }
             }),
             (is_date_view || is_month_view) && _react2.default.createElement(_calendar_button2.default, {
@@ -926,66 +892,14 @@ var CalendarHeader = function CalendarHeader(_ref) {
 CalendarHeader.propTypes = {
     calendar_date: _propTypes2.default.string,
     calendar_view: _propTypes2.default.string,
+    disable_month_selector: _propTypes2.default.bool,
+    disable_year_selector: _propTypes2.default.bool,
     isPeriodDisabled: _propTypes2.default.func,
     navigateTo: _propTypes2.default.func,
     switchView: _propTypes2.default.func
 };
 
 exports.default = CalendarHeader;
-
-/***/ }),
-
-/***/ "./src/javascript/app_2/App/Components/Elements/Calendar/constants.js":
-/*!****************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/Calendar/constants.js ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.week_headers_abbr = exports.week_headers = exports.month_headers = undefined;
-
-var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
-
-var month_headers = exports.month_headers = {
-    Jan: (0, _localize.localize)('Jan'),
-    Feb: (0, _localize.localize)('Feb'),
-    Mar: (0, _localize.localize)('Mar'),
-    Apr: (0, _localize.localize)('Apr'),
-    May: (0, _localize.localize)('May'),
-    Jun: (0, _localize.localize)('Jun'),
-    Jul: (0, _localize.localize)('Jul'),
-    Aug: (0, _localize.localize)('Aug'),
-    Sep: (0, _localize.localize)('Sep'),
-    Oct: (0, _localize.localize)('Oct'),
-    Nov: (0, _localize.localize)('Nov'),
-    Dec: (0, _localize.localize)('Dec')
-};
-
-var week_headers = exports.week_headers = {
-    Monday: (0, _localize.localize)('Monday'),
-    Tuesday: (0, _localize.localize)('Tuesday'),
-    Wednesday: (0, _localize.localize)('Wednesday'),
-    Thursday: (0, _localize.localize)('Thursday'),
-    Friday: (0, _localize.localize)('Friday'),
-    Saturday: (0, _localize.localize)('Saturday'),
-    Sunday: (0, _localize.localize)('Sunday')
-};
-
-var week_headers_abbr = exports.week_headers_abbr = {
-    Monday: (0, _localize.localize)('M'),
-    Tuesday: (0, _localize.localize)('T'),
-    Wednesday: (0, _localize.localize)('W'),
-    Thursday: (0, _localize.localize)('T'),
-    Friday: (0, _localize.localize)('F'),
-    Saturday: (0, _localize.localize)('S'),
-    Sunday: (0, _localize.localize)('S')
-};
 
 /***/ }),
 
@@ -1062,11 +976,17 @@ var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnam
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
 var _string_util = __webpack_require__(/*! ../../../../../../_common/string_util */ "./src/javascript/_common/string_util.js");
+
+var _date_time = __webpack_require__(/*! ../../../../../Constants/date_time */ "./src/javascript/app_2/Constants/date_time.js");
 
 var _Date = __webpack_require__(/*! ../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
 
@@ -1074,17 +994,21 @@ var _types = __webpack_require__(/*! ./types */ "./src/javascript/app_2/App/Comp
 
 var _types2 = _interopRequireDefault(_types);
 
-var _constants = __webpack_require__(/*! ../constants */ "./src/javascript/app_2/App/Components/Elements/Calendar/constants.js");
+var _tooltip = __webpack_require__(/*! ../../tooltip.jsx */ "./src/javascript/app_2/App/Components/Elements/tooltip.jsx");
+
+var _tooltip2 = _interopRequireDefault(_tooltip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var getDays = function getDays(_ref) {
     var calendar_date = _ref.calendar_date,
         date_format = _ref.date_format,
+        holidays = _ref.holidays,
         isPeriodDisabled = _ref.isPeriodDisabled,
         start_date = _ref.start_date,
         selected_date = _ref.selected_date,
-        updateSelected = _ref.updateSelected;
+        updateSelected = _ref.updateSelected,
+        weekends = _ref.weekends;
 
     // adjust Calendar week by 1 day so that Calendar week starts on Monday
     // change to zero to set Calendar week to start on Sunday
@@ -1126,12 +1050,37 @@ var getDays = function getDays(_ref) {
         var moment_date = (0, _Date.toMoment)(date).startOf('day');
         var is_active = selected_date && moment_date.isSame(moment_selected);
         var is_today = moment_date.isSame(moment_today, 'day');
-        var is_disabled = isPeriodDisabled(moment_date, 'day') ||
-        // for forward starting accounts, only show same day as start date and the day after
-        start_date && (moment_date.isBefore(moment_start_date) || moment_date.isAfter((0, _Date.addDays)(moment_start_date, 1)));
 
-        // show 'disabled' style for dates that is not in the same calendar month,
-        // but the date should still be clickable
+        var events = holidays.filter(function (event) {
+            return (
+                // filter by date or day of the week
+                event.dates.find(function (d) {
+                    return d === date || (0, _date_time.getDaysOfTheWeek)(d) === (0, _Date.toMoment)(date).day();
+                })
+            );
+        });
+        var has_events = !!events.length;
+        var is_closes_early = events.map(function (event) {
+            return !!event.descrip.match(/Closes early|Opens late/);
+        })[0];
+        var message = events.map(function (event) {
+            return event.descrip;
+        })[0] || '';
+
+        var is_before_min_or_after_max_date = isPeriodDisabled(moment_date, 'day');
+        var is_disabled =
+        // check if date is before min_date or after_max_date
+        is_before_min_or_after_max_date
+        // for forward starting accounts, only show same day as start date and the day after
+        || start_date && (moment_date.isBefore(moment_start_date) || moment_date.isAfter((0, _Date.addDays)(moment_start_date, 1)))
+        // check if weekends are disabled
+        || weekends.some(function (day) {
+            return (0, _Date.toMoment)(date).day() === day;
+        })
+        // check if date falls on holidays, and doesn't close early or opens late
+        || has_events && !is_closes_early;
+
+        // show 'disabled' style for dates that is not in the same calendar month, it should still be clickable
         var is_other_month = moment_date.month() !== moment_cur_date.month();
 
         days.push(_react2.default.createElement(
@@ -1149,6 +1098,11 @@ var getDays = function getDays(_ref) {
                 },
                 'data-date': date
             },
+            (has_events || is_closes_early) && !is_other_month && !is_before_min_or_after_max_date && _react2.default.createElement(_tooltip2.default, {
+                alignment: 'top',
+                icon: 'dot',
+                message: message
+            }),
             moment_date.date()
         ));
     });
@@ -1164,18 +1118,31 @@ var CalendarDays = exports.CalendarDays = function CalendarDays(props) {
     return _react2.default.createElement(
         'div',
         { className: 'calendar__body calendar__body--date' },
-        Object.keys(_constants.week_headers_abbr).map(function (item, idx) {
+        Object.keys(_date_time.week_headers_abbr).map(function (item, idx) {
             return _react2.default.createElement(
                 'span',
                 { key: idx, className: 'calendar__text calendar__text--bold' },
-                _constants.week_headers_abbr[item]
+                _date_time.week_headers_abbr[item]
             );
         }),
         days
     );
 };
 
-CalendarDays.propTypes = _extends({}, _types2.default);
+CalendarDays.defaultProps = {
+    holidays: [],
+    weekends: []
+};
+
+CalendarDays.propTypes = _extends({}, _types2.default, {
+    date_format: _propTypes2.default.string,
+    holidays: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+        dates: _propTypes2.default.array,
+        descrip: _propTypes2.default.string
+    })),
+    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    weekends: _propTypes2.default.arrayOf(_propTypes2.default.number)
+});
 
 /***/ }),
 
@@ -1294,13 +1261,13 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _date_time = __webpack_require__(/*! ../../../../../Constants/date_time */ "./src/javascript/app_2/Constants/date_time.js");
+
 var _Date = __webpack_require__(/*! ../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
 
 var _types = __webpack_require__(/*! ./types */ "./src/javascript/app_2/App/Components/Elements/Calendar/panels/types.js");
 
 var _types2 = _interopRequireDefault(_types);
-
-var _constants = __webpack_require__(/*! ../constants */ "./src/javascript/app_2/App/Components/Elements/Calendar/constants.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1316,7 +1283,7 @@ var CalendarMonths = exports.CalendarMonths = function CalendarMonths(_ref) {
     return _react2.default.createElement(
         'div',
         { className: 'calendar__body calendar__body--month' },
-        Object.keys(_constants.month_headers).map(function (month, idx) {
+        Object.keys(_date_time.month_headers).map(function (month, idx) {
             var is_active = month === moment_selected_date.clone().format('MMM') && moment_selected_date.isSame(moment_date, 'year');
             var is_disabled = isPeriodDisabled(moment_date.clone().month(month), 'month');
             return _react2.default.createElement(
@@ -1332,7 +1299,7 @@ var CalendarMonths = exports.CalendarMonths = function CalendarMonths(_ref) {
                     },
                     'data-month': month
                 },
-                _constants.month_headers[month]
+                _date_time.month_headers[month]
             );
         })
     );
@@ -1504,7 +1471,7 @@ Object.keys(_calendar_decades).forEach(function (key) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CalendarPanelTypes = undefined;
+exports.CommonPropTypes = undefined;
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -1512,15 +1479,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var CalendarPanelTypes = exports.CalendarPanelTypes = {
+var CommonPropTypes = exports.CommonPropTypes = {
     calendar_date: _propTypes2.default.string,
-    calendar_view: _propTypes2.default.string,
-    date_format: _propTypes2.default.string,
     isPeriodDisabled: _propTypes2.default.func,
-    max_date: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.string]),
-    min_date: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.string]),
-    onClick: _propTypes2.default.object,
-    selected_date: _propTypes2.default.string
+    selected_date: _propTypes2.default.string,
+    updateSelected: _propTypes2.default.func
 };
 
 /***/ }),
@@ -2041,9 +2004,9 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _toggle_button = __webpack_require__(/*! ../toggle_button.jsx */ "./src/javascript/app_2/App/Components/Elements/toggle_button.jsx");
+var _switch_button = __webpack_require__(/*! ../switch_button.jsx */ "./src/javascript/app_2/App/Components/Elements/switch_button.jsx");
 
-var _toggle_button2 = _interopRequireDefault(_toggle_button);
+var _switch_button2 = _interopRequireDefault(_switch_button);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2059,7 +2022,7 @@ var DrawerToggle = function DrawerToggle(_ref) {
             null,
             text
         ),
-        _react2.default.createElement(_toggle_button2.default, {
+        _react2.default.createElement(_switch_button2.default, {
             toggled: to_toggle
         })
     );
@@ -2550,234 +2513,6 @@ exports.default = FullPageModal;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Elements/InkBar/index.js":
-/*!**********************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/InkBar/index.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _inkbar = __webpack_require__(/*! ./inkbar.jsx */ "./src/javascript/app_2/App/Components/Elements/InkBar/inkbar.jsx");
-
-Object.keys(_inkbar).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _inkbar[key];
-    }
-  });
-});
-
-var _inkbar_div = __webpack_require__(/*! ./inkbar_div.jsx */ "./src/javascript/app_2/App/Components/Elements/InkBar/inkbar_div.jsx");
-
-var _inkbar_div2 = _interopRequireDefault(_inkbar_div);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _inkbar_div2.default;
-
-/***/ }),
-
-/***/ "./src/javascript/app_2/App/Components/Elements/InkBar/inkbar.jsx":
-/*!************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/InkBar/inkbar.jsx ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.InkBar = undefined;
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var InkBar = function InkBar(_ref) {
-    var left = _ref.left,
-        width = _ref.width;
-
-    var inkbar_style = {
-        left: left,
-        width: width
-    };
-
-    return _react2.default.createElement('span', { style: inkbar_style, className: 'inkbar' });
-};
-
-InkBar.propTypes = {
-    left: _propTypes2.default.number,
-    width: _propTypes2.default.number
-};
-
-exports.InkBar = InkBar;
-
-/***/ }),
-
-/***/ "./src/javascript/app_2/App/Components/Elements/InkBar/inkbar_div.jsx":
-/*!****************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/InkBar/inkbar_div.jsx ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _inkbar = __webpack_require__(/*! ./inkbar.jsx */ "./src/javascript/app_2/App/Components/Elements/InkBar/inkbar.jsx");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var InkBarDiv = function (_React$Component) {
-    _inherits(InkBarDiv, _React$Component);
-
-    function InkBarDiv(props) {
-        _classCallCheck(this, InkBarDiv);
-
-        var _this = _possibleConstructorReturn(this, (InkBarDiv.__proto__ || Object.getPrototypeOf(InkBarDiv)).call(this, props));
-
-        _this.onClick = function (e) {
-            if (!e.target) return;
-            _this.updateInkbarPosition(e.target.closest('a'));
-        };
-
-        _this.clearInkBar = function () {
-            _this.setState({
-                left: 0,
-                width: 0
-            });
-        };
-
-        _this.updateInkbarPosition = function (el) {
-            if (!el) return;
-            var left = el.offsetLeft,
-                width = el.offsetWidth;
-
-            if (_this.state.width !== width) {
-                _this.setState({ width: width });
-            }
-            if (_this.state.left !== left) {
-                _this.setState({ left: left });
-            }
-        };
-
-        window.addEventListener('resize', _this.updateInkbarPosition);
-        _this.state = {
-            left: 0,
-            width: 0
-        };
-        return _this;
-    }
-
-    _createClass(InkBarDiv, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            if (!this.node) return;
-            this.updateInkbarPosition(this.node.querySelector('a[class="active"]'));
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate() {
-            var active_el = this.node.querySelector('a[class="active"]');
-            if (active_el) {
-                this.updateInkbarPosition(active_el);
-            } else if (this.state.left !== 0 || this.state.width !== 0) {
-                this.clearInkBar(); // clear InkBar when active element doesn't exist
-            }
-        }
-    }, {
-        key: 'componentWillUnMount',
-        value: function componentWillUnMount() {
-            window.removeEventListener('resize', this.updateInkbarPosition);
-            this.clearInkBar();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var _props = this.props,
-                className = _props.className,
-                other_props = _objectWithoutProperties(_props, ['className']);
-
-            var props = _extends({
-                className: (0, _classnames2.default)('has-inkbar', className)
-            }, other_props);
-
-            return _react2.default.createElement(
-                'div',
-                _extends({ ref: function ref(node) {
-                        return _this2.node = node;
-                    } }, props),
-                _react2.default.Children.map(this.props.children, function (child) {
-                    return _react2.default.cloneElement(child, {
-                        onClick: _this2.onClick
-                    });
-                }),
-                _react2.default.createElement(_inkbar.InkBar, { left: this.state.left, width: this.state.width })
-            );
-        }
-    }]);
-
-    return InkBarDiv;
-}(_react2.default.Component);
-
-InkBarDiv.propTypes = {
-    children: _propTypes2.default.array,
-    className: _propTypes2.default.string
-};
-
-exports.default = InkBarDiv;
-
-/***/ }),
-
 /***/ "./src/javascript/app_2/App/Components/Elements/Notifications/index.js":
 /*!*****************************************************************************!*\
   !*** ./src/javascript/app_2/App/Components/Elements/Notifications/index.js ***!
@@ -3148,9 +2883,9 @@ exports.PopConfirmElement = PopConfirmElement;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/index.js":
+/***/ "./src/javascript/app_2/App/Components/Elements/PositionsDrawer/index.js":
 /*!*******************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/index.js ***!
+  !*** ./src/javascript/app_2/App/Components/Elements/PositionsDrawer/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -3163,19 +2898,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _portfolio_drawer = __webpack_require__(/*! ./portfolio_drawer.jsx */ "./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/portfolio_drawer.jsx");
+var _positions_drawer = __webpack_require__(/*! ./positions_drawer.jsx */ "./src/javascript/app_2/App/Components/Elements/PositionsDrawer/positions_drawer.jsx");
 
-var _portfolio_drawer2 = _interopRequireDefault(_portfolio_drawer);
+var _positions_drawer2 = _interopRequireDefault(_positions_drawer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _portfolio_drawer2.default;
+exports.default = _positions_drawer2.default;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/portfolio_drawer.jsx":
+/***/ "./src/javascript/app_2/App/Components/Elements/PositionsDrawer/positions_drawer.jsx":
 /*!*******************************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/portfolio_drawer.jsx ***!
+  !*** ./src/javascript/app_2/App/Components/Elements/PositionsDrawer/positions_drawer.jsx ***!
   \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -3217,9 +2952,9 @@ var _empty_portfolio_message2 = _interopRequireDefault(_empty_portfolio_message)
 
 var _connect = __webpack_require__(/*! ../../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
 
-var _portfolio_drawer_card = __webpack_require__(/*! ./portfolio_drawer_card.jsx */ "./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/portfolio_drawer_card.jsx");
+var _positions_drawer_card = __webpack_require__(/*! ./positions_drawer_card.jsx */ "./src/javascript/app_2/App/Components/Elements/PositionsDrawer/positions_drawer_card.jsx");
 
-var _portfolio_drawer_card2 = _interopRequireDefault(_portfolio_drawer_card);
+var _positions_drawer_card2 = _interopRequireDefault(_positions_drawer_card);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3229,16 +2964,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PortfolioDrawer = function (_React$Component) {
-    _inherits(PortfolioDrawer, _React$Component);
+var PositionsDrawer = function (_React$Component) {
+    _inherits(PositionsDrawer, _React$Component);
 
-    function PortfolioDrawer() {
-        _classCallCheck(this, PortfolioDrawer);
+    function PositionsDrawer() {
+        _classCallCheck(this, PositionsDrawer);
 
-        return _possibleConstructorReturn(this, (PortfolioDrawer.__proto__ || Object.getPrototypeOf(PortfolioDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (PositionsDrawer.__proto__ || Object.getPrototypeOf(PositionsDrawer)).apply(this, arguments));
     }
 
-    _createClass(PortfolioDrawer, [{
+    _createClass(PositionsDrawer, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.props.onMount();
@@ -3256,7 +2991,7 @@ var PortfolioDrawer = function (_React$Component) {
                 error = _props.error,
                 currency = _props.currency,
                 is_empty = _props.is_empty,
-                is_portfolio_drawer_on = _props.is_portfolio_drawer_on,
+                is_positions_drawer_on = _props.is_positions_drawer_on,
                 toggleDrawer = _props.toggleDrawer;
 
 
@@ -3272,7 +3007,7 @@ var PortfolioDrawer = function (_React$Component) {
                 body_content = _react2.default.createElement(_empty_portfolio_message2.default, null);
             } else {
                 body_content = active_positions.map(function (portfolio_position) {
-                    return _react2.default.createElement(_portfolio_drawer_card2.default, _extends({
+                    return _react2.default.createElement(_positions_drawer_card2.default, _extends({
                         key: portfolio_position.id,
                         currency: currency
                     }, portfolio_position));
@@ -3281,32 +3016,31 @@ var PortfolioDrawer = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: (0, _classnames2.default)('portfolio-drawer', { 'portfolio-drawer--open': is_portfolio_drawer_on }) },
+                { className: (0, _classnames2.default)('positions-drawer', { 'positions-drawer--open': is_positions_drawer_on }) },
                 _react2.default.createElement(
                     'div',
-                    { className: 'portfolio-drawer__header' },
-                    _react2.default.createElement('span', { className: 'portfolio-drawer__icon-main ic-portfolio' }),
+                    { className: 'positions-drawer__header' },
                     _react2.default.createElement(
                         'span',
-                        { className: 'portfolio-drawer__title' },
-                        (0, _localize.localize)('Portfolio Quick Menu')
+                        { className: 'positions-drawer__title' },
+                        (0, _localize.localize)('Positions')
                     ),
                     _react2.default.createElement(
                         'div',
                         {
-                            className: 'portfolio-drawer__icon-close',
+                            className: 'positions-drawer__icon-close',
                             onClick: toggleDrawer
                         },
-                        _react2.default.createElement(_Common.IconClose, null)
+                        _react2.default.createElement(_Common.IconMinimize, null)
                     )
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'portfolio-drawer__body' },
+                    { className: 'positions-drawer__body' },
                     _react2.default.createElement(
                         _ttReactCustomScrollbars.Scrollbars,
                         {
-                            style: { width: '100%', height: 'calc(100vh - 35px)' },
+                            style: { width: '100%', height: '100%' },
                             autoHide: true
                         },
                         body_content
@@ -3316,17 +3050,17 @@ var PortfolioDrawer = function (_React$Component) {
         }
     }]);
 
-    return PortfolioDrawer;
+    return PositionsDrawer;
 }(_react2.default.Component);
 
-PortfolioDrawer.propTypes = {
+PositionsDrawer.propTypes = {
     active_positions: _mobxReact.PropTypes.arrayOrObservableArray,
     children: _propTypes2.default.any,
     currency: _propTypes2.default.string,
     error: _propTypes2.default.string,
     is_empty: _propTypes2.default.bool,
     is_loading: _propTypes2.default.bool,
-    is_portfolio_drawer_on: _propTypes2.default.bool,
+    is_positions_drawer_on: _propTypes2.default.bool,
     onMount: _propTypes2.default.func,
     onUnmount: _propTypes2.default.func,
     toggleDrawer: _propTypes2.default.func
@@ -3344,16 +3078,16 @@ exports.default = (0, _connect.connect)(function (_ref) {
         onMount: modules.portfolio.onMount,
         onUnmount: modules.portfolio.onUnmount,
         currency: client.currency,
-        is_portfolio_drawer_on: ui.is_portfolio_drawer_on,
-        toggleDrawer: ui.togglePortfolioDrawer
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        toggleDrawer: ui.togglePositionsDrawer
     };
-})(PortfolioDrawer);
+})(PositionsDrawer);
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/portfolio_drawer_card.jsx":
+/***/ "./src/javascript/app_2/App/Components/Elements/PositionsDrawer/positions_drawer_card.jsx":
 /*!************************************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/portfolio_drawer_card.jsx ***!
+  !*** ./src/javascript/app_2/App/Components/Elements/PositionsDrawer/positions_drawer_card.jsx ***!
   \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -3393,7 +3127,7 @@ var _remaining_time2 = _interopRequireDefault(_remaining_time);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var PortfolioDrawerCard = function PortfolioDrawerCard(_ref) {
+var PositionsDrawerCard = function PositionsDrawerCard(_ref) {
     var currency = _ref.currency,
         expiry_time = _ref.expiry_time,
         id = _ref.id,
@@ -3403,35 +3137,38 @@ var PortfolioDrawerCard = function PortfolioDrawerCard(_ref) {
         underlying = _ref.underlying;
     return _react2.default.createElement(
         _binary_link2.default,
-        { className: 'portfolio-drawer-card', to: (0, _helpers.getContractPath)(id) },
+        {
+            className: 'positions-drawer-card',
+            to: (0, _helpers.getContractPath)(id)
+        },
         _react2.default.createElement(
             _react2.default.Fragment,
             null,
             _react2.default.createElement(
                 'div',
-                { className: 'portfolio-drawer-card__type' },
+                { className: 'positions-drawer-card__type' },
                 _react2.default.createElement(_contract_type_cell2.default, { type: type })
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'portfolio-drawer-card__indicative portfolio-drawer-card__indicative--' + status },
+                { className: 'positions-drawer-card__indicative positions-drawer-card__indicative--' + status },
                 _react2.default.createElement(_money2.default, { amount: indicative, currency: currency })
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'portfolio-drawer-card__symbol' },
+                { className: 'positions-drawer-card__symbol' },
                 underlying
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'portfolio-drawer-card__remaining-time' },
+                { className: 'positions-drawer-card__remaining-time' },
                 _react2.default.createElement(_remaining_time2.default, { end_time: expiry_time })
             )
         )
     );
 };
 
-PortfolioDrawerCard.propTypes = {
+PositionsDrawerCard.propTypes = {
     currency: _propTypes2.default.string,
     expiry_time: _propTypes2.default.PropTypes.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
     id: _propTypes2.default.number,
@@ -3441,7 +3178,7 @@ PortfolioDrawerCard.propTypes = {
     underlying: _propTypes2.default.string
 };
 
-exports.default = PortfolioDrawerCard;
+exports.default = PositionsDrawerCard;
 
 /***/ }),
 
@@ -3560,9 +3297,9 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _toggle_button = __webpack_require__(/*! ../toggle_button.jsx */ "./src/javascript/app_2/App/Components/Elements/toggle_button.jsx");
+var _switch_button = __webpack_require__(/*! ../switch_button.jsx */ "./src/javascript/app_2/App/Components/Elements/switch_button.jsx");
 
-var _toggle_button2 = _interopRequireDefault(_toggle_button);
+var _switch_button2 = _interopRequireDefault(_switch_button);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3581,7 +3318,7 @@ var SettingsControl = function SettingsControl(_ref) {
             null,
             name
         ),
-        toggle ? _react2.default.createElement(_toggle_button2.default, {
+        toggle ? _react2.default.createElement(_switch_button2.default, {
             toggled: to_toggle,
             style: style
         }) : children
@@ -4430,6 +4167,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -4444,6 +4185,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Money = function Money(_ref) {
     var amount = _ref.amount,
+        className = _ref.className,
         _ref$currency = _ref.currency,
         currency = _ref$currency === undefined ? 'USD' : _ref$currency,
         has_sign = _ref.has_sign,
@@ -4462,13 +4204,14 @@ var Money = function Money(_ref) {
         _react2.default.Fragment,
         null,
         sign,
-        _react2.default.createElement('span', { className: 'symbols ' + currency.toLowerCase() }),
+        _react2.default.createElement('span', { className: (0, _classnames2.default)(className, 'symbols', currency.toLowerCase()) }),
         final_amount
     );
 };
 
 Money.propTypes = {
     amount: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    className: _propTypes2.default.string,
     currency: _propTypes2.default.string,
     has_sign: _propTypes2.default.bool,
     is_formatted: _propTypes2.default.bool
@@ -4478,9 +4221,9 @@ exports.default = Money;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Elements/toggle_button.jsx":
+/***/ "./src/javascript/app_2/App/Components/Elements/switch_button.jsx":
 /*!************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Elements/toggle_button.jsx ***!
+  !*** ./src/javascript/app_2/App/Components/Elements/switch_button.jsx ***!
   \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -4506,11 +4249,11 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ToggleButton = function ToggleButton(_ref) {
+var SwitchButton = function SwitchButton(_ref) {
     var style = _ref.style,
         toggled = _ref.toggled;
 
-    var toggle_style = style || 'toggle-button';
+    var toggle_style = style || 'switch-button';
     var icon_class = (0, _classnames2.default)(toggle_style, {
         'toggled': toggled
     });
@@ -4518,12 +4261,12 @@ var ToggleButton = function ToggleButton(_ref) {
     return _react2.default.createElement('div', { className: icon_class });
 };
 
-ToggleButton.propTypes = {
+SwitchButton.propTypes = {
     style: _propTypes2.default.string,
     toggled: _propTypes2.default.bool
 };
 
-exports.default = ToggleButton;
+exports.default = SwitchButton;
 
 /***/ }),
 
@@ -4556,23 +4299,27 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Tooltip = function Tooltip(_ref) {
-    var message = _ref.message,
-        alignment = _ref.alignment,
+    var alignment = _ref.alignment,
         children = _ref.children,
-        icon = _ref.icon;
+        className = _ref.className,
+        classNameIcon = _ref.classNameIcon,
+        icon = _ref.icon,
+        message = _ref.message;
 
-    var icon_name = icon === 'question' || icon === 'info' ? icon : 'question';
+    var icon_name = icon === 'question' || icon === 'info' || icon === 'dot' ? icon : 'question';
     var icon_class = (0, _classnames2.default)(icon_name);
     return _react2.default.createElement(
         'span',
-        { className: 'tooltip', 'data-tooltip': message, 'data-tooltip-pos': alignment },
-        icon ? _react2.default.createElement('i', { className: icon_class }) : children
+        { className: (0, _classnames2.default)(className, 'tooltip'), 'data-tooltip': message, 'data-tooltip-pos': alignment },
+        icon ? _react2.default.createElement('i', { className: (0, _classnames2.default)(classNameIcon, icon_class) }) : children
     );
 };
 
 Tooltip.propTypes = {
     alignment: _propTypes2.default.string,
     children: _propTypes2.default.node,
+    className: _propTypes2.default.string,
+    classNameIcon: _propTypes2.default.string,
     icon: _propTypes2.default.string,
     message: _propTypes2.default.string
 };
@@ -4610,12 +4357,14 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var UILoader = function UILoader(_ref) {
-    var className = _ref.className;
+    var className = _ref.className,
+        classNameBlock = _ref.classNameBlock;
 
     var loading_class = (0, _classnames2.default)('loading', className);
+    var block_class = (0, _classnames2.default)(classNameBlock, 'block-ui');
     return _react2.default.createElement(
         'div',
-        { className: 'block-ui' },
+        { className: block_class },
         _react2.default.createElement(
             'div',
             { className: loading_class },
@@ -4633,7 +4382,8 @@ var UILoader = function UILoader(_ref) {
 };
 
 UILoader.propTypes = {
-    className: _propTypes2.default.string
+    className: _propTypes2.default.string,
+    classNameBlock: _propTypes2.default.string
 };
 
 exports.default = UILoader;
@@ -4668,6 +4418,8 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactTransitionGroup = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/index.js");
+
 var _Common = __webpack_require__(/*! ../../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
 
 var _input_field = __webpack_require__(/*! ../input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
@@ -4678,13 +4430,15 @@ var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/
 
 var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
 
+var _helpers = __webpack_require__(/*! ./helpers */ "./src/javascript/app_2/App/Components/Form/DatePicker/helpers.js");
+
 var _Calendar = __webpack_require__(/*! ../../Elements/Calendar */ "./src/javascript/app_2/App/Components/Elements/Calendar/index.js");
 
 var _Calendar2 = _interopRequireDefault(_Calendar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4707,20 +4461,24 @@ var DatePicker = function (_React$Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DatePicker.__proto__ || Object.getPrototypeOf(DatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            value: '',
+            value: _this.props.value,
             is_datepicker_visible: false,
-            is_clear_btn_visible: false
+            is_clear_btn_visible: false,
+            holidays: [],
+            weekends: []
         }, _this.handleVisibility = function () {
-            _this.setState({ is_datepicker_visible: !_this.state.is_datepicker_visible });
+            _this.setState(function (state) {
+                return { is_datepicker_visible: !state.is_datepicker_visible };
+            });
         }, _this.onClickOutside = function (e) {
             if (!_this.mainNode.contains(e.target) && _this.state.is_datepicker_visible) {
                 _this.setState({ is_datepicker_visible: false });
                 if (!!_this.state.value && _this.props.mode !== 'duration') {
-                    _this.updateDatePickerValue((0, _Date.formatDate)(_this.state.value));
+                    _this.updateDatePickerValue((0, _Date.formatDate)(_this.state.value, 'DD MMM YYYY'));
                 }
             }
         }, _this.onMouseEnter = function () {
-            if (_this.state.value && (!('is_clearable' in _this.props) || _this.props.is_clearable)) {
+            if (_this.state.value && ('is_clearable' in _this.props || _this.props.is_clearable)) {
                 _this.setState({ is_clear_btn_visible: true });
             }
         }, _this.onMouseLeave = function () {
@@ -4742,7 +4500,9 @@ var DatePicker = function (_React$Component) {
             _this.updateDatePickerValue(value);
         }, _this.clearDatePickerInput = function () {
             _this.setState({ value: null }, _this.updateStore);
-            _this.calendar.resetCalendar();
+            if (_this.calendar) {
+                _this.calendar.resetCalendar();
+            }
         }, _this.updateDatePickerValue = function (value) {
             var _this$props = _this.props,
                 date_format = _this$props.date_format,
@@ -4800,6 +4560,7 @@ var DatePicker = function (_React$Component) {
 
             return _react2.default.createElement(_input_field2.default, {
                 className: 'datepicker__input',
+                classNameInput: 'trade-container__input',
                 'data-tip': false,
                 'data-value': _this.state.value,
                 error_messages: validation_errors,
@@ -4827,6 +4588,10 @@ var DatePicker = function (_React$Component) {
             } else {
                 this.updateDatePickerValue((0, _Date.formatDate)(value, 'DD MMM YYYY'));
             }
+
+            if (this.props.disable_trading_events) {
+                this.onChangeCalendarMonth((0, _Date.getStartOfMonth)(this.state.value));
+            }
         }
     }, {
         key: 'componentWillUnmount',
@@ -4839,6 +4604,54 @@ var DatePicker = function (_React$Component) {
 
         // update MobX store
 
+    }, {
+        key: 'onChangeCalendarMonth',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(calendar_date) {
+                var trading_events, holidays, weekends;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return (0, _helpers.getTradingEvents)(calendar_date, this.props.underlying);
+
+                            case 2:
+                                trading_events = _context.sent;
+                                holidays = [];
+                                weekends = [];
+
+                                trading_events.forEach(function (events) {
+                                    var dates = events.dates.split(', '); // convert dates str into array
+                                    var idx = dates.indexOf('Fridays');
+                                    if (idx !== -1) {
+                                        weekends = [6, 0]; // Sat, Sun
+                                    }
+                                    holidays.push({
+                                        dates: dates,
+                                        descrip: events.descrip
+                                    });
+                                });
+
+                                this.setState({
+                                    holidays: holidays,
+                                    weekends: weekends
+                                });
+
+                            case 7:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function onChangeCalendarMonth(_x) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return onChangeCalendarMonth;
+        }()
     }, {
         key: 'render',
         value: function render() {
@@ -4853,7 +4666,7 @@ var DatePicker = function (_React$Component) {
                     _react2.default.createElement('input', {
                         id: this.props.name,
                         name: this.props.name,
-                        className: 'datepicker__input',
+                        className: 'trade-container__input datepicker__input',
                         type: 'date',
                         value: this.state.value,
                         min: this.props.min_date,
@@ -4897,25 +4710,48 @@ var DatePicker = function (_React$Component) {
                     }),
                     onClick: this.handleVisibility
                 }),
-                _react2.default.createElement(_Common.IconClear, {
+                this.props.is_clearable && _react2.default.createElement(_Common.IconClear, {
                     className: (0, _classnames2.default)('datepicker__icon datepicker__icon--clear', {
                         'datepicker__icon--is-hidden': !this.state.is_clear_btn_visible
                     }),
                     onClick: this.state.is_clear_btn_visible ? this.clearDatePickerInput : undefined
                 }),
                 _react2.default.createElement(
-                    'div',
+                    _reactTransitionGroup.CSSTransition,
                     {
-                        className: (0, _classnames2.default)('datepicker__picker', _defineProperty({
-                            'datepicker__picker--show': this.state.is_datepicker_visible
-                        }, 'datepicker__picker--align-' + this.props.alignment, this.props.alignment))
-                    },
-                    _react2.default.createElement(_Calendar2.default, _extends({
-                        ref: function ref(node) {
-                            _this2.calendar = node;
+                        'in': this.state.is_datepicker_visible,
+                        timeout: 100,
+                        classNames: {
+                            enter: 'datepicker__picker--enter',
+                            enterDone: 'datepicker__picker--enter-done',
+                            exit: 'datepicker__picker--exit'
                         },
-                        onSelect: this.onSelectCalendar
-                    }, this.props))
+                        unmountOnExit: true
+                    },
+                    _react2.default.createElement(
+                        'div',
+                        {
+                            className: (0, _classnames2.default)('datepicker__picker', {
+                                'datepicker__picker--left': this.props.alignment === 'left'
+                            })
+                        },
+                        _react2.default.createElement(_Calendar2.default, {
+                            ref: function ref(node) {
+                                _this2.calendar = node;
+                            },
+                            onSelect: this.onSelectCalendar,
+                            onChangeCalendarMonth: this.props.disable_trading_events ? this.onChangeCalendarMonth.bind(this) : undefined,
+                            holidays: this.state.holidays,
+                            weekends: this.state.weekends,
+                            date_format: this.props.date_format,
+                            has_today_btn: this.props.has_today_btn,
+                            footer: this.props.footer,
+                            max_date: this.props.max_date,
+                            min_date: this.props.min_date,
+                            start_date: this.props.start_date,
+                            value: this.props.value
+                        })
+                    )
                 )
             );
         }
@@ -4932,6 +4768,97 @@ DatePicker.defaultProps = {
 DatePicker.propTypes = _extends({}, _Calendar2.default.propTypes);
 
 exports.default = (0, _mobxReact.observer)(DatePicker);
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Form/DatePicker/helpers.js":
+/*!************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/DatePicker/helpers.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getTradingEvents = undefined;
+
+var _Services = __webpack_require__(/*! ../../../../Services */ "./src/javascript/app_2/Services/index.js");
+
+var _utility = __webpack_require__(/*! ../../../../../_common/utility */ "./src/javascript/_common/utility.js");
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var trading_events = {};
+var getTradingEvents = exports.getTradingEvents = function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(date) {
+        var underlying = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var trading_times_response, i, submarkets, j, symbols, k, symbol;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+                switch (_context.prev = _context.next) {
+                    case 0:
+                        if (date) {
+                            _context.next = 2;
+                            break;
+                        }
+
+                        return _context.abrupt('return', []);
+
+                    case 2:
+                        if (date in trading_events) {
+                            _context.next = 7;
+                            break;
+                        }
+
+                        _context.next = 5;
+                        return _Services.WS.getTradingTimes(date);
+
+                    case 5:
+                        trading_times_response = _context.sent;
+
+
+                        if ((0, _utility.getPropertyValue)(trading_times_response, ['trading_times', 'markets'])) {
+                            for (i = 0; i < trading_times_response.trading_times.markets.length; i++) {
+                                submarkets = trading_times_response.trading_times.markets[i].submarkets;
+
+                                if (submarkets) {
+                                    for (j = 0; j < submarkets.length; j++) {
+                                        symbols = submarkets[j].symbols;
+
+                                        if (symbols) {
+                                            for (k = 0; k < symbols.length; k++) {
+                                                symbol = symbols[k];
+
+                                                if (!trading_events[trading_times_response.echo_req.trading_times]) {
+                                                    trading_events[trading_times_response.echo_req.trading_times] = {};
+                                                }
+                                                trading_events[trading_times_response.echo_req.trading_times][symbol.symbol] = symbol.events;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    case 7:
+                        return _context.abrupt('return', trading_events[date][underlying]);
+
+                    case 8:
+                    case 'end':
+                        return _context.stop();
+                }
+            }
+        }, _callee, undefined);
+    }));
+
+    return function getTradingEvents(_x) {
+        return _ref.apply(this, arguments);
+    };
+}();
 
 /***/ }),
 
@@ -5494,10 +5421,10 @@ var NativeSelect = function NativeSelect(_ref) {
         onChange = _ref.onChange;
     return _react2.default.createElement(
         'div',
-        { className: 'select-wrapper' },
+        { className: 'native-select native-select__wrapper' },
         _react2.default.createElement(
             'select',
-            { name: name, value: value, onChange: onChange },
+            { className: 'native-select__select', name: name, value: value, onChange: onChange },
             Array.isArray(list) ? list.map(function (item, idx) {
                 return _react2.default.createElement(
                     'option',
@@ -5631,7 +5558,7 @@ var RangeSlider = function RangeSlider(_ref) {
             { htmlFor: 'range' },
             _react2.default.createElement('input', {
                 id: 'range',
-                className: 'range-slider__track',
+                className: 'trade-container__input range-slider__track',
                 type: 'range',
                 min: first_tick,
                 max: ticks,
@@ -5758,6 +5685,383 @@ exports.default = TickSteps;
 
 /***/ }),
 
+/***/ "./src/javascript/app_2/App/Components/Form/TimePicker/dialog.jsx":
+/*!************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/TimePicker/dialog.jsx ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var Dialog = function Dialog(_ref) {
+    var preClass = _ref.preClass,
+        value = _ref.value,
+        start_time = _ref.start_time,
+        end_time = _ref.end_time,
+        onChange = _ref.onChange,
+        className = _ref.className;
+
+    var start_time_moment = start_time ? (0, _Date.toMoment)(start_time) : (0, _Date.toMoment)();
+    var end_time_moment = end_time ? (0, _Date.toMoment)(end_time) : (0, _Date.toMoment)().hour('23').minute('59').seconds('59').milliseconds('999');
+    var to_compare_moment = (0, _Date.toMoment)();
+
+    var _value$split = value.split(':'),
+        _value$split2 = _slicedToArray(_value$split, 2),
+        hour = _value$split2[0],
+        minute = _value$split2[1];
+
+    var hours = [].concat(_toConsumableArray(Array(24).keys())).map(function (a) {
+        return ('0' + a).slice(-2);
+    });
+    var minutes = [].concat(_toConsumableArray(Array(12).keys())).map(function (a) {
+        return ('0' + a * 5).slice(-2);
+    });
+
+    var selectOption = function selectOption(type, current_value, prev_value) {
+        var is_enabled = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+        if (is_enabled && prev_value) {
+            var _prev_value$split = prev_value.split(':'),
+                _prev_value$split2 = _slicedToArray(_prev_value$split, 2),
+                prev_hour = _prev_value$split2[0],
+                prev_minute = _prev_value$split2[1];
+
+            if (type === 'h' && current_value !== prev_hour || type === 'm' && current_value !== prev_minute) {
+                onChange((type === 'h' ? current_value : prev_hour) + ':' + (type === 'm' ? current_value : prev_minute));
+            }
+        }
+    };
+
+    return _react2.default.createElement(
+        'div',
+        { className: (0, _classnames2.default)(preClass + '-dialog', '' + className) },
+        _react2.default.createElement(
+            'div',
+            { className: preClass + '-selector' },
+            _react2.default.createElement(
+                'div',
+                { className: preClass + '-hours' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-title center-text' },
+                    _react2.default.createElement(
+                        'strong',
+                        null,
+                        (0, _localize.localize)('Hour')
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-container' },
+                    hours.map(function (h, key) {
+                        to_compare_moment.hour(h).minute(minute);
+                        var is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment);
+                        return _react2.default.createElement(
+                            'div',
+                            {
+                                className: (0, _classnames2.default)('list-item', { 'selected': hour === h }, { 'disabled': !is_enabled }),
+                                key: key,
+                                onClick: function onClick() {
+                                    selectOption('h', h, value, is_enabled);
+                                }
+                            },
+                            h
+                        );
+                    })
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: preClass + '-minutes' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-title center-text' },
+                    _react2.default.createElement(
+                        'strong',
+                        null,
+                        (0, _localize.localize)('Minute')
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'list-container' },
+                    minutes.map(function (mm, key) {
+                        to_compare_moment.hour(hour).minute(mm);
+                        var is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment, 'minute');
+                        return _react2.default.createElement(
+                            'div',
+                            {
+                                className: (0, _classnames2.default)('list-item', { 'selected': minute === mm }, { 'disabled': !is_enabled }),
+                                key: key,
+                                onClick: function onClick() {
+                                    selectOption('m', mm, value, is_enabled);
+                                }
+                            },
+                            mm
+                        );
+                    })
+                )
+            )
+        )
+    );
+};
+
+Dialog.propTypes = {
+    className: _propTypes2.default.string,
+    end_time: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object]),
+    onChange: _propTypes2.default.func,
+    preClass: _propTypes2.default.string,
+    start_time: _propTypes2.default.number,
+    value: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object])
+};
+
+exports.default = Dialog;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Form/TimePicker/index.js":
+/*!**********************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/TimePicker/index.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _time_picker = __webpack_require__(/*! ./time_picker.jsx */ "./src/javascript/app_2/App/Components/Form/TimePicker/time_picker.jsx");
+
+var _time_picker2 = _interopRequireDefault(_time_picker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _time_picker2.default;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Form/TimePicker/time_picker.jsx":
+/*!*****************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/TimePicker/time_picker.jsx ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactTransitionGroup = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/index.js");
+
+var _dialog = __webpack_require__(/*! ./dialog.jsx */ "./src/javascript/app_2/App/Components/Form/TimePicker/dialog.jsx");
+
+var _dialog2 = _interopRequireDefault(_dialog);
+
+var _input_field = __webpack_require__(/*! ../input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
+
+var _input_field2 = _interopRequireDefault(_input_field);
+
+var _icon_clock = __webpack_require__(/*! ../../../../Assets/Common/icon_clock.jsx */ "./src/javascript/app_2/Assets/Common/icon_clock.jsx");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TimePicker = function (_React$Component) {
+    _inherits(TimePicker, _React$Component);
+
+    function TimePicker() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, TimePicker);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimePicker.__proto__ || Object.getPrototypeOf(TimePicker)).call.apply(_ref, [this].concat(args))), _this), _this.state = { is_open: false }, _this.toggleDropDown = function () {
+            _this.setState(function (state) {
+                return { is_open: !state.is_open };
+            });
+        }, _this.handleChange = function (arg) {
+            // To handle nativepicker;
+            var value = (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) === 'object' ? arg.target.value : arg;
+
+            if (value !== _this.props.value) {
+                _this.props.onChange({ target: { name: _this.props.name, value: value } });
+            }
+        }, _this.saveRef = function (node) {
+            if (!node) return;
+            if (node.nodeName === 'INPUT') {
+                _this.target_element = node;
+                return;
+            }
+            _this.wrapper_ref = node;
+        }, _this.handleClickOutside = function (event) {
+            if (_this.wrapper_ref && !_this.wrapper_ref.contains(event.target)) {
+                if (_this.state.is_open) {
+                    _this.setState({ is_open: false });
+                }
+            }
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(TimePicker, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            document.addEventListener('mousedown', this.handleClickOutside);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            document.removeEventListener('mousedown', this.handleClickOutside);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var prefix_class = 'time-picker';
+            var _props = this.props,
+                value = _props.value,
+                name = _props.name,
+                is_nativepicker = _props.is_nativepicker,
+                placeholder = _props.placeholder,
+                start_time = _props.start_time,
+                end_time = _props.end_time,
+                validation_errors = _props.validation_errors;
+
+            return _react2.default.createElement(
+                'div',
+                {
+                    ref: this.saveRef,
+                    className: (0, _classnames2.default)(prefix_class, { 'padding': this.props.padding })
+                },
+                is_nativepicker ? _react2.default.createElement('input', {
+                    type: 'time',
+                    id: prefix_class + '-input',
+                    value: value,
+                    onChange: this.handleChange,
+                    name: name,
+                    min: start_time,
+                    max: end_time
+                }) : _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(_icon_clock.IconClock, { className: 'time-picker-icon' }),
+                    _react2.default.createElement(_input_field2.default, {
+                        error_messages: validation_errors,
+                        type: 'text',
+                        is_read_only: true,
+                        id: prefix_class + '-input',
+                        className: (0, _classnames2.default)(prefix_class + '-input'),
+                        value: value,
+                        onClick: this.toggleDropDown,
+                        name: name,
+                        placeholder: placeholder
+                    }),
+                    _react2.default.createElement(
+                        _reactTransitionGroup.CSSTransition,
+                        {
+                            'in': this.state.is_open,
+                            classNames: {
+                                enter: 'time-picker-dialog-enter',
+                                enterDone: 'time-picker-dialog-enter-done',
+                                exit: 'time-picker-dialog-exit'
+                            },
+                            timeout: 100,
+                            unmountOnExit: true
+                        },
+                        _react2.default.createElement(_dialog2.default, {
+                            className: 'from-left',
+                            onChange: this.handleChange,
+                            preClass: prefix_class,
+                            start_time: start_time,
+                            end_time: end_time,
+                            value: value
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return TimePicker;
+}(_react2.default.Component);
+
+TimePicker.propTypes = {
+    end_time: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object]),
+    is_clearable: _propTypes2.default.bool,
+    is_nativepicker: _propTypes2.default.bool,
+    name: _propTypes2.default.string,
+    onChange: _propTypes2.default.func,
+    padding: _propTypes2.default.string,
+    placeholder: _propTypes2.default.string,
+    start_time: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string, _propTypes2.default.object]),
+    value: _propTypes2.default.string
+};
+
+exports.default = (0, _mobxReact.observer)(TimePicker);
+
+/***/ }),
+
 /***/ "./src/javascript/app_2/App/Components/Form/button.jsx":
 /*!*************************************************************!*\
   !*** ./src/javascript/app_2/App/Components/Form/button.jsx ***!
@@ -5771,6 +6075,10 @@ exports.default = TickSteps;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -5786,6 +6094,7 @@ var Button = function Button(_ref) {
     var children = _ref.children,
         _ref$className = _ref.className,
         className = _ref$className === undefined ? '' : _ref$className,
+        classNameSpan = _ref.classNameSpan,
         has_effect = _ref.has_effect,
         id = _ref.id,
         is_disabled = _ref.is_disabled,
@@ -5794,7 +6103,7 @@ var Button = function Button(_ref) {
         text = _ref.text,
         wrapperClassName = _ref.wrapperClassName;
 
-    var classes = 'btn' + (has_effect ? ' effect' : '') + ' ' + className;
+    var classes = (0, _classnames2.default)('btn', { effect: has_effect }, className);
     var button = _react2.default.createElement(
         'button',
         {
@@ -5806,7 +6115,7 @@ var Button = function Button(_ref) {
         },
         _react2.default.createElement(
             'span',
-            null,
+            { className: classNameSpan || undefined },
             text
         ),
         children
@@ -5821,7 +6130,7 @@ var Button = function Button(_ref) {
 };
 
 Button.propTypes = {
-    children: _propTypes2.default.object,
+    children: _propTypes2.default.node,
     className: _propTypes2.default.string,
     has_effect: _propTypes2.default.bool,
     id: _propTypes2.default.string,
@@ -5832,6 +6141,79 @@ Button.propTypes = {
 };
 
 exports.default = Button;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Form/button_toggle_menu.jsx":
+/*!*************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Form/button_toggle_menu.jsx ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _button = __webpack_require__(/*! ./button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
+
+var _button2 = _interopRequireDefault(_button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ButtonToggleMenu = function ButtonToggleMenu(_ref) {
+    var buttons_arr = _ref.buttons_arr,
+        name = _ref.name,
+        onChange = _ref.onChange,
+        value = _ref.value;
+
+    var changeValue = function changeValue(selected_value) {
+        if (value === selected_value) return;
+        onChange({ target: { value: selected_value, name: name } });
+    };
+    var menu = buttons_arr.map(function (val, idx) {
+        var className = (0, _classnames2.default)('button-menu__button', {
+            'button-menu__button--active': val.value === value
+        });
+        return _react2.default.createElement(_button2.default, {
+            key: idx,
+            text: val.text,
+            onClick: function onClick() {
+                return changeValue(val.value);
+            },
+            className: className
+        });
+    });
+    return _react2.default.createElement(
+        'div',
+        { className: 'button-menu' },
+        menu
+    );
+};
+
+ButtonToggleMenu.propTypes = {
+    buttons_arr: _propTypes2.default.array,
+    name: _propTypes2.default.string,
+    onChange: _propTypes2.default.func,
+    value: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string])
+};
+
+exports.default = ButtonToggleMenu;
 
 /***/ }),
 
@@ -5861,45 +6243,30 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _tooltip = __webpack_require__(/*! ../Elements/tooltip.jsx */ "./src/javascript/app_2/App/Components/Elements/tooltip.jsx");
-
-var _tooltip2 = _interopRequireDefault(_tooltip);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Fieldset = function Fieldset(_ref) {
     var children = _ref.children,
         className = _ref.className,
         header = _ref.header,
-        icon = _ref.icon,
         is_center = _ref.is_center,
         onMouseEnter = _ref.onMouseEnter,
-        onMouseLeave = _ref.onMouseLeave,
-        tooltip = _ref.tooltip;
+        onMouseLeave = _ref.onMouseLeave;
 
-    var fieldset_class = (0, _classnames2.default)('fieldset-header', is_center ? 'center-text' : '');
-    var field_left_class = (0, _classnames2.default)('field-info', { icon: icon }, icon, is_center ? 'center' : 'left');
+    var fieldset_header_class = (0, _classnames2.default)('trade-container__fieldset-header', is_center ? 'center-text' : '');
+    var fieldset_info_class = (0, _classnames2.default)('trade-container__fieldset-info', !is_center && 'trade-container__fieldset-info--left');
 
     return _react2.default.createElement(
         'fieldset',
         { className: className, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
         !!header && _react2.default.createElement(
             'div',
-            { className: fieldset_class },
+            { className: fieldset_header_class },
             _react2.default.createElement(
                 'span',
-                { className: field_left_class },
+                { className: fieldset_info_class },
                 header
             )
-        ),
-        !!tooltip && _react2.default.createElement(
-            'span',
-            { className: 'field-info right' },
-            _react2.default.createElement(_tooltip2.default, {
-                alignment: 'left',
-                icon: 'info',
-                message: tooltip || 'Message goes here.'
-            })
         ),
         children
     );
@@ -5913,10 +6280,8 @@ Fieldset.propTypes = {
     children: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
     className: _propTypes2.default.string,
     header: _propTypes2.default.string,
-    icon: _propTypes2.default.string,
     onMouseEnter: _propTypes2.default.func,
-    onMouseLeave: _propTypes2.default.func,
-    tooltip: _propTypes2.default.string
+    onMouseLeave: _propTypes2.default.func
 };
 
 exports.default = Fieldset;
@@ -5968,12 +6333,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var InputField = function InputField(_ref) {
     var checked = _ref.checked,
         className = _ref.className,
+        classNameInput = _ref.classNameInput,
+        classNamePrefix = _ref.classNamePrefix,
         data_tip = _ref.data_tip,
         data_value = _ref.data_value,
         error_messages = _ref.error_messages,
         fractional_digits = _ref.fractional_digits,
         helper = _ref.helper,
         id = _ref.id,
+        is_autocomplete_disabled = _ref.is_autocomplete_disabled,
         is_disabled = _ref.is_disabled,
         is_float = _ref.is_float,
         is_incrementable = _ref.is_incrementable,
@@ -5981,6 +6349,8 @@ var InputField = function InputField(_ref) {
         is_read_only = _ref$is_read_only === undefined ? false : _ref$is_read_only,
         _ref$is_signed = _ref.is_signed,
         is_signed = _ref$is_signed === undefined ? false : _ref$is_signed,
+        _ref$is_unit_at_right = _ref.is_unit_at_right,
+        is_unit_at_right = _ref$is_unit_at_right === undefined ? false : _ref$is_unit_at_right,
         label = _ref.label,
         max_length = _ref.max_length,
         max_value = _ref.max_value,
@@ -5992,6 +6362,7 @@ var InputField = function InputField(_ref) {
         prefix = _ref.prefix,
         required = _ref.required,
         type = _ref.type,
+        unit = _ref.unit,
         value = _ref.value;
 
     var has_error = error_messages && error_messages.length;
@@ -6000,9 +6371,17 @@ var InputField = function InputField(_ref) {
     var min_is_disabled = min_value && +value <= +min_value;
 
     var changeValue = function changeValue(e) {
+        if (unit) {
+            e.target.value = e.target.value.replace(unit, '').trim();
+        }
+
+        if (e.target.value === value && type !== 'checkbox') {
+            return;
+        }
+
         if (type === 'number') {
-            var is_empty = !e.target.value || e.target.value === '';
-            var signed_regex = is_signed ? '(?!^([-+]0)$|^[-+]?$)^[+-]?' : '^';
+            var is_empty = !e.target.value || e.target.value === '' || e.target.value === '  ';
+            var signed_regex = is_signed ? '[\+\-\.0-9]$' : '^';
 
             var is_number = new RegExp(signed_regex + '(\\d*)?' + (is_float ? '(\\.\\d+)?' : '') + '$').test(e.target.value);
 
@@ -6047,9 +6426,15 @@ var InputField = function InputField(_ref) {
         if (e.keyCode === 40) decrementValue(); // down-arrow pressed
     };
 
+    var display_value = value;
+
+    if (unit) {
+        display_value = is_unit_at_right ? value + ' ' + unit : unit + ' ' + value;
+    }
+
     var input = _react2.default.createElement('input', {
         checked: checked ? 'checked' : '',
-        className: (0, _classnames2.default)({ error: has_error }),
+        className: (0, _classnames2.default)({ error: has_error }, classNameInput),
         disabled: is_disabled,
         'data-for': 'error_tooltip_' + name,
         'data-value': data_value,
@@ -6064,7 +6449,8 @@ var InputField = function InputField(_ref) {
         readOnly: is_read_only,
         required: required || undefined,
         type: type === 'number' ? 'text' : type,
-        value: value || ''
+        value: display_value || '',
+        autoComplete: is_autocomplete_disabled ? 'off' : undefined
     });
 
     var input_increment = _react2.default.createElement(
@@ -6106,11 +6492,7 @@ var InputField = function InputField(_ref) {
                 { htmlFor: name, className: 'input-label' },
                 label
             ),
-            !!prefix && _react2.default.createElement(
-                'i',
-                null,
-                _react2.default.createElement('span', { className: 'symbols ' + prefix.toLowerCase() })
-            ),
+            !!prefix && _react2.default.createElement('span', { className: (0, _classnames2.default)(classNamePrefix, 'symbols', prefix.toLowerCase()) }),
             !!helper && _react2.default.createElement(
                 'span',
                 { className: 'input-helper' },
@@ -6128,15 +6510,19 @@ var InputField = function InputField(_ref) {
 InputField.propTypes = {
     checked: _propTypes2.default.number,
     className: _propTypes2.default.string,
+    classNameInput: _propTypes2.default.string,
+    classNamePrefix: _propTypes2.default.string,
     error_messages: _mobxReact.PropTypes.arrayOrObservableArray,
     fractional_digits: _propTypes2.default.number,
     helper: _propTypes2.default.string,
     id: _propTypes2.default.string,
+    is_autocomplete_disabled: _propTypes2.default.bool,
     is_disabled: _propTypes2.default.string,
     is_float: _propTypes2.default.bool,
     is_incrementable: _propTypes2.default.bool,
     is_read_only: _propTypes2.default.bool,
     is_signed: _propTypes2.default.bool,
+    is_unit_at_right: _propTypes2.default.bool,
     label: _propTypes2.default.string,
     max_length: _propTypes2.default.number,
     name: _propTypes2.default.string,
@@ -6146,6 +6532,7 @@ InputField.propTypes = {
     prefix: _propTypes2.default.string,
     required: _propTypes2.default.bool,
     type: _propTypes2.default.string,
+    unit: _propTypes2.default.string,
     value: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string])
 };
 
@@ -6228,393 +6615,6 @@ exports.default = NumberSelector;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Form/time_picker.jsx":
-/*!******************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Form/time_picker.jsx ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js");
-
-var _start_date = __webpack_require__(/*! ../../../Stores/Modules/Trading/Helpers/start_date */ "./src/javascript/app_2/Stores/Modules/Trading/Helpers/start_date.js");
-
-var _Date = __webpack_require__(/*! ../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
-
-var _input_field = __webpack_require__(/*! ./input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
-
-var _input_field2 = _interopRequireDefault(_input_field);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TimePickerDropdown = function (_React$Component) {
-    _inherits(TimePickerDropdown, _React$Component);
-
-    function TimePickerDropdown(props) {
-        _classCallCheck(this, TimePickerDropdown);
-
-        var _this = _possibleConstructorReturn(this, (TimePickerDropdown.__proto__ || Object.getPrototypeOf(TimePickerDropdown)).call(this, props));
-
-        _this.selectOption = function (type, value) {
-            var is_enabled = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-            if (is_enabled && _this.props.value) {
-                var _this$props$value$spl = _this.props.value.split(':'),
-                    _this$props$value$spl2 = _slicedToArray(_this$props$value$spl, 2),
-                    prev_hour = _this$props$value$spl2[0],
-                    prev_minute = _this$props$value$spl2[1];
-
-                if (type === 'h' && value !== prev_hour || type === 'm' && value !== prev_minute) {
-                    var is_type_selected = type === 'h' ? 'is_hour_selected' : 'is_minute_selected';
-                    _this.setState(_defineProperty({
-                        last_updated_type: type
-                    }, is_type_selected, true));
-                    _this.props.onChange((type === 'h' ? value : prev_hour) + ':' + (type === 'm' ? value : prev_minute));
-                }
-            }
-        };
-
-        _this.clear = function (event) {
-            event.stopPropagation();
-            _this.resetValues();
-            _this.props.onChange('');
-        };
-
-        _this.hours = [].concat(_toConsumableArray(Array(24).keys())).map(function (a) {
-            return ('0' + a).slice(-2);
-        });
-        _this.minutes = [].concat(_toConsumableArray(Array(12).keys())).map(function (a) {
-            return ('0' + a * 5).slice(-2);
-        });
-        _this.state = {
-            is_hour_selected: false,
-            is_minute_selected: false,
-            last_updated_type: null
-        };
-        return _this;
-    }
-
-    _createClass(TimePickerDropdown, [{
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            var _state = this.state,
-                is_hour_selected = _state.is_hour_selected,
-                is_minute_selected = _state.is_minute_selected;
-
-            if (is_hour_selected && is_minute_selected) {
-                this.resetValues();
-                this.props.toggle();
-            }
-            if (!prevProps.className && this.props.className === 'active') {
-                this.resetValues();
-            }
-            if (prevState.last_updated_type !== this.state.last_updated_type && this.state.last_updated_type) {
-                this.setState({ last_updated_type: null });
-            }
-        }
-    }, {
-        key: 'resetValues',
-        value: function resetValues() {
-            this.setState({
-                is_hour_selected: false,
-                is_minute_selected: false
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var _props = this.props,
-                preClass = _props.preClass,
-                value = _props.value,
-                toggle = _props.toggle,
-                start_date = _props.start_date,
-                sessions = _props.sessions;
-
-            var start_moment = (0, _Date.toMoment)(start_date);
-            var start_moment_clone = start_moment.clone().minute(0).second(0);
-
-            var _value$split = value.split(':'),
-                _value$split2 = _slicedToArray(_value$split, 2),
-                hour = _value$split2[0],
-                minute = _value$split2[1];
-
-            return _react2.default.createElement(
-                'div',
-                { className: preClass + '-dropdown ' + this.props.className },
-                _react2.default.createElement(
-                    'div',
-                    {
-                        className: preClass + '-panel',
-                        onClick: toggle
-                    },
-                    _react2.default.createElement(
-                        'span',
-                        { className: value ? '' : 'placeholder' },
-                        value || (0, _localize.localize)('Select time')
-                    ),
-                    (!('is_clearable' in this.props) || this.props.is_clearable) && _react2.default.createElement('span', {
-                        className: preClass + '-clear',
-                        onClick: this.clear
-                    })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: preClass + '-selector' },
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            ref: this.saveHourRef,
-                            className: preClass + '-hours'
-                        },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-title center-text' },
-                            _react2.default.createElement(
-                                'strong',
-                                null,
-                                (0, _localize.localize)('Hour')
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-container' },
-                            this.hours.map(function (h, key) {
-                                start_moment_clone.hour(h);
-                                var is_enabled = (0, _start_date.isSessionAvailable)(sessions, start_moment_clone, start_moment, true);
-                                return _react2.default.createElement(
-                                    'div',
-                                    {
-                                        className: 'list-item' + (hour === h ? ' selected' : '') + (is_enabled ? '' : ' disabled'),
-                                        key: key,
-                                        onClick: function onClick() {
-                                            _this2.selectOption('h', h, is_enabled);
-                                        }
-                                    },
-                                    h
-                                );
-                            })
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            ref: this.saveMinuteRef,
-                            className: preClass + '-minutes'
-                        },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-title center-text' },
-                            _react2.default.createElement(
-                                'strong',
-                                null,
-                                (0, _localize.localize)('Minute')
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'list-container' },
-                            this.minutes.map(function (mm, key) {
-                                start_moment_clone.hour(hour).minute(mm);
-                                var is_enabled = (0, _start_date.isSessionAvailable)(sessions, start_moment_clone, start_moment);
-                                return _react2.default.createElement(
-                                    'div',
-                                    {
-                                        className: 'list-item' + (minute === mm ? ' selected' : '') + (is_enabled ? '' : ' disabled'),
-                                        key: key,
-                                        onClick: function onClick() {
-                                            _this2.selectOption('m', mm, is_enabled);
-                                        }
-                                    },
-                                    mm
-                                );
-                            })
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return TimePickerDropdown;
-}(_react2.default.Component);
-
-var TimePicker = function (_React$Component2) {
-    _inherits(TimePicker, _React$Component2);
-
-    function TimePicker(props) {
-        _classCallCheck(this, TimePicker);
-
-        var _this3 = _possibleConstructorReturn(this, (TimePicker.__proto__ || Object.getPrototypeOf(TimePicker)).call(this, props));
-
-        _this3.toggleDropDown = function () {
-            _this3.setState({ is_open: !_this3.state.is_open });
-        };
-
-        _this3.handleChange = function (arg) {
-            // To handle nativepicker;
-            var value = (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) === 'object' ? arg.target.value : arg;
-
-            if (value !== _this3.props.value) {
-                _this3.props.onChange({ target: { name: _this3.props.name, value: value } });
-            }
-        };
-
-        _this3.saveRef = function (node) {
-            if (!node) return;
-            if (node.nodeName === 'INPUT') {
-                _this3.target_element = node;
-                return;
-            }
-            _this3.wrapper_ref = node;
-        };
-
-        _this3.handleClickOutside = function (event) {
-            if (_this3.wrapper_ref && !_this3.wrapper_ref.contains(event.target)) {
-                if (_this3.state.is_open) {
-                    _this3.setState({ is_open: false });
-                }
-            }
-        };
-
-        _this3.state = {
-            is_open: false,
-            value: ''
-        };
-        return _this3;
-    }
-
-    _createClass(TimePicker, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            document.addEventListener('mousedown', this.handleClickOutside);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            document.removeEventListener('mousedown', this.handleClickOutside);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var prefix_class = 'time-picker';
-            var _props2 = this.props,
-                is_nativepicker = _props2.is_nativepicker,
-                value = _props2.value,
-                name = _props2.name,
-                is_align_right = _props2.is_align_right,
-                placeholder = _props2.placeholder,
-                start_date = _props2.start_date,
-                sessions = _props2.sessions,
-                validation_errors = _props2.validation_errors;
-
-            return _react2.default.createElement(
-                'div',
-                {
-                    ref: this.saveRef,
-                    className: '' + prefix_class + (this.props.padding ? ' padding' : '') + (this.state.is_open ? ' active' : '')
-                },
-                is_nativepicker ? _react2.default.createElement('input', {
-                    type: 'time',
-                    id: prefix_class + '-input',
-                    value: value,
-                    onChange: this.handleChange,
-                    name: name
-                }) : _react2.default.createElement(
-                    _react2.default.Fragment,
-                    null,
-                    _react2.default.createElement(_input_field2.default, {
-                        error_messages: validation_errors,
-                        type: 'text',
-                        is_read_only: true,
-                        id: prefix_class + '-input',
-                        className: prefix_class + '-input ' + (this.state.is_open ? 'active' : ''),
-                        value: value,
-                        onClick: this.toggleDropDown,
-                        name: name,
-                        placeholder: placeholder
-                    }),
-                    _react2.default.createElement(TimePickerDropdown, {
-                        className: '' + (this.state.is_open ? 'active' : '') + (is_align_right ? ' from-right' : ''),
-                        toggle: this.toggleDropDown,
-                        onChange: this.handleChange,
-                        preClass: prefix_class,
-                        start_date: start_date,
-                        value: value,
-                        sessions: sessions,
-                        is_clearable: this.props.is_clearable
-                    })
-                )
-            );
-        }
-    }]);
-
-    return TimePicker;
-}(_react2.default.Component);
-
-TimePicker.propTypes = {
-    is_align_right: _propTypes2.default.bool,
-    is_clearable: _propTypes2.default.bool,
-    is_nativepicker: _propTypes2.default.bool,
-    name: _propTypes2.default.string,
-    onChange: _propTypes2.default.func,
-    padding: _propTypes2.default.string,
-    placeholder: _propTypes2.default.string,
-    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_date: _propTypes2.default.number,
-    value: _propTypes2.default.string
-};
-
-TimePickerDropdown.propTypes = {
-    className: _propTypes2.default.string,
-    is_clearable: _propTypes2.default.bool,
-    onChange: _propTypes2.default.func,
-    preClass: _propTypes2.default.string,
-    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_date: _propTypes2.default.number,
-    toggle: _propTypes2.default.func,
-    value: _propTypes2.default.string,
-    value_split: _propTypes2.default.bool
-};
-
-exports.default = (0, _mobxReact.observer)(TimePicker);
-
-/***/ }),
-
 /***/ "./src/javascript/app_2/App/Components/Layout/Footer/index.js":
 /*!********************************************************************!*\
   !*** ./src/javascript/app_2/App/Components/Layout/Footer/index.js ***!
@@ -6653,14 +6653,14 @@ Object.keys(_toggle_fullscreen).forEach(function (key) {
   });
 });
 
-var _toggle_portfolio = __webpack_require__(/*! ./toggle_portfolio.jsx */ "./src/javascript/app_2/App/Components/Layout/Footer/toggle_portfolio.jsx");
+var _toggle_positions = __webpack_require__(/*! ./toggle_positions.jsx */ "./src/javascript/app_2/App/Components/Layout/Footer/toggle_positions.jsx");
 
-Object.keys(_toggle_portfolio).forEach(function (key) {
+Object.keys(_toggle_positions).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _toggle_portfolio[key];
+      return _toggle_positions[key];
     }
   });
 });
@@ -6848,9 +6848,9 @@ exports.ToggleFullScreen = ToggleFullScreen;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/App/Components/Layout/Footer/toggle_portfolio.jsx":
+/***/ "./src/javascript/app_2/App/Components/Layout/Footer/toggle_positions.jsx":
 /*!********************************************************************************!*\
-  !*** ./src/javascript/app_2/App/Components/Layout/Footer/toggle_portfolio.jsx ***!
+  !*** ./src/javascript/app_2/App/Components/Layout/Footer/toggle_positions.jsx ***!
   \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -6861,7 +6861,7 @@ exports.ToggleFullScreen = ToggleFullScreen;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.TogglePortfolio = undefined;
+exports.TogglePositions = undefined;
 
 var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
@@ -6879,30 +6879,30 @@ var _Footer = __webpack_require__(/*! ../../../../Assets/Footer */ "./src/javasc
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var TogglePortfolio = function TogglePortfolio(_ref) {
-    var is_portfolio_drawer_on = _ref.is_portfolio_drawer_on,
-        togglePortfolioDrawer = _ref.togglePortfolioDrawer;
+var TogglePositions = function TogglePositions(_ref) {
+    var is_positions_drawer_on = _ref.is_positions_drawer_on,
+        togglePositionsDrawer = _ref.togglePositionsDrawer;
 
-    var toggle_portfolio_class = (0, _classnames2.default)('ic-portfolio', {
-        'active': is_portfolio_drawer_on
+    var toggle_positions_class = (0, _classnames2.default)('ic-positions', {
+        'active': is_positions_drawer_on
     });
     return _react2.default.createElement(
         'a',
         {
             href: 'javascript:;',
-            className: toggle_portfolio_class,
-            onClick: togglePortfolioDrawer
+            className: toggle_positions_class,
+            onClick: togglePositionsDrawer
         },
-        _react2.default.createElement(_Footer.IconQuickPortfolio, { className: 'footer-icon' })
+        _react2.default.createElement(_Footer.IconPositions, null)
     );
 };
 
-TogglePortfolio.propTypes = {
-    is_portfolio_drawer_on: _propTypes2.default.bool,
-    togglePortfolioDrawer: _propTypes2.default.func
+TogglePositions.propTypes = {
+    is_positions_drawer_on: _propTypes2.default.bool,
+    togglePositionsDrawer: _propTypes2.default.func
 };
 
-exports.TogglePortfolio = TogglePortfolio;
+exports.TogglePositions = TogglePositions;
 
 /***/ }),
 
@@ -7019,10 +7019,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactTransitionGroup = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/index.js");
 
-var _localize = __webpack_require__(/*! ../../Elements/localize.jsx */ "./src/javascript/app_2/App/Components/Elements/localize.jsx");
-
-var _localize2 = _interopRequireDefault(_localize);
-
 var _AccountSwitcher = __webpack_require__(/*! ../../../Containers/AccountSwitcher */ "./src/javascript/app_2/App/Containers/AccountSwitcher/index.js");
 
 var _Common = __webpack_require__(/*! ../../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
@@ -7037,9 +7033,9 @@ var AccountInfo = function AccountInfo(_ref) {
         loginid = _ref.loginid,
         is_dialog_on = _ref.is_dialog_on,
         is_upgrade_enabled = _ref.is_upgrade_enabled,
+        is_virtual = _ref.is_virtual,
         onClickUpgrade = _ref.onClickUpgrade,
-        toggleDialog = _ref.toggleDialog,
-        account_type = _ref.account_type;
+        toggleDialog = _ref.toggleDialog;
     return _react2.default.createElement(
         'div',
         { className: 'acc-balance' },
@@ -7048,16 +7044,28 @@ var AccountInfo = function AccountInfo(_ref) {
             { className: 'acc-switcher-container' },
             _react2.default.createElement(
                 'div',
-                { className: (0, _classnames2.default)('acc-info', { 'show': is_dialog_on }), onClick: toggleDialog },
+                {
+                    className: (0, _classnames2.default)('acc-info', {
+                        'acc-info--show': is_dialog_on,
+                        'acc-info--is-virtual': is_virtual
+                    }),
+                    onClick: toggleDialog
+                },
                 _react2.default.createElement(
                     'p',
-                    { className: 'acc-balance-type' },
-                    _react2.default.createElement(_localize2.default, { str: account_type + ' Account' })
-                ),
-                _react2.default.createElement(
-                    'p',
-                    { className: 'acc-balance-id' },
+                    {
+                        className: 'acc-balance-id',
+                        title: loginid
+                    },
                     loginid
+                ),
+                typeof balance !== 'undefined' && _react2.default.createElement(
+                    'p',
+                    { className: 'acc-balance-amount' },
+                    _react2.default.createElement('span', {
+                        className: (0, _classnames2.default)('symbols', (currency || '').toLowerCase())
+                    }),
+                    balance
                 ),
                 _react2.default.createElement(_Common.IconArrow, { className: 'select-arrow' })
             ),
@@ -7065,8 +7073,12 @@ var AccountInfo = function AccountInfo(_ref) {
                 _reactTransitionGroup.CSSTransition,
                 {
                     'in': is_dialog_on,
-                    timeout: 400,
-                    classNames: 'acc-switcher-wrapper',
+                    timeout: 200,
+                    classNames: {
+                        enter: 'acc-switcher-wrapper--enter',
+                        enterDone: 'acc-switcher-wrapper--enter-done',
+                        exit: 'acc-switcher-wrapper--exit'
+                    },
                     unmountOnExit: true
                 },
                 _react2.default.createElement(
@@ -7080,16 +7092,6 @@ var AccountInfo = function AccountInfo(_ref) {
                     })
                 )
             )
-        ),
-        typeof balance !== 'undefined' && _react2.default.createElement(
-            'p',
-            { className: 'acc-balance-amount' },
-            _react2.default.createElement(
-                'i',
-                null,
-                _react2.default.createElement('span', { className: 'symbols ' + (currency || '').toLowerCase() })
-            ),
-            balance
         )
     );
 };
@@ -7100,12 +7102,54 @@ AccountInfo.propTypes = {
     currency: _propTypes2.default.string,
     is_dialog_on: _propTypes2.default.bool,
     is_upgrade_enabled: _propTypes2.default.bool,
+    is_virtual: _propTypes2.default.bool,
     loginid: _propTypes2.default.string,
     onClickUpgrade: _propTypes2.default.func,
     toggleDialog: _propTypes2.default.func
 };
 
 exports.AccountInfo = AccountInfo;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Layout/Header/deposit_button.jsx":
+/*!******************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Layout/Header/deposit_button.jsx ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.DepositButton = undefined;
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _button = __webpack_require__(/*! ../../Form/button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
+
+var _button2 = _interopRequireDefault(_button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DepositButton = function DepositButton() {
+    return _react2.default.createElement(_button2.default, {
+        className: 'primary orange',
+        has_effect: true,
+        text: (0, _localize.localize)('Deposit')
+        // TODO: Redirect to Deposit page in Cashier
+        // onClick={redirectToCashierDeposit}
+    });
+};
+
+exports.DepositButton = DepositButton;
 
 /***/ }),
 
@@ -7135,6 +7179,18 @@ Object.keys(_account_info).forEach(function (key) {
   });
 });
 
+var _deposit_button = __webpack_require__(/*! ./deposit_button.jsx */ "./src/javascript/app_2/App/Components/Layout/Header/deposit_button.jsx");
+
+Object.keys(_deposit_button).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _deposit_button[key];
+    }
+  });
+});
+
 var _install_pwa_button = __webpack_require__(/*! ./install_pwa_button.jsx */ "./src/javascript/app_2/App/Components/Layout/Header/install_pwa_button.jsx");
 
 Object.keys(_install_pwa_button).forEach(function (key) {
@@ -7155,6 +7211,18 @@ Object.keys(_login_button).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _login_button[key];
+    }
+  });
+});
+
+var _upgrade_button = __webpack_require__(/*! ./upgrade_button.jsx */ "./src/javascript/app_2/App/Components/Layout/Header/upgrade_button.jsx");
+
+Object.keys(_upgrade_button).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _upgrade_button[key];
     }
   });
 });
@@ -7330,10 +7398,6 @@ var _symbol = __webpack_require__(/*! ../../../../../../images/app_2/header/symb
 
 var _symbol2 = _interopRequireDefault(_symbol);
 
-var _InkBar = __webpack_require__(/*! ../../Elements/InkBar */ "./src/javascript/app_2/App/Components/Elements/InkBar/index.js");
-
-var _InkBar2 = _interopRequireDefault(_InkBar);
-
 var _Routes = __webpack_require__(/*! ../../Routes */ "./src/javascript/app_2/App/Components/Routes/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -7349,7 +7413,7 @@ var MenuLinks = function MenuLinks(_ref) {
             _react2.default.createElement(_symbol2.default, { width: '30px', height: '30px' })
         ),
         !!items.length && _react2.default.createElement(
-            _InkBar2.default,
+            'div',
             { className: 'menu-links' },
             items.map(function (item, idx) {
                 return _react2.default.createElement(
@@ -7466,6 +7530,56 @@ var ToggleNotificationsDrawer = function ToggleNotificationsDrawer() {
 };
 
 exports.ToggleNotificationsDrawer = ToggleNotificationsDrawer;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Layout/Header/upgrade_button.jsx":
+/*!******************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Layout/Header/upgrade_button.jsx ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.UpgradeButton = undefined;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _button = __webpack_require__(/*! ../../Form/button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
+
+var _button2 = _interopRequireDefault(_button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpgradeButton = function UpgradeButton(_ref) {
+    var onClick = _ref.onClick;
+    return _react2.default.createElement(_button2.default, {
+        id: 'acc-balance-btn',
+        className: 'primary orange',
+        has_effect: true,
+        text: (0, _localize.localize)('Upgrade'),
+        onClick: onClick
+    });
+};
+
+UpgradeButton.propTypes = {
+    onClick: _propTypes2.default.func
+};
+
+exports.UpgradeButton = UpgradeButton;
 
 /***/ }),
 
@@ -7885,12 +7999,9 @@ var header_links = [{
     text: (0, _localize.localize)('Trade'),
     link_to: _Constants.routes.trade
 }, {
-    icon: _react2.default.createElement(_NavBar.IconPortfolio, { className: 'ic-header__portfolio' }),
-    text: (0, _localize.localize)('Portfolio'),
-    link_to: _Constants.routes.portfolio
-}, {
+    // TODO: Combine portfolio and statement into reports page
     icon: _react2.default.createElement(_NavBar.IconStatement, { className: 'ic-header__statement' }),
-    text: (0, _localize.localize)('Statement'),
+    text: (0, _localize.localize)('Reports'),
     link_to: _Constants.routes.statement
 }];
 
@@ -8034,8 +8145,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js");
 
-var _upgrade_button = __webpack_require__(/*! ../../Components/Elements/AccountSwitcher/upgrade_button.jsx */ "./src/javascript/app_2/App/Components/Elements/AccountSwitcher/upgrade_button.jsx");
-
 var _Drawer = __webpack_require__(/*! ../../../Assets/Header/Drawer */ "./src/javascript/app_2/Assets/Header/Drawer/index.js");
 
 var _Services = __webpack_require__(/*! ../../../Services */ "./src/javascript/app_2/Services/index.js");
@@ -8073,6 +8182,12 @@ var AccountSwitcher = function (_React$Component) {
             if (_this.wrapper_ref && !_this.wrapper_ref.contains(event.target) && _this.props.is_visible && accounts_toggle_btn) {
                 _this.props.toggle();
             }
+        }, _this.handleLogout = function () {
+            _this.props.toggle();
+            if (_this.props.is_positions_drawer_on) {
+                _this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+            }
+            (0, _Services.requestLogout)();
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -8095,10 +8210,19 @@ var AccountSwitcher = function (_React$Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 this.props.toggle();
-                                _context.next = 3;
-                                return this.props.switchAccount(loginid);
+
+                                if (!(this.props.account_loginid === loginid)) {
+                                    _context.next = 3;
+                                    break;
+                                }
+
+                                return _context.abrupt('return');
 
                             case 3:
+                                _context.next = 5;
+                                return this.props.switchAccount(loginid);
+
+                            case 5:
                             case 'end':
                                 return _context.stop();
                         }
@@ -8118,44 +8242,102 @@ var AccountSwitcher = function (_React$Component) {
             var _this2 = this;
 
             if (!this.props.is_logged_in) return false;
+            // TODO: Once we allow other real accounts (apart from CR), assign correct title and group accounts into list with correct account title/types
+            // e.g - Real, Financial, Gaming, Investment
+
+            var main_account_title = (0, _localize.localize)('Real account');
 
             return _react2.default.createElement(
                 'div',
-                { className: 'acc-switcher-list', ref: this.setWrapperRef },
-                this.props.account_list.length > 0 && this.props.account_list.map(function (account) {
-                    return _react2.default.createElement(
-                        _react2.default.Fragment,
-                        { key: account.loginid },
-                        _react2.default.createElement(
-                            'div',
-                            {
-                                className: (0, _classnames2.default)('acc-switcher-account', account.icon),
-                                onClick: _this2.doSwitch.bind(_this2, account.loginid)
-                            },
-                            _react2.default.createElement(
-                                'span',
-                                { className: 'acc-switcher-id' },
-                                account.loginid
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                { className: 'acc-switcher-type' },
-                                account.title
-                            )
-                        )
-                    );
-                }),
-                this.props.is_upgrade_enabled && _react2.default.createElement(
+                { className: 'acc-switcher__list', ref: this.setWrapperRef },
+
+                // Make sure this block is not rendered if there are no real accounts
+                !!(this.props.account_list.length > 0 && !this.props.account_list[0].is_virtual) && _react2.default.createElement(
                     'div',
-                    { className: 'acc-button' },
-                    _react2.default.createElement(_upgrade_button.UpgradeButton, { onClick: this.props.onClickUpgrade })
+                    { className: 'acc-switcher__list__group' },
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'acc-switcher__list__title' },
+                        main_account_title
+                    ),
+                    this.props.account_list.filter(function (accounts) {
+                        return !accounts.is_virtual;
+                    }).map(function (account) {
+                        return _react2.default.createElement(
+                            _react2.default.Fragment,
+                            { key: account.loginid },
+                            _react2.default.createElement(
+                                'div',
+                                {
+                                    className: (0, _classnames2.default)('acc-switcher-account', {
+                                        'acc-switcher-account--selected': account.loginid === _this2.props.account_loginid
+                                    }),
+                                    onClick: _this2.doSwitch.bind(_this2, account.loginid)
+                                },
+                                _react2.default.createElement(
+                                    'span',
+                                    {
+                                        className: (0, _classnames2.default)('acc-switcher__id', {
+                                            'acc-switcher__id__icon': account.icon
+                                        }, 'acc-switcher__id__icon--' + account.icon)
+                                    },
+                                    account.loginid
+                                ),
+                                _react2.default.createElement('span', { className: 'acc-switcher__radio' })
+                            )
+                        );
+                    }),
+                    // TODO: Add link to account opening page for upgrade or multi account page for new account.
+                    // Update text below for handling types of account to create :- e.g - Investment
+                    !!(this.props.is_upgrade_enabled && this.props.upgrade_info.can_open_multi) && _react2.default.createElement(
+                        'div',
+                        { className: 'acc-switcher__new-account' },
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            (0, _localize.localize)('Add new account')
+                        )
+                    )
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'acc-logout', onClick: _Services.requestLogout },
+                    { className: 'acc-switcher__list__virtual' },
                     _react2.default.createElement(
                         'span',
-                        { className: 'acc-logout-text' },
+                        { className: 'acc-switcher__list__title' },
+                        (0, _localize.localize)('Virtual account')
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        {
+                            className: (0, _classnames2.default)('acc-switcher-account', {
+                                'acc-switcher-account--selected': this.props.virtual_loginid === this.props.account_loginid
+                            }),
+                            onClick: this.doSwitch.bind(this, this.props.virtual_loginid)
+                        },
+                        _react2.default.createElement(
+                            'span',
+                            { className: (0, _classnames2.default)('acc-switcher__id', 'virtual') },
+                            this.props.virtual_loginid
+                        ),
+                        _react2.default.createElement('span', { className: 'acc-switcher__radio' })
+                    )
+                ),
+                !!(this.props.is_upgrade_enabled && this.props.is_virtual) && _react2.default.createElement(
+                    'div',
+                    { className: 'acc-switcher__new-account' },
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        (0, _localize.localize)('Upgrade to Real Account')
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'acc-logout', onClick: this.handleLogout },
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'acc-logout__text' },
                         (0, _localize.localize)('Log out')
                     ),
                     _react2.default.createElement(_Drawer.IconLogout, { className: 'drawer-icon' })
@@ -8169,19 +8351,33 @@ var AccountSwitcher = function (_React$Component) {
 
 AccountSwitcher.propTypes = {
     account_list: _propTypes2.default.array,
+    account_loginid: _propTypes2.default.string,
     is_logged_in: _propTypes2.default.bool,
+    is_positions_drawer_on: _propTypes2.default.bool,
     is_upgrade_enabled: _propTypes2.default.bool,
+    is_virtual: _propTypes2.default.bool,
     is_visible: _propTypes2.default.bool,
     onClickUpgrade: _propTypes2.default.func,
-    toggle: _propTypes2.default.func
+    toggle: _propTypes2.default.func,
+    togglePositionsDrawer: _propTypes2.default.func,
+    upgrade_info: _propTypes2.default.object,
+    virtual_loginid: _propTypes2.default.string
 };
 
 var account_switcher = (0, _connect.connect)(function (_ref3) {
-    var client = _ref3.client;
+    var client = _ref3.client,
+        ui = _ref3.ui;
     return {
         account_list: client.account_list,
+        account_loginid: client.loginid,
         is_logged_in: client.is_logged_in,
-        switchAccount: client.switchAccount
+        is_virtual: client.is_virtual,
+        switchAccount: client.switchAccount,
+        upgrade_info: client.upgrade_info,
+        virtual_loginid: client.virtual_account_loginid,
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        togglePositionsDrawer: ui.togglePositionsDrawer
+
     };
 })(AccountSwitcher);
 
@@ -8389,10 +8585,10 @@ var MenuDrawer = function MenuDrawer(_ref) {
     var is_dark_mode = _ref.is_dark_mode,
         is_logged_in = _ref.is_logged_in,
         is_mobile = _ref.is_mobile,
-        is_portfolio_drawer_on = _ref.is_portfolio_drawer_on,
+        is_positions_drawer_on = _ref.is_positions_drawer_on,
         is_purchase_locked = _ref.is_purchase_locked,
         toggleDarkMode = _ref.toggleDarkMode,
-        togglePortfolioDrawer = _ref.togglePortfolioDrawer,
+        togglePositionsDrawer = _ref.togglePositionsDrawer,
         togglePurchaseLock = _ref.togglePurchaseLock;
     return _react2.default.createElement(
         'div',
@@ -8438,8 +8634,8 @@ var MenuDrawer = function MenuDrawer(_ref) {
                 icon: _react2.default.createElement(_Drawer2.IconLogout, { className: 'drawer-icon' }),
                 text: (0, _localize.localize)('Logout'),
                 custom_action: function custom_action() {
-                    if (is_portfolio_drawer_on) {
-                        togglePortfolioDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+                    if (is_positions_drawer_on) {
+                        togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
                     }
                     (0, _Services.requestLogout)();
                 }
@@ -8452,11 +8648,11 @@ MenuDrawer.propTypes = {
     is_dark_mode: _propTypes2.default.bool,
     is_logged_in: _propTypes2.default.bool,
     is_mobile: _propTypes2.default.bool,
-    is_portfolio_drawer_on: _propTypes2.default.bool,
+    is_positions_drawer_on: _propTypes2.default.bool,
     is_purchase_confirmed: _propTypes2.default.bool,
     is_purchase_locked: _propTypes2.default.bool,
     toggleDarkMode: _propTypes2.default.func,
-    togglePortfolioDrawer: _propTypes2.default.func,
+    togglePositionsDrawer: _propTypes2.default.func,
     togglePurchaseConfirmation: _propTypes2.default.func,
     togglePurchaseLock: _propTypes2.default.func
 };
@@ -8468,11 +8664,11 @@ exports.default = (0, _connect.connect)(function (_ref2) {
         is_logged_in: client.is_logged_in,
         is_dark_mode: ui.is_dark_mode_on,
         is_mobile: ui.is_mobile,
-        is_portfolio_drawer_on: ui.is_portfolio_drawer_on,
+        is_positions_drawer_on: ui.is_positions_drawer_on,
         is_purchase_confirmed: ui.is_purchase_confirm_on,
         is_purchase_locked: ui.is_purchase_lock_on,
         toggleDarkMode: ui.toggleDarkMode,
-        togglePortfolioDrawer: ui.togglePortfolioDrawer,
+        togglePositionsDrawer: ui.togglePositionsDrawer,
         togglePurchaseConfirmation: ui.togglePurchaseConfirmation,
         togglePurchaseLock: ui.togglePurchaseLock
     };
@@ -8508,34 +8704,47 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(/*! react-router */ "./node_modules/react-router/es/index.js");
 
+var _ttReactCustomScrollbars = __webpack_require__(/*! tt-react-custom-scrollbars */ "./node_modules/tt-react-custom-scrollbars/lib/index.js");
+
 var _connect = __webpack_require__(/*! ../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var AppContents = function AppContents(_ref) {
     var children = _ref.children,
-        is_portfolio_drawer_on = _ref.is_portfolio_drawer_on;
+        is_contract_mode = _ref.is_contract_mode,
+        is_positions_drawer_on = _ref.is_positions_drawer_on;
     return _react2.default.createElement(
         'div',
         {
             id: 'app_contents',
             className: (0, _classnames2.default)('app-contents', {
-                'app-contents--show-portfolio-drawer': is_portfolio_drawer_on
+                'app-contents--show-positions-drawer': is_positions_drawer_on,
+                'app-contents--contract-mode': is_contract_mode
             })
         },
-        children
+        _react2.default.createElement(
+            _ttReactCustomScrollbars.Scrollbars,
+            {
+                autoHide: true,
+                style: { height: 'calc(100vh - 83px)' }
+            },
+            children
+        )
     );
 };
 
 AppContents.propTypes = {
     children: _propTypes2.default.any,
-    is_portfolio_drawer_on: _propTypes2.default.bool
+    is_positions_drawer_on: _propTypes2.default.bool
 };
 
 exports.default = (0, _reactRouter.withRouter)((0, _connect.connect)(function (_ref2) {
-    var ui = _ref2.ui;
+    var modules = _ref2.modules,
+        ui = _ref2.ui;
     return {
-        is_portfolio_drawer_on: ui.is_portfolio_drawer_on
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        is_contract_mode: modules.smart_chart.is_contract_mode
     };
 })(AppContents));
 
@@ -8574,29 +8783,33 @@ var _Footer = __webpack_require__(/*! ../../Components/Layout/Footer */ "./src/j
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Footer = function Footer(_ref) {
-    var is_logged_in = _ref.is_logged_in,
-        is_portfolio_drawer_on = _ref.is_portfolio_drawer_on,
-        is_language_dialog_visible = _ref.is_language_dialog_visible,
+    var is_language_dialog_visible = _ref.is_language_dialog_visible,
+        is_logged_in = _ref.is_logged_in,
+        is_positions_drawer_on = _ref.is_positions_drawer_on,
         is_settings_dialog_on = _ref.is_settings_dialog_on,
         network_status = _ref.network_status,
-        toggleSettingsDialog = _ref.toggleSettingsDialog,
-        togglePortfolioDrawer = _ref.togglePortfolioDrawer;
+        togglePositionsDrawer = _ref.togglePositionsDrawer,
+        toggleSettingsDialog = _ref.toggleSettingsDialog;
     return _react2.default.createElement(
         _react2.default.Fragment,
         null,
+        _react2.default.createElement(
+            'div',
+            { className: 'footer-links footer-links-left' },
+            is_logged_in && _react2.default.createElement(_Footer.TogglePositions, {
+                is_positions_drawer_on: is_positions_drawer_on,
+                togglePositionsDrawer: togglePositionsDrawer
+            })
+        ),
         _react2.default.createElement(_Footer.NetworkStatus, { status: network_status }),
         _react2.default.createElement(_server_time2.default, null),
         _react2.default.createElement(
             'div',
             { className: 'footer-links' },
-            is_logged_in && _react2.default.createElement(_Footer.TogglePortfolio, {
-                is_portfolio_drawer_on: is_portfolio_drawer_on,
-                togglePortfolioDrawer: togglePortfolioDrawer
-            }),
             _react2.default.createElement(_Footer.ToggleFullScreen, null),
             _react2.default.createElement(_Footer.ToggleSettings, {
-                is_settings_visible: is_settings_dialog_on,
                 is_language_visible: is_language_dialog_visible,
+                is_settings_visible: is_settings_dialog_on,
                 toggleSettings: toggleSettingsDialog
             })
         )
@@ -8606,10 +8819,10 @@ var Footer = function Footer(_ref) {
 Footer.propTypes = {
     is_language_dialog_visible: _propTypes2.default.bool,
     is_logged_in: _propTypes2.default.bool,
-    is_portfolio_drawer_on: _propTypes2.default.bool,
+    is_positions_drawer_on: _propTypes2.default.bool,
     is_settings_dialog_on: _propTypes2.default.bool,
     network_status: _propTypes2.default.object,
-    togglePortfolioDrawer: _propTypes2.default.func,
+    togglePositionsDrawer: _propTypes2.default.func,
     toggleSettingsDialog: _propTypes2.default.func
 };
 
@@ -8619,11 +8832,11 @@ exports.default = (0, _connect.connect)(function (_ref2) {
         ui = _ref2.ui;
     return {
         is_logged_in: client.is_logged_in,
-        is_language_dialog_visible: ui.is_language_dialog_on,
-        is_portfolio_drawer_on: ui.is_portfolio_drawer_on,
-        is_settings_dialog_on: ui.is_settings_dialog_on,
         network_status: common.network_status,
-        togglePortfolioDrawer: ui.togglePortfolioDrawer,
+        is_language_dialog_visible: ui.is_language_dialog_on,
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        is_settings_dialog_on: ui.is_settings_dialog_on,
+        togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSettingsDialog: ui.toggleSettingsDialog
     };
 })(Footer);
@@ -8667,15 +8880,16 @@ var _connect = __webpack_require__(/*! ../../../Stores/connect */ "./src/javascr
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Header = function Header(_ref) {
-    var account_type = _ref.account_type,
-        balance = _ref.balance,
+    var balance = _ref.balance,
         can_upgrade = _ref.can_upgrade,
+        can_upgrade_to = _ref.can_upgrade_to,
         currency = _ref.currency,
         hideInstallButton = _ref.hideInstallButton,
         is_acc_switcher_on = _ref.is_acc_switcher_on,
         is_install_button_visible = _ref.is_install_button_visible,
         is_logged_in = _ref.is_logged_in,
         is_mobile = _ref.is_mobile,
+        is_virtual = _ref.is_virtual,
         loginid = _ref.loginid,
         onClickUpgrade = _ref.onClickUpgrade,
         pwa_prompt_event = _ref.pwa_prompt_event,
@@ -8719,37 +8933,39 @@ var Header = function Header(_ref) {
                         _react2.default.Fragment,
                         null,
                         _react2.default.createElement(_Header.AccountInfo, {
-                            account_type: account_type,
                             balance: (0, _currency_base.formatMoney)(currency, balance, true),
                             is_upgrade_enabled: can_upgrade,
+                            is_virtual: is_virtual,
                             onClickUpgrade: onClickUpgrade,
                             currency: currency,
                             loginid: loginid,
                             is_dialog_on: is_acc_switcher_on,
                             toggleDialog: toggleAccountsDialog
-                        })
+                        }),
+                        !!(can_upgrade_to && is_virtual) && _react2.default.createElement(_Header.UpgradeButton, null),
+                        !is_virtual && _react2.default.createElement(_Header.DepositButton, null)
                     ) : _react2.default.createElement(_Header.LoginButton, null)
                 )
-            ),
-            _react2.default.createElement(_Header.ToggleNotificationsDrawer, null)
+            )
         )
     );
 };
 
 Header.propTypes = {
-    account_type: _propTypes2.default.string,
     balance: _propTypes2.default.string,
     can_upgrade: _propTypes2.default.bool,
+    can_upgrade_to: _propTypes2.default.bool,
     currency: _propTypes2.default.string,
     hideInstallButton: _propTypes2.default.func,
     is_acc_switcher_on: _propTypes2.default.bool,
-    is_dark_mode: _propTypes2.default.bool, // TODO: add dark theme handler
+    is_dark_mode: _propTypes2.default.bool,
     is_install_button_visible: _propTypes2.default.bool,
     is_logged_in: _propTypes2.default.bool,
     is_mobile: _propTypes2.default.bool,
+    is_virtual: _propTypes2.default.bool,
     loginid: _propTypes2.default.string,
-    onClickUpgrade: _propTypes2.default.func, // TODO: add click handler
-    pwa_prompt_event: _propTypes2.default.object,
+    onClickUpgrade: _propTypes2.default.func,
+    pwa_prompt_event: _propTypes2.default.object, // TODO: add click handler
     setPWAPromptEvent: _propTypes2.default.func,
     showInstallButton: _propTypes2.default.func,
     toggleAccountsDialog: _propTypes2.default.func
@@ -8761,11 +8977,12 @@ exports.default = (0, _reactRouter.withRouter)((0, _connect.connect)(function (_
     var client = _ref2.client,
         ui = _ref2.ui;
     return {
-        account_type: client.account_title,
         balance: client.balance,
         can_upgrade: client.can_upgrade,
+        can_upgrade_to: client.can_upgrade_to,
         currency: client.currency,
         is_logged_in: client.is_logged_in,
+        is_virtual: client.is_virtual,
         loginid: client.loginid,
         hideInstallButton: ui.hideInstallButton,
         is_acc_switcher_on: ui.is_accounts_switcher_on,
@@ -8778,67 +8995,6 @@ exports.default = (0, _reactRouter.withRouter)((0, _connect.connect)(function (_
         toggleAccountsDialog: ui.toggleAccountsDialog
     };
 })(Header));
-
-/***/ }),
-
-/***/ "./src/javascript/app_2/App/Containers/Layout/theme_wrapper.jsx":
-/*!**********************************************************************!*\
-  !*** ./src/javascript/app_2/App/Containers/Layout/theme_wrapper.jsx ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouter = __webpack_require__(/*! react-router */ "./node_modules/react-router/es/index.js");
-
-var _connect = __webpack_require__(/*! ../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ThemeWrapper = function ThemeWrapper(_ref) {
-    var children = _ref.children,
-        is_dark_theme = _ref.is_dark_theme;
-
-    var theme_wrapper_class = (0, _classnames2.default)('theme-wrapper', {
-        dark: is_dark_theme,
-        light: !is_dark_theme
-    });
-    return _react2.default.createElement(
-        'div',
-        { id: 'theme_wrapper', className: theme_wrapper_class },
-        children
-    );
-};
-
-ThemeWrapper.propTypes = {
-    children: _propTypes2.default.node,
-    is_dark_theme: _propTypes2.default.bool
-};
-
-exports.default = (0, _reactRouter.withRouter)((0, _connect.connect)(function (_ref2) {
-    var ui = _ref2.ui;
-    return {
-        is_dark_theme: ui.is_dark_mode_on
-    };
-})(ThemeWrapper));
 
 /***/ }),
 
@@ -9507,9 +9663,9 @@ var _error_boundary = __webpack_require__(/*! ./Components/Elements/Errors/error
 
 var _error_boundary2 = _interopRequireDefault(_error_boundary);
 
-var _PortfolioDrawer = __webpack_require__(/*! ./Components/Elements/PortfolioDrawer */ "./src/javascript/app_2/App/Components/Elements/PortfolioDrawer/index.js");
+var _PositionsDrawer = __webpack_require__(/*! ./Components/Elements/PositionsDrawer */ "./src/javascript/app_2/App/Components/Elements/PositionsDrawer/index.js");
 
-var _PortfolioDrawer2 = _interopRequireDefault(_PortfolioDrawer);
+var _PositionsDrawer2 = _interopRequireDefault(_PositionsDrawer);
 
 var _ToastMessage = __webpack_require__(/*! ./Components/Elements/ToastMessage */ "./src/javascript/app_2/App/Components/Elements/ToastMessage/index.js");
 
@@ -9528,10 +9684,6 @@ var _footer2 = _interopRequireDefault(_footer);
 var _header = __webpack_require__(/*! ./Containers/Layout/header.jsx */ "./src/javascript/app_2/App/Containers/Layout/header.jsx");
 
 var _header2 = _interopRequireDefault(_header);
-
-var _theme_wrapper = __webpack_require__(/*! ./Containers/Layout/theme_wrapper.jsx */ "./src/javascript/app_2/App/Containers/Layout/theme_wrapper.jsx");
-
-var _theme_wrapper2 = _interopRequireDefault(_theme_wrapper);
 
 var _routes = __webpack_require__(/*! ./Containers/Routes/routes.jsx */ "./src/javascript/app_2/App/Containers/Routes/routes.jsx");
 
@@ -9552,11 +9704,11 @@ var App = function App(_ref) {
             _connect.MobxProvider,
             { store: root_store },
             _react2.default.createElement(
-                _theme_wrapper2.default,
+                _react2.default.Fragment,
                 null,
                 _react2.default.createElement(
                     'div',
-                    { id: 'header' },
+                    { className: 'header' },
                     _react2.default.createElement(_header2.default, null)
                 ),
                 _react2.default.createElement(
@@ -9566,14 +9718,14 @@ var App = function App(_ref) {
                         _app_contents2.default,
                         null,
                         _react2.default.createElement(_routes2.default, null),
-                        _react2.default.createElement(_PortfolioDrawer2.default, null),
+                        _react2.default.createElement(_PositionsDrawer2.default, null),
                         _react2.default.createElement(_toast_message2.default, { position: _ToastMessage.POSITIONS.TOP_RIGHT })
                     ),
                     _react2.default.createElement(_DenialOfServiceModal2.default, null)
                 ),
                 _react2.default.createElement(
                     'footer',
-                    { id: 'footer' },
+                    { className: 'footer' },
                     _react2.default.createElement(_footer2.default, null)
                 )
             )
@@ -9604,6 +9756,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IconArrow = undefined;
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -9615,16 +9771,18 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var IconArrow = function IconArrow(_ref) {
-    var className = _ref.className;
+    var className = _ref.className,
+        classNamePath = _ref.classNamePath;
     return _react2.default.createElement(
         'svg',
         { className: className, width: '16', height: '16', xmlns: 'http://www.w3.org/2000/svg' },
-        _react2.default.createElement('path', { className: 'arrow-path', d: 'M13.164 5.13a.5.5 0 1 1 .672.74l-5.5 5a.5.5 0 0 1-.672 0l-5.5-5a.5.5 0 0 1 .672-.74L8 9.824l5.164-4.694z', fill: '#D2D3DA', fillRule: 'nonzero' })
+        _react2.default.createElement('path', { className: (0, _classnames2.default)(classNamePath, 'arrow-path'), d: 'M13.164 5.13a.5.5 0 1 1 .672.74l-5.5 5a.5.5 0 0 1-.672 0l-5.5-5a.5.5 0 0 1 .672-.74L8 9.824l5.164-4.694z', fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'nonzero' })
     );
 };
 
 IconArrow.propTypes = {
-    className: _propTypes2.default.string
+    className: _propTypes2.default.string,
+    classNamePath: _propTypes2.default.string
 };
 
 exports.IconArrow = IconArrow;
@@ -9665,7 +9823,7 @@ var IconBack = function IconBack(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 16 16' },
-        _react2.default.createElement('path', { fill: '#333', fillRule: 'nonzero', d: 'M3.6 8.5L7 12.2a.5.5 0 1 1-.8.6l-4-4.5a.5.5 0 0 1 0-.6l4-4.5a.5.5 0 0 1 .8.6L3.6 7.5h9.9a.5.5 0 1 1 0 1H3.6z' })
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M3.613 8.5l3.26 3.668a.5.5 0 1 1-.747.664l-4-4.5a.5.5 0 0 1 0-.664l4-4.5a.5.5 0 0 1 .748.664L3.614 7.5H13.5a.5.5 0 1 1 0 1H3.613z' })
     );
 };
 
@@ -9714,7 +9872,7 @@ var IconCalendar = function IconCalendar(_ref) {
             className: className,
             onClick: onClick
         },
-        _react2.default.createElement('path', { fill: '#5C5C5C', fillRule: 'evenodd', d: 'M13.875 2H12v-.438a.562.562 0 1 0-1.125 0V2h-5.75v-.438a.562.562 0 1 0-1.125 0V2H2.125C1.503 2 1 2.503 1 3.125v10.75C1 14.497 1.503 15 2.125 15h11.75c.622 0 1.125-.505 1.125-1.125V3.125C15 2.503 14.497 2 13.875 2zM2.125 3.125H4v.313a.562.562 0 1 0 1.125 0v-.313h5.75v.313a.562.562 0 1 0 1.125 0v-.313h1.875v1.75H2.125v-1.75zm11.75 10.75H2.125V6h11.75v7.875zM4.5 8h1a.5.5 0 1 1 0 1h-1a.5.5 0 1 1 0-1zm3 0h1a.5.5 0 1 1 0 1h-1a.5.5 0 1 1 0-1zm3 0h1a.5.5 0 1 1 0 1h-1a.5.5 0 1 1 0-1zm-6 3.031h1a.5.5 0 1 1 0 1h-1a.5.5 0 1 1 0-1zm3 0h1a.5.5 0 1 1 0 1h-1a.5.5 0 1 1 0-1z' })
+        _react2.default.createElement('path', { fill: '#000', fillOpacity: '.8', fillRule: 'nonzero', d: 'M4 3H2v11h12V3h-2v.5a.5.5 0 1 1-1 0V3H5v.5a.5.5 0 0 1-1 0V3zm1-1h6v-.5a.5.5 0 1 1 1 0V2h2a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h2v-.5a.5.5 0 0 1 1 0V2zM2 5h12v1H2V5z' })
     );
 };
 
@@ -9811,7 +9969,7 @@ var IconChevronDoubleLeft = function IconChevronDoubleLeft(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', viewBox: '0 0 16 16' },
-        _react2.default.createElement('path', { fill: '#5C5C5C', fillRule: 'evenodd', d: 'M4.247 8l4.587 4.128a.5.5 0 0 1-.668.744l-5-4.5a.5.5 0 0 1 0-.744l5-4.5a.5.5 0 0 1 .668.744L4.247 8zm8.587 4.128a.5.5 0 0 1-.668.744l-5-4.5a.5.5 0 0 1 0-.744l5-4.5a.5.5 0 0 1 .668.744L8.247 8l4.587 4.128z' })
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M4.247 8l4.587 4.128a.5.5 0 0 1-.668.744l-5-4.5a.5.5 0 0 1 0-.744l5-4.5a.5.5 0 0 1 .668.744L4.247 8zm8.587 4.128a.5.5 0 0 1-.668.744l-5-4.5a.5.5 0 0 1 0-.744l5-4.5a.5.5 0 0 1 .668.744L8.247 8l4.587 4.128z' })
     );
 };
 
@@ -9857,7 +10015,7 @@ var IconChevronDoubleRight = function IconChevronDoubleRight(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', viewBox: '0 0 16 16' },
-        _react2.default.createElement('path', { fill: '#5C5C5C', fillRule: 'evenodd', d: 'M7.753 8L3.166 3.872a.5.5 0 0 1 .668-.744l5 4.5a.5.5 0 0 1 0 .744l-5 4.5a.5.5 0 1 1-.668-.744L7.753 8zm4 0L7.166 3.872a.5.5 0 0 1 .668-.744l5 4.5a.5.5 0 0 1 0 .744l-5 4.5a.5.5 0 1 1-.668-.744L11.753 8z' })
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M7.753 8L3.166 3.872a.5.5 0 0 1 .668-.744l5 4.5a.5.5 0 0 1 0 .744l-5 4.5a.5.5 0 1 1-.668-.744L7.753 8zm4 0L7.166 3.872a.5.5 0 0 1 .668-.744l5 4.5a.5.5 0 0 1 0 .744l-5 4.5a.5.5 0 1 1-.668-.744L11.753 8z' })
     );
 };
 
@@ -9903,7 +10061,7 @@ var IconChevronLeft = function IconChevronLeft(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', viewBox: '0 0 16 16' },
-        _react2.default.createElement('path', { fill: '#5C5C5C', fillRule: 'evenodd', d: 'M6.247 8l4.587 4.128a.5.5 0 0 1-.668.744l-5-4.5a.5.5 0 0 1 0-.744l5-4.5a.5.5 0 0 1 .668.744L6.247 8z' })
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M6.247 8l4.587 4.128a.5.5 0 0 1-.668.744l-5-4.5a.5.5 0 0 1 0-.744l5-4.5a.5.5 0 0 1 .668.744L6.247 8z' })
     );
 };
 
@@ -9949,7 +10107,7 @@ var IconChevronRight = function IconChevronRight(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', viewBox: '0 0 16 16' },
-        _react2.default.createElement('path', { fill: '#5C5C5C', fillRule: 'evenodd', d: 'M9.753 8L5.166 3.872a.5.5 0 0 1 .668-.744l5 4.5a.5.5 0 0 1 0 .744l-5 4.5a.5.5 0 1 1-.668-.744L9.753 8z' })
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M9.753 8L5.166 3.872a.5.5 0 0 1 .668-.744l5 4.5a.5.5 0 0 1 0 .744l-5 4.5a.5.5 0 1 1-.668-.744L9.753 8z' })
     );
 };
 
@@ -10009,6 +10167,61 @@ IconClear.propTypes = {
 };
 
 exports.IconClear = IconClear;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Assets/Common/icon_clock.jsx":
+/*!***********************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Common/icon_clock.jsx ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.IconClock = undefined;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var IconClock = function IconClock(_ref) {
+    var className = _ref.className,
+        onClick = _ref.onClick;
+    return _react2.default.createElement(
+        'svg',
+        {
+            xmlns: 'http://www.w3.org/2000/svg',
+            width: '16',
+            height: '16',
+            className: className,
+            onClick: onClick
+        },
+        _react2.default.createElement(
+            'g',
+            { fill: 'none', fillRule: 'nonzero', stroke: '#5C5C5C' },
+            _react2.default.createElement('circle', { cx: '8', cy: '8', r: '7.5' }),
+            _react2.default.createElement('path', { strokeLinecap: 'round', strokeLinejoin: 'round', d: 'M8 3.5v5h3.5' })
+        )
+    );
+};
+
+IconClock.propTypes = {
+    className: _propTypes2.default.string,
+    onClick: _propTypes2.default.func
+};
+
+exports.IconClock = IconClock;
 
 /***/ }),
 
@@ -10154,6 +10367,52 @@ exports.IconExclamation = IconExclamation;
 
 /***/ }),
 
+/***/ "./src/javascript/app_2/Assets/Common/icon_minimize.jsx":
+/*!**************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Common/icon_minimize.jsx ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.IconMinimize = undefined;
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var IconMinimize = function IconMinimize(_ref) {
+    var className = _ref.className;
+    return _react2.default.createElement(
+        'svg',
+        { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 16 16' },
+        _react2.default.createElement('path', { className: 'color1-fill', fill: '#000', fillOpacity: '0.8', fillRule: 'nonzero', d: 'M0 7h16v2H0z' })
+    );
+};
+
+IconMinimize.propTypes = {
+    className: _propTypes2.default.string
+};
+
+exports.IconMinimize = IconMinimize;
+
+/***/ }),
+
 /***/ "./src/javascript/app_2/Assets/Common/icon_minus.jsx":
 /*!***********************************************************!*\
   !*** ./src/javascript/app_2/Assets/Common/icon_minus.jsx ***!
@@ -10189,7 +10448,7 @@ var IconMinus = function IconMinus(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)(className, { disabled: is_disabled }), xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 16 16' },
-        _react2.default.createElement('path', { fill: '#5C5C5C', fillRule: 'evenodd', d: 'M3 7.5h10v1H3z' })
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M3 7.5h10v1H3z' })
     );
 };
 
@@ -10247,6 +10506,48 @@ IconPlus.propTypes = {
 };
 
 exports.IconPlus = IconPlus;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Assets/Common/icon_tooltip.jsx":
+/*!*************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Common/icon_tooltip.jsx ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.IconTooltip = undefined;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var IconTooltip = function IconTooltip(_ref) {
+    var className = _ref.className;
+    return _react2.default.createElement(
+        'svg',
+        { className: className, xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 16 16' },
+        _react2.default.createElement('path', { fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'evenodd', d: 'M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16zM8 6a.75.75 0 1 0 0-1.5A.75.75 0 0 0 8 6zm0 1a.5.5 0 0 0-.5.5v4a.5.5 0 1 0 1 0v-4A.5.5 0 0 0 8 7z' })
+    );
+};
+
+IconTooltip.propTypes = {
+    className: _propTypes2.default.string
+};
+
+exports.IconTooltip = IconTooltip;
 
 /***/ }),
 
@@ -10372,6 +10673,18 @@ Object.keys(_icon_clear).forEach(function (key) {
   });
 });
 
+var _icon_clock = __webpack_require__(/*! ./icon_clock.jsx */ "./src/javascript/app_2/Assets/Common/icon_clock.jsx");
+
+Object.keys(_icon_clock).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _icon_clock[key];
+    }
+  });
+});
+
 var _icon_close = __webpack_require__(/*! ./icon_close.jsx */ "./src/javascript/app_2/Assets/Common/icon_close.jsx");
 
 Object.keys(_icon_close).forEach(function (key) {
@@ -10392,6 +10705,18 @@ Object.keys(_icon_exclamation).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _icon_exclamation[key];
+    }
+  });
+});
+
+var _icon_minimize = __webpack_require__(/*! ./icon_minimize.jsx */ "./src/javascript/app_2/Assets/Common/icon_minimize.jsx");
+
+Object.keys(_icon_minimize).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _icon_minimize[key];
     }
   });
 });
@@ -10611,10 +10936,10 @@ exports.IconMaximize = IconMaximize;
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/Assets/Footer/icon_quick_portfolio.jsx":
-/*!*********************************************************************!*\
-  !*** ./src/javascript/app_2/Assets/Footer/icon_quick_portfolio.jsx ***!
-  \*********************************************************************/
+/***/ "./src/javascript/app_2/Assets/Footer/icon_positions.jsx":
+/*!***************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Footer/icon_positions.jsx ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10624,11 +10949,7 @@ exports.IconMaximize = IconMaximize;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.IconQuickPortfolio = undefined;
-
-var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-
-var _classnames2 = _interopRequireDefault(_classnames);
+exports.IconPositions = undefined;
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -10638,22 +10959,34 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var IconQuickPortfolio = function IconQuickPortfolio(_ref) {
+var IconPositions = function IconPositions(_ref) {
     var className = _ref.className;
+
+    var IconType = _react2.default.createElement(
+        'g',
+        { fill: 'none', fillRule: 'evenodd' },
+        _react2.default.createElement('path', { className: 'color1-fill color3-fill', fill: '#000', fillOpacity: '.8', fillRule: 'evenodd', d: 'M5 2v-.5A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5V2h3.5A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2H5zm1 0h4v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V2zM1 8.128V12.5a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5V8.128l-2.804 1.557a2.5 2.5 0 0 1-1.214.315H5.018a2.5 2.5 0 0 1-1.214-.315L1 8.128zm0-1.144L4.29 8.81A1.5 1.5 0 0 0 5.018 9h5.964a1.5 1.5 0 0 0 .728-.189L15 6.984V3.5a.5.5 0 0 0-.5-.5h-13a.5.5 0 0 0-.5.5v3.484zM6.5 8a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3z' })
+    );
+
     return _react2.default.createElement(
         'svg',
-        { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 16 12' },
-        _react2.default.createElement('path', { className: 'color1-fill color3-fill', fill: '#2A3052', fillRule: 'evenodd', d: 'M1 0h14c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H1a1 1 0 0 1-1-1V1c0-.6.4-1 1-1zm0 1v10h5V1H1zm6 0v10h8V1H7zm1.5 1.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm2 0h3a.5.5 0 1 1 0 1h-3a.5.5 0 1 1 0-1zm-2 2a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm2 0h3a.5.5 0 1 1 0 1h-3a.5.5 0 1 1 0-1zm-2 2a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm2 0h3a.5.5 0 1 1 0 1h-3a.5.5 0 1 1 0-1zm-2 2a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm2 0h3a.5.5 0 1 1 0 1h-3a.5.5 0 1 1 0-1z' })
+        { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 16 16' },
+        IconType
     );
 };
 
-IconQuickPortfolio.propTypes = {
-    className: _propTypes2.default.string
+IconPositions.propTypes = {
+    className: _propTypes2.default.string,
+    type: _propTypes2.default.string
 };
 
-exports.IconQuickPortfolio = IconQuickPortfolio;
+exports.IconPositions = IconPositions;
 
 /***/ }),
 
@@ -10729,14 +11062,14 @@ Object.keys(_icon_maximize).forEach(function (key) {
   });
 });
 
-var _icon_quick_portfolio = __webpack_require__(/*! ./icon_quick_portfolio.jsx */ "./src/javascript/app_2/Assets/Footer/icon_quick_portfolio.jsx");
+var _icon_positions = __webpack_require__(/*! ./icon_positions.jsx */ "./src/javascript/app_2/Assets/Footer/icon_positions.jsx");
 
-Object.keys(_icon_quick_portfolio).forEach(function (key) {
+Object.keys(_icon_positions).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _icon_quick_portfolio[key];
+      return _icon_positions[key];
     }
   });
 });
@@ -11030,18 +11363,12 @@ var IconPortfolio = function IconPortfolio(_ref) {
     var className = _ref.className;
     return _react2.default.createElement(
         'svg',
-        { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 16 16' },
+        { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '14', viewBox: '0 0 16 14' },
         _react2.default.createElement(
             'g',
-            { className: 'color2-fill', fill: 'none', fillRule: 'evenodd', stroke: 'none', strokeWidth: '1' },
-            _react2.default.createElement(
-                'g',
-                null,
-                _react2.default.createElement('path', { className: 'color1-stroke color2-fill color3-stroke', fill: 'none', stroke: '#2A3052', d: 'M1.5 14.5h13a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1h-13a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1z' }),
-                _react2.default.createElement('path', { className: 'color1-stroke color3-stroke color4-fill portfolio-fix', stroke: '#2A3052', d: 'M5.5 3v-.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V3' }),
-                _react2.default.createElement('path', { className: 'color1-stroke scale-fix', stroke: '#2A3052', strokeLinecap: 'square', d: 'M0 8l4.047 2.248a2 2 0 0 0 .971.252h5.964a2 2 0 0 0 .971-.252L16 8' }),
-                _react2.default.createElement('path', { className: 'color1-stroke', stroke: '#2A3052', strokeLinecap: 'round', d: 'M6.5 8.5h3' })
-            )
+            { fill: 'none', fillRule: 'evenodd' },
+            _react2.default.createElement('path', { fill: '#000', fillOpacity: '0.16', d: 'M5 2v-.5A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5V2h3.5A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2H5zm1 0h4v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V2z' }),
+            _react2.default.createElement('path', { fill: '#FFF', fillRule: 'nonzero', d: 'M1 8.128l2.804 1.557A2.5 2.5 0 0 0 5.018 10h5.964a2.5 2.5 0 0 0 1.214-.315L15 8.128V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V8.128zm0-1.144V3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v3.484L11.71 8.81a1.5 1.5 0 0 1-.728.189H5.018a1.5 1.5 0 0 1-.728-.189L1 6.984zM6.5 8h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0 0 1z' })
         )
     );
 };
@@ -11241,6 +11568,138 @@ Object.keys(_icon_trade).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _icon_trade[key];
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Assets/Trading/Barriers/icon_barrier_down.jsx":
+/*!****************************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Trading/Barriers/icon_barrier_down.jsx ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.IconBarrierDown = undefined;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var IconBarrierDown = function IconBarrierDown(_ref) {
+    var className = _ref.className;
+    return _react2.default.createElement(
+        'svg',
+        { className: className, xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16' },
+        _react2.default.createElement('path', {
+            fillOpacity: '.8',
+            fillRule: 'evenodd',
+            d: 'M7.5 11.793V3.5a.5.5 0 0 1 1 0v8.293l2.646-2.647a.5.5 0 1 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 11.793z'
+        })
+    );
+};
+
+IconBarrierDown.propTypes = {
+    className: _propTypes2.default.string
+};
+
+exports.IconBarrierDown = IconBarrierDown;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Assets/Trading/Barriers/icon_barrier_up.jsx":
+/*!**************************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Trading/Barriers/icon_barrier_up.jsx ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.IconBarrierUp = undefined;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var IconBarrierUp = function IconBarrierUp(_ref) {
+    var className = _ref.className;
+    return _react2.default.createElement(
+        'svg',
+        { className: className, xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16' },
+        _react2.default.createElement('path', {
+            fillOpacity: '.8',
+            fillRule: 'evenodd',
+            d: 'M8.5 4.207V12.5a.5.5 0 1 1-1 0V4.207L4.854 6.854a.5.5 0 1 1-.708-.708l3.5-3.5a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 1 1-.708.708L8.5 4.207z'
+        })
+    );
+};
+
+IconBarrierUp.propTypes = {
+    className: _propTypes2.default.string
+};
+
+exports.IconBarrierUp = IconBarrierUp;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Assets/Trading/Barriers/index.js":
+/*!***************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Trading/Barriers/index.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _icon_barrier_up = __webpack_require__(/*! ./icon_barrier_up.jsx */ "./src/javascript/app_2/Assets/Trading/Barriers/icon_barrier_up.jsx");
+
+Object.keys(_icon_barrier_up).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _icon_barrier_up[key];
+    }
+  });
+});
+
+var _icon_barrier_down = __webpack_require__(/*! ./icon_barrier_down.jsx */ "./src/javascript/app_2/Assets/Trading/Barriers/icon_barrier_down.jsx");
+
+Object.keys(_icon_barrier_down).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _icon_barrier_down[key];
     }
   });
 });
@@ -11582,6 +12041,255 @@ Object.keys(_icon_trade_categories).forEach(function (key) {
     }
   });
 });
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Assets/Trading/Categories/trade_categories.jsx":
+/*!*****************************************************************************!*\
+  !*** ./src/javascript/app_2/Assets/Trading/Categories/trade_categories.jsx ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.TradeCategories = undefined;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
+
+var TradeCategories = function TradeCategories(_ref) {
+    var category = _ref.category;
+
+    var TradeTypeTemplate = void 0;
+    if (category) {
+        switch (category) {
+            case 'rise_fall':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Higher", you win the payout if the exit spot is strictly higher than the entry spot.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Lower", you win the payout if the exit spot is strictly lower than the entry spot.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Allow equals", you win the payout if exit spot is higher than or equal to entry spot for "Higher". Similarly, you win the payout if exit spot is lower than or equal to entry spot for "Lower".')
+                    )
+                );
+                break;
+            case 'rise_fall_equal':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Higher", you win the payout if the exit spot is strictly higher than the entry spot.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Lower", you win the payout if the exit spot is strictly lower than the entry spot.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Allow equals", you win the payout if exit spot is higher than or equal to entry spot for "Higher". Similarly, you win the payout if exit spot is lower than or equal to entry spot for "Lower".')
+                    )
+                );
+                break;
+            case 'high_low':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Higher", you win the payout if the exit spot is strictly higher than the barrier.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Lower", you win the payout if the exit spot is strictly lower than the barrier.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If the exit spot is equal to the barrier, you don\'t win the payout.')
+                    )
+                );
+                break;
+            case 'end':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Ends Between", you win the payout if the exit spot is strictly higher than the Low barrier AND strictly lower than the High barrier.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Ends Outside", you win the payout if the exit spot is EITHER strictly higher than the High barrier, OR strictly lower than the Low barrier.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If the exit spot is equal to either the Low barrier or the High barrier, you don\'t win the payout.')
+                    )
+                );
+                break;
+            case 'stay':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Stays Between", you win the payout if the market stays between (does not touch) either the High barrier or the Low barrier at any time during the contract period')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Goes Outside", you win the payout if the market touches either the High barrier or the Low barrier at any time during the contract period.')
+                    )
+                );
+                break;
+            case 'match_diff':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Matches", you will win the payout if the last digit of the last tick is the same as your prediction.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Differs", you will win the payout if the last digit of the last tick is not the same as your prediction.')
+                    )
+                );
+                break;
+            case 'even_odd':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Even", you will win the payout if the last digit of the last tick is an even number (i.e., 2, 4, 6, 8, or 0).')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Odd", you will win the payout if the last digit of the last tick is an odd number (i.e., 1, 3, 5, 7, or 9).')
+                    )
+                );
+                break;
+            case 'over_under':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Over", you will win the payout if the last digit of the last tick is greater than your prediction.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Under", you will win the payout if the last digit of the last tick is less than your prediction.')
+                    )
+                );
+                break;
+            case 'touch':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Touches", you win the payout if the market touches the barrier at any time during the contract period.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Does Not Touch", you win the payout if the market never touches the barrier at any time during the contract period.')
+                    )
+                );
+                break;
+            case 'asian':
+                TradeTypeTemplate = _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('Asian options settle by comparing the last tick with the average spot over the period.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Asian Rise", you will win the payout if the last tick is higher than the average of the ticks.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If you select "Asian Fall", you will win the payout if the last tick is lower than the average of the ticks.')
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        (0, _localize.localize)('If the last tick is equal to the average of the ticks, you don\'t win the payout.')
+                    )
+                );
+                break;
+            default:
+                TradeTypeTemplate = _react2.default.createElement(
+                    'p',
+                    null,
+                    'not found'
+                );
+                break;
+        }
+    }
+    return _react2.default.createElement(
+        'div',
+        null,
+        TradeTypeTemplate
+    );
+};
+
+TradeCategories.propTypes = {
+    category: _propTypes2.default.string
+};
+
+exports.TradeCategories = TradeCategories;
 
 /***/ }),
 
@@ -12088,6 +12796,74 @@ var getContractTypeDisplay = exports.getContractTypeDisplay = function getContra
         ONETOUCH: (0, _localize.localize)('Touches'),
         NOTOUCH: (0, _localize.localize)('Does Not Touch')
     };
+};
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Constants/date_time.js":
+/*!*****************************************************!*\
+  !*** ./src/javascript/app_2/Constants/date_time.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getDaysOfTheWeek = exports.week_headers_abbr = exports.week_headers = exports.month_headers = undefined;
+
+var _localize = __webpack_require__(/*! ../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var month_headers = exports.month_headers = {
+    Jan: (0, _localize.localize)('Jan'),
+    Feb: (0, _localize.localize)('Feb'),
+    Mar: (0, _localize.localize)('Mar'),
+    Apr: (0, _localize.localize)('Apr'),
+    May: (0, _localize.localize)('May'),
+    Jun: (0, _localize.localize)('Jun'),
+    Jul: (0, _localize.localize)('Jul'),
+    Aug: (0, _localize.localize)('Aug'),
+    Sep: (0, _localize.localize)('Sep'),
+    Oct: (0, _localize.localize)('Oct'),
+    Nov: (0, _localize.localize)('Nov'),
+    Dec: (0, _localize.localize)('Dec')
+};
+
+var week_headers = exports.week_headers = {
+    Monday: (0, _localize.localize)('Monday'),
+    Tuesday: (0, _localize.localize)('Tuesday'),
+    Wednesday: (0, _localize.localize)('Wednesday'),
+    Thursday: (0, _localize.localize)('Thursday'),
+    Friday: (0, _localize.localize)('Friday'),
+    Saturday: (0, _localize.localize)('Saturday'),
+    Sunday: (0, _localize.localize)('Sunday')
+};
+
+var week_headers_abbr = exports.week_headers_abbr = {
+    Monday: (0, _localize.localize)('M'),
+    Tuesday: (0, _localize.localize)('T'),
+    Wednesday: (0, _localize.localize)('W'),
+    Thursday: (0, _localize.localize)('T'),
+    Friday: (0, _localize.localize)('F'),
+    Saturday: (0, _localize.localize)('S'),
+    Sunday: (0, _localize.localize)('S')
+};
+
+var getDaysOfTheWeek = exports.getDaysOfTheWeek = function getDaysOfTheWeek(day) {
+    var days_of_the_week = {
+        'Mondays': 1,
+        'Tuesdays': 2,
+        'Wednesdays': 3,
+        'Thursdays': 4,
+        'Fridays': 5,
+        'Saturdays': 6,
+        'Sundays': 0
+    };
+
+    return days_of_the_week[day];
 };
 
 /***/ }),
@@ -13449,11 +14225,15 @@ var EmptyPortfolioMessage = function EmptyPortfolioMessage() {
         _react2.default.createElement(
             'div',
             { className: 'portfolio-empty' },
-            _react2.default.createElement(_NavBar.IconPortfolio, { className: 'portfolio-empty__icon' }),
             _react2.default.createElement(
-                'span',
-                { className: 'portfolio-empty__text' },
-                (0, _localize.localize)('No open positions.')
+                'div',
+                { className: 'portfolio-empty__wrapper' },
+                _react2.default.createElement(_NavBar.IconPortfolio, { className: 'portfolio-empty__icon' }),
+                _react2.default.createElement(
+                    'span',
+                    { className: 'portfolio-empty__text' },
+                    (0, _localize.localize)('No running contract')
+                )
             )
         )
     );
@@ -13605,7 +14385,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var FullScreenDialog = function FullScreenDialog(props) {
     var title = props.title,
         visible = props.visible,
-        children = props.children;
+        children = props.children,
+        wrapperClassName = props.wrapperClassName;
 
 
     var checkVisibility = function checkVisibility() {
@@ -13674,7 +14455,7 @@ var FullScreenDialog = function FullScreenDialog(props) {
             { className: 'fullscreen-dialog__content' },
             _react2.default.createElement(
                 'div',
-                { className: 'contracts-modal-list' },
+                { className: '' + (wrapperClassName || 'fullscreen-dialog__contracts-modal-list') },
                 children
             )
         )
@@ -13685,7 +14466,8 @@ FullScreenDialog.propTypes = {
     children: _propTypes2.default.any,
     onClose: _propTypes2.default.func,
     title: _propTypes2.default.string,
-    visible: _propTypes2.default.bool
+    visible: _propTypes2.default.bool,
+    wrapperClassName: _propTypes2.default.string
 };
 
 exports.default = FullScreenDialog;
@@ -13892,11 +14674,9 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _icon_tooltip = __webpack_require__(/*! ../../../../../Assets/Common/icon_tooltip.jsx */ "./src/javascript/app_2/Assets/Common/icon_tooltip.jsx");
+
 var _Categories = __webpack_require__(/*! ../../../../../Assets/Trading/Categories */ "./src/javascript/app_2/Assets/Trading/Categories/index.js");
-
-var _tooltip = __webpack_require__(/*! ../../../../../App/Components/Elements/tooltip.jsx */ "./src/javascript/app_2/App/Components/Elements/tooltip.jsx");
-
-var _tooltip2 = _interopRequireDefault(_tooltip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13904,6 +14684,7 @@ var ContractTypeItem = function ContractTypeItem(_ref) {
     var contracts = _ref.contracts,
         name = _ref.name,
         value = _ref.value,
+        handleInfoClick = _ref.handleInfoClick,
         handleSelect = _ref.handleSelect;
     return contracts.map(function (contract, idx) {
         return contract.value !== 'rise_fall_equal' && _react2.default.createElement(
@@ -13913,8 +14694,8 @@ var ContractTypeItem = function ContractTypeItem(_ref) {
                 className: 'list-item ' + (value === contract.value ? 'selected' : ''),
                 name: name,
                 value: contract.value,
-                onClick: function onClick() {
-                    return handleSelect(contract);
+                onClick: function onClick(e) {
+                    return handleSelect(contract, e);
                 }
             },
             _react2.default.createElement(_Categories.IconTradeCategory, { category: contract.value }),
@@ -13923,16 +14704,20 @@ var ContractTypeItem = function ContractTypeItem(_ref) {
                 { className: 'contract-title' },
                 contract.text
             ),
-            _react2.default.createElement(_tooltip2.default, {
-                alignment: 'left',
-                icon: 'info'
-            })
+            _react2.default.createElement(
+                'div',
+                { id: 'info-icon', className: 'trade-type-info-icon', onClick: function onClick() {
+                        return handleInfoClick(contract);
+                    } },
+                _react2.default.createElement(_icon_tooltip.IconTooltip, null)
+            )
         );
     });
 };
 
 ContractTypeItem.propTypes = {
     contracts: _mobxReact.PropTypes.arrayOrObservableArray,
+    handleInfoClick: _propTypes2.default.func,
     handleSelect: _propTypes2.default.func,
     name: _propTypes2.default.string,
     value: _propTypes2.default.string
@@ -13973,7 +14758,8 @@ var _contract_type_item2 = _interopRequireDefault(_contract_type_item);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ContractTypeList = function ContractTypeList(_ref) {
-    var handleSelect = _ref.handleSelect,
+    var handleInfoClick = _ref.handleInfoClick,
+        handleSelect = _ref.handleSelect,
         list = _ref.list,
         name = _ref.name,
         value = _ref.value;
@@ -14002,7 +14788,8 @@ var ContractTypeList = function ContractTypeList(_ref) {
                             contracts: list[key],
                             name: name,
                             value: value,
-                            handleSelect: handleSelect
+                            handleSelect: handleSelect,
+                            handleInfoClick: handleInfoClick
                         })
                     )
                 )
@@ -14012,6 +14799,7 @@ var ContractTypeList = function ContractTypeList(_ref) {
 };
 
 ContractTypeList.propTypes = {
+    handleInfoClick: _propTypes2.default.func,
     handleSelect: _propTypes2.default.func,
     list: _mobxReact.PropTypes.objectOrObservableObject,
     name: _propTypes2.default.string,
@@ -14056,6 +14844,14 @@ var _contract_type_list = __webpack_require__(/*! ./contract_type_list.jsx */ ".
 
 var _contract_type_list2 = _interopRequireDefault(_contract_type_list);
 
+var _trade_type_info_dialog = __webpack_require__(/*! ../TradeTypeInfo/trade_type_info_dialog.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeTypeInfo/trade_type_info_dialog.jsx");
+
+var _trade_type_info_dialog2 = _interopRequireDefault(_trade_type_info_dialog);
+
+var _trade_type_info_item = __webpack_require__(/*! ../TradeTypeInfo/trade_type_info_item.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeTypeInfo/trade_type_info_item.jsx");
+
+var _trade_type_info_item2 = _interopRequireDefault(_trade_type_info_item);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14072,11 +14868,56 @@ var ContractTypeWidget = function (_React$PureComponent) {
 
         var _this = _possibleConstructorReturn(this, (ContractTypeWidget.__proto__ || Object.getPrototypeOf(ContractTypeWidget)).call(this, props));
 
-        _this.handleSelect = function (item) {
-            if (item.value !== _this.props.value) {
+        _this.handleSelect = function (item, e) {
+            if (item.value !== _this.props.value && e.target.id !== 'info-icon') {
                 _this.props.onChange({ target: { name: _this.props.name, value: item.value } });
             }
             _this.handleVisibility();
+        };
+
+        _this.onSubmitButtonClick = function (item) {
+            if (item.value !== _this.props.value) {
+                _this.props.onChange({ target: { name: _this.props.name, value: item.value } });
+            }
+            _this.handleInfoVisibility();
+        };
+
+        _this.handleInfoClick = function (item) {
+            _this.setState({ item: item });
+            _this.handleInfoVisibility();
+            _this.handleVisibility();
+        };
+
+        _this.handleNavigationClick = function (item) {
+            _this.setState({ item: item });
+        };
+
+        _this.handleNextClick = function (navigationList) {
+            var navigationLength = navigationList.length;
+            var item = _this.state.item;
+            var currentIndex = navigationList.findIndex(function (list_item) {
+                return list_item.value === item.value;
+            });
+            var nextIndex = currentIndex + 1;
+            if (nextIndex < navigationLength) {
+                _this.handleNavigationClick(navigationList[nextIndex]);
+            } else {
+                _this.handleNavigationClick(navigationList[0]);
+            }
+        };
+
+        _this.handlePrevClick = function (navigationList) {
+            var navigationLength = navigationList.length;
+            var item = _this.state.item;
+            var currentIndex = navigationList.findIndex(function (list_item) {
+                return list_item.value === item.value;
+            });
+            var prevIndex = currentIndex - 1;
+            if (prevIndex > -1) {
+                _this.handleNavigationClick(navigationList[prevIndex]);
+            } else {
+                _this.handleNavigationClick(navigationList[navigationLength - 1]);
+            }
         };
 
         _this.setWrapperRef = function (node) {
@@ -14086,11 +14927,33 @@ var ContractTypeWidget = function (_React$PureComponent) {
         _this.handleClickOutside = function (event) {
             if (_this.wrapper_ref && !_this.wrapper_ref.contains(event.target) && _this.state.is_dialog_open) {
                 _this.setState({ is_dialog_open: false });
+            } else if (_this.wrapper_ref && !_this.wrapper_ref.contains(event.target) && _this.state.is_info_dialog_open) {
+                _this.setState({ is_info_dialog_open: false, is_dialog_open: false });
             }
+        };
+
+        _this.handleInfoVisibility = function () {
+            _this.setState(function (state) {
+                return {
+                    is_info_dialog_open: !state.is_info_dialog_open
+                };
+            });
         };
 
         _this.handleVisibility = function () {
             _this.setState({ is_dialog_open: !_this.state.is_dialog_open });
+        };
+
+        _this.onWidgetClick = function () {
+            _this.setState(function (state) {
+                return { is_dialog_open: !state.is_dialog_open, is_info_dialog_open: false };
+            });
+        };
+
+        _this.onBackButtonClick = function () {
+            _this.setState(function (state) {
+                return { is_dialog_open: !state.is_dialog_open, is_info_dialog_open: false };
+            });
         };
 
         _this.getDisplayText = function () {
@@ -14124,8 +14987,23 @@ var ContractTypeWidget = function (_React$PureComponent) {
             return container_classes;
         };
 
+        _this.getNavigationList = function () {
+            var navigationList = [];
+            var list = _this.props.list;
+            /* eslint-disable */
+            Object.keys(list).map(function (key) {
+                !['In/Out', 'Asians'].includes(key) && list[key].map(function (contract) {
+                    contract.value !== 'rise_fall_equal' && navigationList.push(contract);
+                });
+            });
+            /* eslint-disable */
+            return navigationList;
+        };
+
         _this.state = {
-            is_dialog_open: false
+            is_dialog_open: false,
+            is_info_dialog_open: false,
+            item: {}
         };
         return _this;
     }
@@ -14156,7 +15034,7 @@ var ContractTypeWidget = function (_React$PureComponent) {
                     'div',
                     {
                         className: 'contracts-popup-display ' + (this.state.is_dialog_open ? 'clicked' : ''),
-                        onClick: this.handleVisibility
+                        onClick: this.onWidgetClick
                     },
                     _react2.default.createElement(_Categories.IconTradeCategory, { category: this.props.value }),
                     _react2.default.createElement(
@@ -14176,7 +15054,27 @@ var ContractTypeWidget = function (_React$PureComponent) {
                         list: this.props.list,
                         name: this.props.name,
                         value: this.props.value,
-                        handleSelect: this.handleSelect
+                        handleSelect: this.handleSelect,
+                        handleInfoClick: this.handleInfoClick
+                    })
+                ),
+                _react2.default.createElement(
+                    _trade_type_info_dialog2.default,
+                    {
+                        is_mobile: this.props.is_mobile,
+                        onClose: this.handleInfoClick,
+                        open: this.state.is_info_dialog_open,
+                        title: this.state.item.text
+                    },
+                    _react2.default.createElement(_trade_type_info_item2.default, {
+                        handleNavigationClick: this.handleNavigationClick,
+                        handleNextClick: this.handleNextClick,
+                        handlePrevClick: this.handlePrevClick,
+                        is_mobile: this.props.is_mobile,
+                        item: this.state.item,
+                        navigationList: this.getNavigationList(),
+                        onBackButtonClick: this.onBackButtonClick,
+                        onSubmitButtonClick: this.onSubmitButtonClick
                     })
                 )
             );
@@ -14228,14 +15126,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ErrorBalance = function ErrorBalance() {
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-login-wrapper' },
+        { className: 'purchase-container__error-login' },
         _react2.default.createElement(
             'span',
-            { className: 'info-text' },
+            { className: 'purchase-container__error-info purchase-container__error-login-info' },
             (0, _localize.localize)('You have an insufficient amount of balance.')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'secondary orange',
+            className: 'purchase-container__error-login-btn secondary orange',
+            classNameSpan: 'purchase-container__error-login-btn-span',
             has_effect: true,
             text: (0, _localize.localize)('Deposit')
         })
@@ -14275,10 +15174,10 @@ var ErrorGeneral = function ErrorGeneral(_ref) {
     var message = _ref.message;
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-error-wrapper' },
+        { className: 'purchase-container__error-result' },
         _react2.default.createElement(
             'span',
-            { className: 'info-text' },
+            { className: 'purchase-container__error-info' },
             message
         )
     );
@@ -14324,29 +15223,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ErrorLogin = function ErrorLogin() {
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-login-wrapper' },
+        { className: 'purchase-container__error-login' },
         _react2.default.createElement(
             'span',
-            { className: 'info-text' },
+            { className: 'purchase-container__error-info purchase-container__error-login-info' },
             (0, _localize.localize)('Please log in to purchase the contract')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'secondary orange',
+            className: 'purchase-container__error-login-btn secondary orange',
+            classNameSpan: 'purchase-container__error-login-btn-span',
             has_effect: true,
             text: (0, _localize.localize)('log in'),
             onClick: _login.redirectToLogin
         }),
         _react2.default.createElement(
             'p',
-            null,
+            { className: 'purchase-container__error-login-prompt' },
             (0, _localize.localize)('Don\'t have a [_1] account?', ['Binary.com'])
         ),
         _react2.default.createElement(
             'a',
-            { href: 'javascript:;' },
+            { className: 'purchase-container__error-login-link', href: 'javascript:;' },
             _react2.default.createElement(
                 'span',
-                { className: 'info-text' },
+                { className: 'purchase-container__error-info purchase-container__error-login-info' },
                 (0, _localize.localize)('Create one now')
             )
         )
@@ -14492,11 +15392,11 @@ var MessageBox = function MessageBox(_ref) {
 
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-error' },
+        { className: 'purchase-container__error' },
         _react2.default.createElement(
             'div',
-            { className: 'close-btn-container', onClick: onClick },
-            _react2.default.createElement(_icon_close.IconClose, { className: 'ic-close' })
+            { className: 'purchase-container__error-close-btn', onClick: onClick },
+            _react2.default.createElement(_icon_close.IconClose, { className: 'purchase-container__error-close-btn-ic' })
         ),
         has_error ? ErrorComponent : _react2.default.createElement(_purchase_result2.default, {
             purchase_info: purchase_info.buy,
@@ -14552,13 +15452,13 @@ var PurchaseResult = function PurchaseResult(_ref) {
         purchase_info = _ref.purchase_info;
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-result-wrapper' },
+        { className: 'purchase-container__error-result' },
         _react2.default.createElement(
             'div',
             null,
             _react2.default.createElement(
                 'strong',
-                null,
+                { className: 'purchase-container__error-result-header' },
                 (0, _localize.localize)('Purchase Info')
             )
         ),
@@ -14567,14 +15467,14 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Buy Price'),
                 ':'
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'buy-price' },
-                _react2.default.createElement('i', { className: (0, _classnames2.default)('symbols', currency.toLowerCase()) }),
+                null,
+                _react2.default.createElement('i', { className: (0, _classnames2.default)('purchase-container__error-result-currency', 'symbols', currency.toLowerCase()) }),
                 purchase_info.buy_price
             )
         ),
@@ -14583,14 +15483,14 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Payout'),
                 ':'
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'payout' },
-                _react2.default.createElement('i', { className: (0, _classnames2.default)('symbols', currency.toLowerCase()) }),
+                null,
+                _react2.default.createElement('i', { className: (0, _classnames2.default)('purchase-container__error-result-currency', 'symbols', currency.toLowerCase()) }),
                 purchase_info.payout
             )
         ),
@@ -14599,7 +15499,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Start'),
                 ':'
             ),
@@ -14611,7 +15511,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Contract ID'),
                 ':'
             ),
@@ -14623,7 +15523,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Transaction ID'),
                 ':'
             ),
@@ -14635,7 +15535,7 @@ var PurchaseResult = function PurchaseResult(_ref) {
             null,
             _react2.default.createElement(
                 'span',
-                { className: 'label' },
+                { className: 'purchase-container__error-result-label' },
                 (0, _localize.localize)('Description'),
                 ':'
             ),
@@ -14715,26 +15615,26 @@ var PurchaseLock = function PurchaseLock(_ref) {
     var onClick = _ref.onClick;
     return _react2.default.createElement(
         'div',
-        { className: 'purchase-lock-container' },
+        { className: 'purchase-container__lock' },
         _react2.default.createElement(
             'div',
-            { className: 'lock-container' },
-            _react2.default.createElement(_icon_lock.IconLock, { className: 'ic-lock' })
+            null,
+            _react2.default.createElement(_icon_lock.IconLock, { className: 'purchase-container__lock-icon' })
         ),
         _react2.default.createElement(
             'h4',
-            null,
+            { className: 'purchase-container__lock-header' },
             (0, _localize.localize)('Purchase Locked')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'flat secondary orange',
+            className: 'purchase-container__lock-button flat secondary orange',
             has_effect: true,
             onClick: onClick,
             text: (0, _localize.localize)('Unlock')
         }),
         _react2.default.createElement(
             'span',
-            { className: 'lock-message' },
+            { className: 'purchase-container__lock-message' },
             (0, _localize.localize)('You can lock/unlock the purchase button from the Settings menu')
         )
     );
@@ -14761,6 +15661,10 @@ exports.default = PurchaseLock;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -14793,38 +15697,42 @@ var ContractInfo = function ContractInfo(_ref) {
         null,
         proposal_info.has_error || !proposal_info.id ? _react2.default.createElement(
             'div',
-            { className: proposal_info.has_error ? 'error-info-wrapper' : '' },
-            _react2.default.createElement(
+            {
+                className: (0, _classnames2.default)({
+                    'trade-container__error': proposal_info.has_error
+                })
+            },
+            proposal_info.message && _react2.default.createElement(
                 'span',
-                null,
+                { className: 'trade-container__error-info' },
                 proposal_info.message
             )
         ) : _react2.default.createElement(
             'div',
-            { className: 'purchase-info-wrapper' },
+            { className: 'trade-container__price' },
             _react2.default.createElement(
                 'div',
-                { className: 'info-wrapper' },
+                { className: 'trade-container__price-info' },
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'trade-container__price-info-basis' },
                     (0, _localize.localize)('[_1]', proposal_info.obj_contract_basis.text)
                 ),
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(_money2.default, { amount: proposal_info.obj_contract_basis.value, currency: currency })
+                    _react2.default.createElement(_money2.default, { amount: proposal_info.obj_contract_basis.value, className: 'trade-container__price-info-currency', currency: currency })
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'icon_price_move_container' },
+                    { className: 'trade-container__price-info-movement' },
                     has_increased !== null && _react2.default.createElement(_icon_price_move.IconPriceMove, { type: has_increased ? 'profit' : 'loss' })
                 )
             ),
             _react2.default.createElement(
                 'span',
-                { className: 'purchase-tooltip' },
-                _react2.default.createElement(_tooltip2.default, { alignment: 'left', icon: 'info', message: proposal_info.message })
+                null,
+                _react2.default.createElement(_tooltip2.default, { alignment: 'left', className: 'trade-container__price-tooltip', classNameIcon: 'trade-container__price-tooltip-i', icon: 'info', message: proposal_info.message })
             )
         )
     );
@@ -14837,6 +15745,876 @@ ContractInfo.propTypes = {
 };
 
 exports.default = ContractInfo;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/advanced_duration.jsx":
+/*!*********************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/advanced_duration.jsx ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TimePicker = __webpack_require__(/*! ../../../../../../App/Components/Form/TimePicker */ "./src/javascript/app_2/App/Components/Form/TimePicker/index.js");
+
+var _TimePicker2 = _interopRequireDefault(_TimePicker);
+
+var _DatePicker = __webpack_require__(/*! ../../../../../../App/Components/Form/DatePicker */ "./src/javascript/app_2/App/Components/Form/DatePicker/index.js");
+
+var _DatePicker2 = _interopRequireDefault(_DatePicker);
+
+var _DropDown = __webpack_require__(/*! ../../../../../../App/Components/Form/DropDown */ "./src/javascript/app_2/App/Components/Form/DropDown/index.js");
+
+var _DropDown2 = _interopRequireDefault(_DropDown);
+
+var _button_toggle_menu = __webpack_require__(/*! ../../../../../../App/Components/Form/button_toggle_menu.jsx */ "./src/javascript/app_2/App/Components/Form/button_toggle_menu.jsx");
+
+var _button_toggle_menu2 = _interopRequireDefault(_button_toggle_menu);
+
+var _input_field = __webpack_require__(/*! ../../../../../../App/Components/Form/input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
+
+var _input_field2 = _interopRequireDefault(_input_field);
+
+var _RangeSlider = __webpack_require__(/*! ../../../../../../App/Components/Form/RangeSlider */ "./src/javascript/app_2/App/Components/Form/RangeSlider/index.js");
+
+var _RangeSlider2 = _interopRequireDefault(_RangeSlider);
+
+var _duration = __webpack_require__(/*! ../../../../../../Stores/Modules/Trading/Helpers/duration */ "./src/javascript/app_2/Stores/Modules/Trading/Helpers/duration.js");
+
+var _Date = __webpack_require__(/*! ../../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdvancedDuration = function AdvancedDuration(_ref) {
+    var advanced_duration_unit = _ref.advanced_duration_unit,
+        advanced_expiry_type = _ref.advanced_expiry_type,
+        duration_min_max = _ref.duration_min_max,
+        duration_units_list = _ref.duration_units_list,
+        changeDurationUnit = _ref.changeDurationUnit,
+        getDurationFromUnit = _ref.getDurationFromUnit,
+        expiry_date = _ref.expiry_date,
+        expiry_list = _ref.expiry_list,
+        expiry_time = _ref.expiry_time,
+        expiry_type = _ref.expiry_type,
+        is_nativepicker = _ref.is_nativepicker,
+        number_input_props = _ref.number_input_props,
+        onChange = _ref.onChange,
+        server_time = _ref.server_time,
+        sessions = _ref.sessions,
+        shared_input_props = _ref.shared_input_props,
+        start_date = _ref.start_date,
+        start_time = _ref.start_time,
+        symbol = _ref.symbol,
+        market_close_times = _ref.market_close_times,
+        onChangeUiStore = _ref.onChangeUiStore,
+        duration_t = _ref.duration_t;
+
+    var moment_expiry = (0, _Date.toMoment)(expiry_date || server_time);
+    var is_24_hours_contract = false;
+    var expiry_time_sessions = sessions;
+    var max_date_duration = void 0,
+        min_date_expiry = void 0;
+
+    if (expiry_type === 'endtime') {
+        var max_daily_duration = duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
+        var moment_contract_start_date_time = (0, _Date.setTime)((0, _Date.toMoment)(start_date || server_time), (0, _Date.isTimeValid)(start_time) ? start_time : server_time.format('HH:mm'));
+        var has_intraday_duration_unit = (0, _duration.hasIntradayDurationUnit)(duration_units_list);
+
+        // When the contract start is forwarding or is not forwarding but the expiry date is as same as start date, the contract should be expired within 24 hours
+        is_24_hours_contract = (!!start_date || moment_expiry.isSame((0, _Date.toMoment)(server_time), 'day')) && has_intraday_duration_unit;
+
+        if (is_24_hours_contract) {
+            var expiry_date_time = (0, _Date.setTime)(moment_expiry.clone(), moment_contract_start_date_time.clone().add(5, 'minute').format('HH:mm'));
+            var expiry_date_market_close = (0, _Date.setTime)(expiry_date_time.clone(), market_close_times.slice(-1)[0]);
+            var is_expired_next_day = expiry_date_time.diff(moment_contract_start_date_time, 'day') === 1;
+
+            expiry_time_sessions = [{
+                open: is_expired_next_day ? expiry_date_time.clone().startOf('day') : expiry_date_time.clone(),
+                // when the expiry_date is on the next day of the start_date, the session should be close 5 min before the start_time of the contract.
+                close: is_expired_next_day ? (0, _Date.minDate)(expiry_date_time.clone().subtract(10, 'minute'), expiry_date_market_close) : expiry_date_market_close.clone()
+            }];
+            min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
+            max_date_duration = moment_contract_start_date_time.clone().add(start_date ? 24 * 3600 : max_daily_duration, 'second');
+        } else {
+            min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
+            max_date_duration = moment_contract_start_date_time.clone().add(max_daily_duration, 'second');
+
+            if (!has_intraday_duration_unit) {
+                min_date_expiry.add(1, 'day');
+            }
+        }
+    }
+
+    var endtime_container_class = (0, _classnames2.default)('endtime-container', {
+        'has-time': is_24_hours_contract
+    });
+
+    var changeExpiry = function changeExpiry(_ref2) {
+        var target = _ref2.target;
+        var name = target.name,
+            value = target.value;
+
+
+        onChange({ target: { name: 'expiry_type', value: value } });
+        onChangeUiStore({ name: name, value: value });
+    };
+
+    return _react2.default.createElement(
+        _react.Fragment,
+        null,
+        expiry_list.length > 1 && _react2.default.createElement(_button_toggle_menu2.default, {
+            buttons_arr: expiry_list,
+            name: 'advanced_expiry_type',
+            onChange: changeExpiry,
+            value: advanced_expiry_type
+        }),
+        expiry_type === 'duration' ? _react2.default.createElement(
+            _react.Fragment,
+            null,
+            _react2.default.createElement(
+                'div',
+                { className: 'duration-container' },
+                duration_units_list.length > 1 && _react2.default.createElement(_DropDown2.default, {
+                    is_alignment_left: true,
+                    is_nativepicker: is_nativepicker,
+                    list: duration_units_list,
+                    name: 'advanced_duration_unit',
+                    onChange: changeDurationUnit,
+                    value: advanced_duration_unit
+                }),
+                advanced_duration_unit === 't' && _react2.default.createElement(_RangeSlider2.default, _extends({
+                    name: 'duration',
+                    ticks: 10,
+                    value: duration_t
+                }, shared_input_props)),
+                advanced_duration_unit !== 't' && _react2.default.createElement(_input_field2.default, _extends({
+                    classNameInput: 'trade-container__input',
+                    label: duration_units_list.length === 1 ? duration_units_list[0].text : null,
+                    name: 'duration',
+                    value: getDurationFromUnit(advanced_duration_unit)
+                }, number_input_props, shared_input_props))
+            )
+        ) : _react2.default.createElement(
+            _react.Fragment,
+            null,
+            _react2.default.createElement(
+                'div',
+                { className: endtime_container_class },
+                _react2.default.createElement(_DatePicker2.default, {
+                    name: 'expiry_date',
+                    has_today_btn: true,
+                    min_date: min_date_expiry,
+                    max_date: max_date_duration,
+                    start_date: start_date,
+                    onChange: onChange,
+                    value: expiry_date,
+                    is_read_only: true,
+                    is_nativepicker: is_nativepicker,
+                    alignment: 'left',
+                    disable_year_selector: true,
+                    disable_trading_events: true,
+                    underlying: symbol
+                    // validation_errors={validation_errors.expiry_date} TODO: add validation_errors for expiry date
+                }),
+                is_24_hours_contract && _react2.default.createElement(_TimePicker2.default, {
+                    end_time: expiry_time_sessions[0].close,
+                    onChange: onChange,
+                    name: 'expiry_time',
+                    placeholder: '12:00',
+                    start_time: expiry_time_sessions[0].open,
+                    value: expiry_time || min_date_expiry.format('HH:mm'),
+                    is_nativepicker: is_nativepicker
+                    // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
+                })
+            )
+        )
+    );
+};
+
+AdvancedDuration.propTypes = {
+    advanced_duration_unit: _propTypes2.default.string,
+    advanced_expiry_type: _propTypes2.default.string,
+    changeDurationUnit: _propTypes2.default.func,
+    duration_min_max: _propTypes2.default.object,
+    duration_t: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_units_list: _mobxReact.PropTypes.arrayOrObservableArray,
+    expiry_date: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
+    expiry_list: _propTypes2.default.array,
+    expiry_time: _propTypes2.default.string,
+    expiry_type: _propTypes2.default.string,
+    getDurationFromUnit: _propTypes2.default.func,
+    is_nativepicker: _propTypes2.default.bool,
+    market_close_times: _propTypes2.default.array,
+    number_input_props: _propTypes2.default.object,
+    onChange: _propTypes2.default.func,
+    onChangeUiStore: _propTypes2.default.func,
+    server_time: _propTypes2.default.object,
+    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
+    shared_input_props: _propTypes2.default.object,
+    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    start_time: _propTypes2.default.string,
+    symbol: _propTypes2.default.string
+};
+
+exports.default = AdvancedDuration;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration.jsx":
+/*!************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration.jsx ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _fieldset = __webpack_require__(/*! ../../../../../../App/Components/Form/fieldset.jsx */ "./src/javascript/app_2/App/Components/Form/fieldset.jsx");
+
+var _fieldset2 = _interopRequireDefault(_fieldset);
+
+var _RangeSlider = __webpack_require__(/*! ../../../../../../App/Components/Form/RangeSlider */ "./src/javascript/app_2/App/Components/Form/RangeSlider/index.js");
+
+var _RangeSlider2 = _interopRequireDefault(_RangeSlider);
+
+var _duration = __webpack_require__(/*! ../../../../../../Stores/Modules/Trading/Helpers/duration */ "./src/javascript/app_2/Stores/Modules/Trading/Helpers/duration.js");
+
+var _Date = __webpack_require__(/*! ../../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
+
+var _duration_toggle = __webpack_require__(/*! ./duration_toggle.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration_toggle.jsx");
+
+var _duration_toggle2 = _interopRequireDefault(_duration_toggle);
+
+var _advanced_duration = __webpack_require__(/*! ./advanced_duration.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/advanced_duration.jsx");
+
+var _advanced_duration2 = _interopRequireDefault(_advanced_duration);
+
+var _simple_duration = __webpack_require__(/*! ./simple_duration.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/simple_duration.jsx");
+
+var _simple_duration2 = _interopRequireDefault(_simple_duration);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Duration = function Duration(_ref) {
+    var advanced_duration_unit = _ref.advanced_duration_unit,
+        advanced_expiry_type = _ref.advanced_expiry_type,
+        hasDurationUnit = _ref.hasDurationUnit,
+        contract_expiry_type = _ref.contract_expiry_type,
+        duration = _ref.duration,
+        duration_unit = _ref.duration_unit,
+        duration_units_list = _ref.duration_units_list,
+        duration_min_max = _ref.duration_min_max,
+        expiry_date = _ref.expiry_date,
+        expiry_time = _ref.expiry_time,
+        expiry_type = _ref.expiry_type,
+        getDurationFromUnit = _ref.getDurationFromUnit,
+        onChange = _ref.onChange,
+        onChangeUiStore = _ref.onChangeUiStore,
+        onChangeMultiple = _ref.onChangeMultiple,
+        is_advanced_duration = _ref.is_advanced_duration,
+        is_minimized = _ref.is_minimized,
+        is_nativepicker = _ref.is_nativepicker,
+        server_time = _ref.server_time,
+        sessions = _ref.sessions,
+        start_date = _ref.start_date,
+        start_time = _ref.start_time,
+        validation_errors = _ref.validation_errors,
+        market_close_times = _ref.market_close_times,
+        simple_duration_unit = _ref.simple_duration_unit,
+        duration_t = _ref.duration_t,
+        symbol = _ref.symbol;
+
+    var expiry_list = [{ text: (0, _localize.localize)('Duration'), value: 'duration' }];
+
+    var has_end_time = expiry_list.find(function (expiry) {
+        return expiry.value === 'endtime';
+    });
+    if (duration_units_list.length === 1 && duration_unit === 't') {
+        if (has_end_time) {
+            expiry_list.pop(); // remove end time for contracts with only tick duration
+        }
+    } else if (!has_end_time) {
+        expiry_list.push({ text: (0, _localize.localize)('End Time'), value: 'endtime' });
+    }
+
+    if (is_minimized) {
+        var moment_expiry = (0, _Date.toMoment)(expiry_date);
+        var duration_unit_text = (duration_units_list.find(function (o) {
+            return o.value === duration_unit;
+        }) || {}).text;
+        return _react2.default.createElement(
+            'div',
+            { className: 'fieldset-minimized duration' },
+            _react2.default.createElement('span', { className: 'icon trade-duration' }),
+            expiry_type === 'duration' ? duration + ' ' + duration_unit_text : moment_expiry.format('ddd - DD MMM, YYYY') + '\n' + expiry_time
+        );
+    }
+
+    var changeDurationUnit = function changeDurationUnit(_ref2) {
+        var target = _ref2.target;
+        var name = target.name,
+            value = target.value;
+
+        var duration_value = getDurationFromUnit(value);
+
+        onChangeUiStore({ name: name, value: value });
+        onChangeMultiple({
+            duration_unit: value,
+            duration: duration_value
+        });
+    };
+
+    var changeDurationValue = function changeDurationValue(_ref3) {
+        var target = _ref3.target;
+        var name = target.name,
+            value = target.value;
+
+        var duration_name = 'duration_' + (is_advanced_duration ? advanced_duration_unit : simple_duration_unit);
+
+        onChangeUiStore({ name: duration_name, value: value });
+        onChange({ target: { name: name, value: value } });
+    };
+
+    var onToggleDurationType = function onToggleDurationType(_ref4) {
+        var target = _ref4.target;
+        var name = target.name,
+            value = target.value;
+
+        onChangeUiStore({ name: name, value: value });
+
+        // replace selected duration unit and duration if the contract doesn't have that duration unit
+        var current_duration_unit = value ? advanced_duration_unit : simple_duration_unit;
+        if (!hasDurationUnit(current_duration_unit)) {
+            current_duration_unit = duration_units_list[0].value;
+            onChangeUiStore({ name: (value ? 'advanced' : 'simple') + '_duration_unit', value: current_duration_unit });
+        }
+
+        var duration_value = getDurationFromUnit(current_duration_unit);
+        var new_trade_store_values = {
+            duration_unit: current_duration_unit,
+            duration: duration_value
+        };
+
+        // simple only has expiry type of duration
+        if (!value && expiry_type !== 'duration') {
+            new_trade_store_values.expiry_type = 'duration';
+        }
+
+        if (value && expiry_type !== advanced_expiry_type) {
+            new_trade_store_values.expiry_type = advanced_expiry_type;
+        }
+
+        onChangeMultiple(_extends({}, new_trade_store_values));
+    };
+
+    var max_value = void 0,
+        min_value = void 0;
+    if (duration_min_max[contract_expiry_type]) {
+        max_value = (0, _duration.convertDurationLimit)(+duration_min_max[contract_expiry_type].max, duration_unit);
+        min_value = (0, _duration.convertDurationLimit)(+duration_min_max[contract_expiry_type].min, duration_unit);
+    }
+
+    var props = {
+        shared_input: {
+            max_value: max_value,
+            min_value: min_value,
+            onChange: changeDurationValue
+        },
+        number_input: {
+            type: 'number',
+            is_nativepicker: is_nativepicker,
+            is_incrementable: true,
+            error_messages: validation_errors.duration || []
+        }
+    };
+    // e.g. digit contracts only has range slider - does not have toggle between advanced / simple
+    var has_toggle = expiry_list.length > 1 || duration_units_list.length > 1;
+
+    return _react2.default.createElement(
+        _fieldset2.default,
+        { className: 'trade-container__fieldset' },
+        !has_toggle && _react2.default.createElement(_RangeSlider2.default, _extends({
+            name: 'duration',
+            ticks: 10,
+            value: duration_t
+        }, props.shared_input)),
+        has_toggle && _react2.default.createElement(
+            _react.Fragment,
+            null,
+            is_advanced_duration && _react2.default.createElement(_advanced_duration2.default, {
+                advanced_expiry_type: advanced_expiry_type,
+                advanced_duration_unit: advanced_duration_unit,
+                changeDurationUnit: changeDurationUnit,
+                contract_expiry_type: contract_expiry_type,
+                duration_min_max: duration_min_max,
+                duration_units_list: duration_units_list,
+                expiry_date: expiry_date,
+                expiry_list: expiry_list,
+                expiry_time: expiry_time,
+                expiry_type: expiry_type,
+                getDurationFromUnit: getDurationFromUnit,
+                is_nativepicker: is_nativepicker,
+                market_close_times: market_close_times,
+                number_input_props: props.number_input,
+                onChange: onChange,
+                server_time: server_time,
+                sessions: sessions,
+                shared_input_props: props.shared_input,
+                start_date: start_date,
+                start_time: start_time,
+                onChangeUiStore: onChangeUiStore,
+                duration_t: duration_t,
+                symbol: symbol
+            }),
+            !is_advanced_duration && _react2.default.createElement(_simple_duration2.default, {
+                getDurationFromUnit: getDurationFromUnit,
+                changeDurationUnit: changeDurationUnit,
+                duration_units_list: duration_units_list,
+                number_input_props: props.number_input,
+                onChange: onChange,
+                shared_input_props: props.shared_input,
+                simple_duration_unit: simple_duration_unit,
+                onChangeUiStore: onChangeUiStore,
+                duration_t: duration_t
+            }),
+            _react2.default.createElement(_duration_toggle2.default, {
+                name: 'is_advanced_duration',
+                onChange: onToggleDurationType,
+                value: is_advanced_duration
+            })
+        )
+    );
+};
+
+Duration.propTypes = {
+    advanced_duration_unit: _propTypes2.default.string,
+    advanced_expiry_type: _propTypes2.default.string,
+    contract_expiry_type: _propTypes2.default.string,
+    duration: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_min_max: _propTypes2.default.object,
+    duration_t: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_unit: _propTypes2.default.string,
+    duration_units_list: _mobxReact.PropTypes.arrayOrObservableArray,
+    expiry_date: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
+    expiry_time: _propTypes2.default.string,
+    expiry_type: _propTypes2.default.string,
+    getDurationFromUnit: _propTypes2.default.func,
+    hasDurationUnit: _propTypes2.default.func,
+    is_advanced_duration: _propTypes2.default.bool,
+    is_minimized: _propTypes2.default.bool,
+    is_nativepicker: _propTypes2.default.bool,
+    market_close_times: _propTypes2.default.array,
+    onChange: _propTypes2.default.func,
+    onChangeUiStore: _propTypes2.default.func,
+    server_time: _propTypes2.default.object,
+    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
+    simple_duration_unit: _propTypes2.default.string,
+    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    start_time: _propTypes2.default.string,
+    symbol: _propTypes2.default.string,
+    validation_errors: _propTypes2.default.object
+};
+
+exports.default = Duration;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration_toggle.jsx":
+/*!*******************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration_toggle.jsx ***!
+  \*******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Common = __webpack_require__(/*! ../../../../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DurationToggle = function DurationToggle(_ref) {
+    var name = _ref.name,
+        onChange = _ref.onChange,
+        value = _ref.value;
+
+    var toggle = function toggle() {
+        onChange({ target: { value: !value, name: name } });
+    };
+    var icon_className = (0, _classnames2.default)('advanced-simple-toggle__icon', 'select-arrow', { 'advanced-simple-toggle__icon--active': value });
+    return _react2.default.createElement(
+        _react.Fragment,
+        null,
+        _react2.default.createElement(
+            'button',
+            { className: 'advanced-simple-toggle', onClick: toggle },
+            _react2.default.createElement(_Common.IconArrow, { className: icon_className, classNamePath: 'advanced-simple-toggle__icon-path' })
+        )
+    );
+};
+
+DurationToggle.propTypes = {
+    name: _propTypes2.default.string,
+    onChange: _propTypes2.default.func,
+    value: _propTypes2.default.bool
+};
+
+exports.default = DurationToggle;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration_wrapper.jsx":
+/*!********************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration_wrapper.jsx ***!
+  \********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+
+var _duration = __webpack_require__(/*! ./duration.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration.jsx");
+
+var _duration2 = _interopRequireDefault(_duration);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DurationWrapper = function (_React$Component) {
+    _inherits(DurationWrapper, _React$Component);
+
+    function DurationWrapper() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, DurationWrapper);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DurationWrapper.__proto__ || Object.getPrototypeOf(DurationWrapper)).call.apply(_ref, [this].concat(args))), _this), _this.hasDurationUnit = function (duration_unit) {
+            var duration_list = [].concat(_toConsumableArray(_this.props.duration_units_list));
+
+            if (_this.props.duration_units_list.length > 1 && !_this.props.is_advanced_duration) {
+                duration_list = duration_list.filter(function (du) {
+                    return du.value === 'm' || du.value === 't';
+                });
+            }
+            return duration_list.some(function (du) {
+                return du.value === duration_unit;
+            });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(DurationWrapper, [{
+        key: 'setDurationUnit',
+        value: function setDurationUnit() {
+            var new_duration_unit = this.props.duration_units_list[0].value;
+            var new_duration_value = this.props.getDurationFromUnit(new_duration_unit);
+
+            this.props.onChangeUiStore({ name: (this.props.is_advanced_duration ? 'advanced' : 'simple') + '_duration_unit', value: new_duration_unit });
+            this.props.onChangeMultiple({
+                duration_unit: new_duration_unit,
+                duration: new_duration_value
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var current_unit = this.props.is_advanced_duration ? this.props.advanced_duration_unit : this.props.simple_duration_unit;
+            var current_duration = this.props.getDurationFromUnit(this.props.duration_unit);
+
+            if (this.props.duration_unit !== current_unit) {
+                this.props.onChangeUiStore({ name: (this.props.is_advanced_duration ? 'advanced' : 'simple') + '_duration_unit', value: this.props.duration_unit });
+            }
+
+            if (this.props.duration !== current_duration) {
+                this.props.onChangeUiStore({ name: 'duration_' + current_unit, value: this.props.duration });
+            }
+        }
+    }, {
+        key: 'componentWillReact',
+        value: function componentWillReact() {
+            var simple_is_missing_duration_unit = !this.props.is_advanced_duration && this.props.simple_duration_unit === 'd' && this.props.duration_units_list.length === 4;
+            var current_duration_unit = this.props.is_advanced_duration ? this.props.advanced_duration_unit : this.props.simple_duration_unit;
+            var current_duration = this.props.getDurationFromUnit(this.props.duration_unit);
+            var has_missing_duration_unit = !this.hasDurationUnit(current_duration_unit);
+            var simple_is_not_type_duration = !this.props.is_advanced_duration && this.props.expiry_type !== 'duration';
+            var advanced_has_wrong_expiry = this.props.is_advanced_duration && this.props.expiry_type !== this.props.advanced_expiry_type && this.props.duration_units_list.length > 1;
+
+            // intercept changes to current contracts duration_units_list - if they are missing change duration_unit and value in trade_store and ui_store
+            if (has_missing_duration_unit || simple_is_missing_duration_unit) {
+                this.setDurationUnit();
+                return;
+            }
+
+            // simple only has expiry type duration
+            if (simple_is_not_type_duration) {
+                this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
+            }
+
+            if (advanced_has_wrong_expiry) {
+                this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
+            }
+
+            if (this.props.duration !== current_duration) {
+                this.props.onChangeUiStore({ name: 'duration_' + this.props.duration_unit, value: this.props.duration });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(_duration2.default, _extends({
+                hasDurationUnit: this.hasDurationUnit
+            }, this.props));
+        }
+    }]);
+
+    return DurationWrapper;
+}(_react2.default.Component);
+
+DurationWrapper.propTypes = {
+    advanced_duration_unit: _propTypes2.default.string,
+    advanced_expiry_type: _propTypes2.default.string,
+    contract_expiry_type: _propTypes2.default.string,
+    duration: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_d: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_h: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_m: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_min_max: _propTypes2.default.object,
+    duration_s: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_t: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_unit: _propTypes2.default.string,
+    duration_units_list: _mobxReact.PropTypes.arrayOrObservableArray,
+    expiry_date: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
+    expiry_time: _propTypes2.default.string,
+    expiry_type: _propTypes2.default.string,
+    getDurationFromUnit: _propTypes2.default.func,
+    is_advanced_duration: _propTypes2.default.bool,
+    is_minimized: _propTypes2.default.bool,
+    is_nativepicker: _propTypes2.default.bool,
+    market_close_times: _propTypes2.default.array,
+    onChange: _propTypes2.default.func,
+    onChangeMultiple: _propTypes2.default.func,
+    onChangeUiStore: _propTypes2.default.func,
+    server_time: _propTypes2.default.object,
+    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
+    simple_duration_unit: _propTypes2.default.string,
+    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    start_time: _propTypes2.default.string,
+    symbol: _propTypes2.default.string,
+    validation_errors: _propTypes2.default.object
+};
+
+exports.default = (0, _mobxReact.observer)(DurationWrapper);
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/index.js":
+/*!********************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/index.js ***!
+  \********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _duration_wrapper = __webpack_require__(/*! ./duration_wrapper.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/duration_wrapper.jsx");
+
+var _duration_wrapper2 = _interopRequireDefault(_duration_wrapper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _duration_wrapper2.default;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/simple_duration.jsx":
+/*!*******************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/simple_duration.jsx ***!
+  \*******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _button_toggle_menu = __webpack_require__(/*! ../../../../../../App/Components/Form/button_toggle_menu.jsx */ "./src/javascript/app_2/App/Components/Form/button_toggle_menu.jsx");
+
+var _button_toggle_menu2 = _interopRequireDefault(_button_toggle_menu);
+
+var _input_field = __webpack_require__(/*! ../../../../../../App/Components/Form/input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
+
+var _input_field2 = _interopRequireDefault(_input_field);
+
+var _RangeSlider = __webpack_require__(/*! ../../../../../../App/Components/Form/RangeSlider */ "./src/javascript/app_2/App/Components/Form/RangeSlider/index.js");
+
+var _RangeSlider2 = _interopRequireDefault(_RangeSlider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SimpleDuration = function SimpleDuration(_ref) {
+    var changeDurationUnit = _ref.changeDurationUnit,
+        getDurationFromUnit = _ref.getDurationFromUnit,
+        number_input_props = _ref.number_input_props,
+        duration_units_list = _ref.duration_units_list,
+        shared_input_props = _ref.shared_input_props,
+        simple_duration_unit = _ref.simple_duration_unit,
+        duration_t = _ref.duration_t;
+
+    var filterMinutesAndTicks = function filterMinutesAndTicks(arr) {
+        var filtered_arr = arr.filter(function (du) {
+            return du.value === 't' || du.value === 'm';
+        });
+        if (filtered_arr.length <= 1) return [];
+
+        return filtered_arr;
+    };
+    var has_label = !duration_units_list.some(function (du) {
+        return du.value === 't';
+    });
+
+    return _react2.default.createElement(
+        _react.Fragment,
+        null,
+        duration_units_list.length > 1 && _react2.default.createElement(_button_toggle_menu2.default, {
+            buttons_arr: filterMinutesAndTicks(duration_units_list),
+            name: 'simple_duration_unit',
+            onChange: changeDurationUnit,
+            value: simple_duration_unit
+        }),
+        simple_duration_unit === 't' && _react2.default.createElement(_RangeSlider2.default, _extends({
+            name: 'duration',
+            value: duration_t,
+            ticks: 10
+        }, shared_input_props)),
+        simple_duration_unit !== 't' && _react2.default.createElement(_input_field2.default, _extends({
+            classNameInput: 'trade-container__input',
+            name: 'duration',
+            label: has_label ? duration_units_list[0].text : null,
+            value: getDurationFromUnit(simple_duration_unit)
+        }, number_input_props, shared_input_props))
+    );
+};
+
+SimpleDuration.propTypes = {
+    changeDurationUnit: _propTypes2.default.func,
+    duration_t: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+    duration_units_list: _mobxReact.PropTypes.arrayOrObservableArray,
+    getDurationFromUnit: _propTypes2.default.func,
+    number_input_props: _propTypes2.default.object,
+    shared_input_props: _propTypes2.default.object,
+    simple_duration_unit: _propTypes2.default.string
+};
+
+exports.default = SimpleDuration;
 
 /***/ }),
 
@@ -14882,6 +16660,7 @@ var AllowEquals = function AllowEquals(_ref) {
         'div',
         { className: 'allow-equals' },
         _react2.default.createElement(_input_field2.default, {
+            classNameInput: 'trade-container__input',
             id: 'allow_equals',
             name: 'contract_type',
             onChange: onChange,
@@ -14991,13 +16770,11 @@ var Amount = function Amount(_ref) {
             (0, _currency_base.addComma)(amount, 2)
         );
     }
-    var amount_container_class = (0, _classnames2.default)('amount-container', {
-        'three-columns': !is_single_currency
-    });
+    var amount_container_class = (0, _classnames2.default)({ 'three-columns': !is_single_currency });
 
     return _react2.default.createElement(
         _fieldset2.default,
-        null,
+        { className: 'trade-container__fieldset' },
         _react2.default.createElement(
             'div',
             { className: amount_container_class },
@@ -15018,8 +16795,11 @@ var Amount = function Amount(_ref) {
                 onChange: onChange
             }),
             _react2.default.createElement(_input_field2.default, {
+                classNameInput: 'trade-container__input',
+                classNamePrefix: 'trade-container__currency',
                 error_messages: validation_errors.amount,
                 fractional_digits: (0, _currency_base.getDecimalPlaces)(currency),
+                is_autocomplete_disabled: true,
                 is_float: true,
                 is_nativepicker: is_nativepicker,
                 max_length: 10,
@@ -15067,6 +16847,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
@@ -15077,6 +16861,8 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Barriers = __webpack_require__(/*! ../../../../../Assets/Trading/Barriers */ "./src/javascript/app_2/Assets/Trading/Barriers/index.js");
+
 var _fieldset = __webpack_require__(/*! ../../../../../App/Components/Form/fieldset.jsx */ "./src/javascript/app_2/App/Components/Form/fieldset.jsx");
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
@@ -15084,6 +16870,8 @@ var _fieldset2 = _interopRequireDefault(_fieldset);
 var _input_field = __webpack_require__(/*! ../../../../../App/Components/Form/input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
 
 var _input_field2 = _interopRequireDefault(_input_field);
+
+var _localize = __webpack_require__(/*! ../../../../../../_common/localize */ "./src/javascript/_common/localize.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15094,6 +16882,8 @@ var Barrier = function Barrier(_ref) {
         is_minimized = _ref.is_minimized,
         onChange = _ref.onChange,
         validation_errors = _ref.validation_errors;
+
+    var barrier_title = barrier_count === 1 ? (0, _localize.localize)('Barrier') : (0, _localize.localize)('Barriers');
 
     if (is_minimized) {
         if (barrier_count !== 2) {
@@ -15121,27 +16911,47 @@ var Barrier = function Barrier(_ref) {
             )
         );
     }
+
+    var input_class = barrier_count === 2 ? 'multiple' : 'single';
     return _react2.default.createElement(
         _fieldset2.default,
-        null,
-        _react2.default.createElement(_input_field2.default, {
-            type: 'number',
-            name: 'barrier_1',
-            value: barrier_1,
-            onChange: onChange,
-            error_messages: validation_errors.barrier_1 || [],
-            is_float: true,
-            is_signed: true
-        }),
-        barrier_count === 2 && _react2.default.createElement(_input_field2.default, {
-            type: 'number',
-            name: 'barrier_2',
-            value: barrier_2,
-            onChange: onChange,
-            error_messages: validation_errors.barrier_2,
-            is_float: true,
-            is_signed: true
-        })
+        {
+            className: 'trade-container__fieldset trade-container__barriers',
+            header: barrier_title,
+            is_center: true
+        },
+        _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(_input_field2.default, {
+                type: 'number',
+                name: 'barrier_1',
+                value: barrier_1,
+                className: 'trade-container__barriers-' + input_class,
+                classNameInput: (0, _classnames2.default)('trade-container__input', 'trade-container__barriers-input', 'trade-container__barriers-' + input_class + '-input'),
+                onChange: onChange,
+                error_messages: validation_errors.barrier_1 || [],
+                is_float: true,
+                is_signed: true
+            }),
+            barrier_count === 2 && _react2.default.createElement(
+                _react2.default.Fragment,
+                null,
+                _react2.default.createElement(_input_field2.default, {
+                    type: 'number',
+                    name: 'barrier_2',
+                    value: barrier_2,
+                    className: 'multiple',
+                    classNameInput: 'trade-container__input',
+                    onChange: onChange,
+                    error_messages: validation_errors.barrier_2,
+                    is_float: true,
+                    is_signed: true
+                }),
+                _react2.default.createElement(_Barriers.IconBarrierUp, { className: 'trade-container__barriers--up' }),
+                _react2.default.createElement(_Barriers.IconBarrierDown, { className: 'trade-container__barriers--down' })
+            )
+        )
     );
 };
 
@@ -15155,267 +16965,6 @@ Barrier.propTypes = {
 };
 
 exports.default = (0, _mobxReact.observer)(Barrier);
-
-/***/ }),
-
-/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/duration.jsx":
-/*!***************************************************************************************!*\
-  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/duration.jsx ***!
-  \***************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
-
-var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _localize = __webpack_require__(/*! ../../../../../../_common/localize */ "./src/javascript/_common/localize.js");
-
-var _DatePicker = __webpack_require__(/*! ../../../../../App/Components/Form/DatePicker */ "./src/javascript/app_2/App/Components/Form/DatePicker/index.js");
-
-var _DatePicker2 = _interopRequireDefault(_DatePicker);
-
-var _DropDown = __webpack_require__(/*! ../../../../../App/Components/Form/DropDown */ "./src/javascript/app_2/App/Components/Form/DropDown/index.js");
-
-var _DropDown2 = _interopRequireDefault(_DropDown);
-
-var _fieldset = __webpack_require__(/*! ../../../../../App/Components/Form/fieldset.jsx */ "./src/javascript/app_2/App/Components/Form/fieldset.jsx");
-
-var _fieldset2 = _interopRequireDefault(_fieldset);
-
-var _input_field = __webpack_require__(/*! ../../../../../App/Components/Form/input_field.jsx */ "./src/javascript/app_2/App/Components/Form/input_field.jsx");
-
-var _input_field2 = _interopRequireDefault(_input_field);
-
-var _RangeSlider = __webpack_require__(/*! ../../../../../App/Components/Form/RangeSlider */ "./src/javascript/app_2/App/Components/Form/RangeSlider/index.js");
-
-var _RangeSlider2 = _interopRequireDefault(_RangeSlider);
-
-var _time_picker = __webpack_require__(/*! ../../../../../App/Components/Form/time_picker.jsx */ "./src/javascript/app_2/App/Components/Form/time_picker.jsx");
-
-var _time_picker2 = _interopRequireDefault(_time_picker);
-
-var _duration = __webpack_require__(/*! ../../../../../Stores/Modules/Trading/Helpers/duration */ "./src/javascript/app_2/Stores/Modules/Trading/Helpers/duration.js");
-
-var _Date = __webpack_require__(/*! ../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* TODO:
-      1. disable days other than today and tomorrow if start date is forward starting
-*/
-
-var Duration = function Duration(_ref) {
-    var contract_expiry_type = _ref.contract_expiry_type,
-        duration = _ref.duration,
-        duration_unit = _ref.duration_unit,
-        duration_units_list = _ref.duration_units_list,
-        duration_min_max = _ref.duration_min_max,
-        expiry_date = _ref.expiry_date,
-        expiry_time = _ref.expiry_time,
-        expiry_type = _ref.expiry_type,
-        onChange = _ref.onChange,
-        is_minimized = _ref.is_minimized,
-        is_nativepicker = _ref.is_nativepicker,
-        server_time = _ref.server_time,
-        sessions = _ref.sessions,
-        start_date = _ref.start_date,
-        start_time = _ref.start_time,
-        market_close_times = _ref.market_close_times,
-        validation_errors = _ref.validation_errors;
-
-    var expiry_list = [{ text: (0, _localize.localize)('Duration'), value: 'duration' }];
-
-    var moment_expiry = (0, _Date.toMoment)(expiry_date || server_time);
-    var is_24_hours_contract = false;
-    var expiry_time_sessions = sessions;
-    var max_date_duration = void 0,
-        min_date_expiry = void 0,
-        max_duration = void 0,
-        min_duration = void 0;
-
-    if (expiry_type !== 'endtime' && duration_min_max[contract_expiry_type]) {
-        min_duration = (0, _duration.convertDurationLimit)(+duration_min_max[contract_expiry_type].min, duration_unit);
-        max_duration = (0, _duration.convertDurationLimit)(+duration_min_max[contract_expiry_type].max, duration_unit);
-    } else if (expiry_type === 'endtime') {
-        var max_daily_duration = duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
-        var moment_contract_start_date_time = (0, _Date.setTime)((0, _Date.toMoment)(start_date || server_time), (0, _Date.isTimeValid)(start_time) ? start_time : server_time.format('HH:mm'));
-        var has_intraday_duration_unit = (0, _duration.hasIntradayDurationUnit)(duration_units_list);
-
-        // When the contract start is forwarding or is not forwarding but the expiry date is as same as start date, the contract should be expired within 24 hours
-        is_24_hours_contract = (!!start_date || moment_expiry.isSame((0, _Date.toMoment)(server_time), 'day')) && has_intraday_duration_unit;
-
-        if (is_24_hours_contract) {
-            var expiry_date_time = (0, _Date.setTime)(moment_expiry.clone(), moment_contract_start_date_time.clone().add(5, 'minute').format('HH:mm'));
-            var expiry_date_market_close = (0, _Date.setTime)(expiry_date_time.clone(), market_close_times.slice(-1)[0]);
-            var is_expired_next_day = expiry_date_time.diff(moment_contract_start_date_time, 'day') === 1;
-
-            expiry_time_sessions = [{
-                open: is_expired_next_day ? expiry_date_time.clone().startOf('day') : expiry_date_time.clone(),
-                // when the expiry_date is on the next day of the start_date, the session should be close 5 min before the start_time of the contract.
-                close: is_expired_next_day ? (0, _Date.minDate)(expiry_date_time.clone().subtract(10, 'minute'), expiry_date_market_close) : expiry_date_market_close.clone()
-            }];
-
-            min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
-            max_date_duration = moment_contract_start_date_time.clone().add(start_date ? 24 * 3600 : max_daily_duration, 'second');
-        } else {
-            min_date_expiry = moment_contract_start_date_time.clone().startOf('day');
-            max_date_duration = moment_contract_start_date_time.clone().add(max_daily_duration, 'second');
-
-            if (!has_intraday_duration_unit) {
-                min_date_expiry.add(1, 'day');
-            }
-        }
-    }
-    if (is_minimized) {
-        var duration_unit_text = (duration_units_list.find(function (o) {
-            return o.value === duration_unit;
-        }) || {}).text;
-        return _react2.default.createElement(
-            'div',
-            { className: 'fieldset-minimized duration' },
-            _react2.default.createElement('span', { className: 'icon trade-duration' }),
-            expiry_type === 'duration' ? duration + ' ' + duration_unit_text : moment_expiry.format('ddd - DD MMM, YYYY') + '\n' + expiry_time
-        );
-    }
-
-    var has_end_time = expiry_list.find(function (expiry) {
-        return expiry.value === 'endtime';
-    });
-    if (duration_units_list.length === 1 && duration_unit === 't') {
-        if (has_end_time) {
-            expiry_list.pop(); // remove end time for contracts with only tick duration
-        }
-    } else if (!has_end_time) {
-        expiry_list.push({ text: (0, _localize.localize)('End Time'), value: 'endtime' });
-    }
-
-    var endtime_container_class = (0, _classnames2.default)('endtime-container', {
-        'has-time': is_24_hours_contract
-    });
-
-    return _react2.default.createElement(
-        _fieldset2.default,
-        null,
-        _react2.default.createElement(_DropDown2.default, {
-            is_alignment_left: true,
-            is_nativepicker: is_nativepicker,
-            list: expiry_list,
-            name: 'expiry_type',
-            value: expiry_type,
-            onChange: onChange
-        }),
-        expiry_type === 'duration' ? _react2.default.createElement(
-            _react2.default.Fragment,
-            null,
-            _react2.default.createElement(
-                'div',
-                { className: 'duration-container' },
-                _react2.default.createElement(_DropDown2.default, {
-                    is_alignment_left: true,
-                    is_nativepicker: is_nativepicker,
-                    list: duration_units_list,
-                    name: 'duration_unit',
-                    value: duration_unit,
-                    onChange: onChange
-                }),
-                duration_unit === 't' ? _react2.default.createElement(_RangeSlider2.default, {
-                    max_value: max_duration,
-                    min_value: min_duration,
-                    name: 'duration',
-                    ticks: 10,
-                    value: duration,
-                    onChange: onChange
-                }) : _react2.default.createElement(_input_field2.default, {
-                    type: 'number',
-                    max_value: max_duration,
-                    min_value: min_duration,
-                    name: 'duration',
-                    value: duration,
-                    onChange: onChange,
-                    is_nativepicker: is_nativepicker,
-                    is_incrementable: true,
-                    error_messages: validation_errors.duration || []
-                })
-            )
-        ) : _react2.default.createElement(
-            _react2.default.Fragment,
-            null,
-            _react2.default.createElement(
-                'div',
-                { className: endtime_container_class },
-                _react2.default.createElement(_DatePicker2.default, {
-                    name: 'expiry_date',
-                    has_today_btn: true,
-                    min_date: min_date_expiry,
-                    max_date: max_date_duration,
-                    start_date: start_date,
-                    onChange: onChange,
-                    value: expiry_date,
-                    is_read_only: true,
-                    is_clearable: true,
-                    is_nativepicker: is_nativepicker,
-                    alignment: 'left',
-                    disabled_selector: ['year']
-                    // sessions={expiry_date_sessions} TODO: add expiry date sessions. e.g. disable days if market closes on weekend
-                    // validation_errors={validation_errors.expiry_date} TODO: add validation_errors for expiry date
-                }),
-                is_24_hours_contract && _react2.default.createElement(_time_picker2.default, {
-                    onChange: onChange,
-                    is_align_right: true,
-                    name: 'expiry_time',
-                    placeholder: '12:00',
-                    sessions: expiry_time_sessions,
-                    start_date: moment_expiry.unix(),
-                    value: expiry_time || min_date_expiry.format('HH:mm'),
-                    is_clearable: false,
-                    is_nativepicker: is_nativepicker
-                    // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
-                })
-            )
-        )
-    );
-};
-
-// ToDo: Refactor Duration.jsx and date_picker.jsx
-Duration.propTypes = {
-    contract_expiry_type: _propTypes2.default.string,
-    duration: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
-    duration_min_max: _propTypes2.default.object,
-    duration_unit: _propTypes2.default.string,
-    duration_units_list: _mobxReact.PropTypes.arrayOrObservableArray,
-    expiry_date: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
-    expiry_time: _propTypes2.default.string,
-    expiry_type: _propTypes2.default.string,
-    is_minimized: _propTypes2.default.bool,
-    is_nativepicker: _propTypes2.default.bool,
-    market_close_times: _propTypes2.default.array,
-    onChange: _propTypes2.default.func,
-    server_time: _propTypes2.default.object,
-    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_date: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
-    start_time: _propTypes2.default.string,
-    validation_errors: _propTypes2.default.object
-};
-
-exports.default = (0, _mobxReact.observer)(Duration);
 
 /***/ }),
 
@@ -15474,6 +17023,7 @@ var LastDigit = function LastDigit(_ref) {
     return _react2.default.createElement(
         _fieldset2.default,
         {
+            className: 'trade-container__fieldset',
             header: (0, _localize.localize)('Last Digit Prediction'),
             is_center: true
         },
@@ -15498,10 +17048,10 @@ exports.default = (0, _mobxReact.observer)(LastDigit);
 
 /***/ }),
 
-/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/start_date.jsx":
-/*!*****************************************************************************************!*\
-  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/start_date.jsx ***!
-  \*****************************************************************************************/
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeTypeInfo/trade_type_info_dialog.jsx":
+/*!*******************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeTypeInfo/trade_type_info_dialog.jsx ***!
+  \*******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15512,7 +17062,82 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactTransitionGroup = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/index.js");
+
+var _full_screen_dialog = __webpack_require__(/*! ../../Elements/full_screen_dialog.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Elements/full_screen_dialog.jsx");
+
+var _full_screen_dialog2 = _interopRequireDefault(_full_screen_dialog);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TradeTypeInfoDialog = function TradeTypeInfoDialog(_ref) {
+    var children = _ref.children,
+        is_mobile = _ref.is_mobile,
+        open = _ref.open,
+        onClose = _ref.onClose,
+        title = _ref.title;
+    return is_mobile ? _react2.default.createElement(
+        _full_screen_dialog2.default,
+        {
+            visible: open,
+            onClose: onClose,
+            title: title,
+            wrapperClassName: 'trade-type-info-modal'
+        },
+        children
+    ) : _react2.default.createElement(
+        _reactTransitionGroup.CSSTransition,
+        {
+            classNames: 'trade-type-info-popup',
+            'in': open,
+            timeout: 100,
+            unmountOnExit: true
+        },
+        _react2.default.createElement(
+            'div',
+            { className: 'trade-type-info-popup' },
+            _react2.default.createElement(
+                'div',
+                { className: 'trade-type-info' },
+                children
+            )
+        )
+    );
+};
+
+TradeTypeInfoDialog.propTypes = {
+    children: _propTypes2.default.element,
+    is_mobile: _propTypes2.default.bool,
+    onClose: _propTypes2.default.func,
+    open: _propTypes2.default.bool,
+    title: _propTypes2.default.string
+};
+
+exports.default = TradeTypeInfoDialog;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeTypeInfo/trade_type_info_item.jsx":
+/*!*****************************************************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/Trading/Components/Form/TradeTypeInfo/trade_type_info_item.jsx ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -15522,90 +17147,125 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _ttReactCustomScrollbars = __webpack_require__(/*! tt-react-custom-scrollbars */ "./node_modules/tt-react-custom-scrollbars/lib/index.js");
+
+var _icon_back = __webpack_require__(/*! ../../../../../Assets/Common/icon_back.jsx */ "./src/javascript/app_2/Assets/Common/icon_back.jsx");
+
+var _icon_chevron_left = __webpack_require__(/*! ../../../../../Assets/Common/icon_chevron_left.jsx */ "./src/javascript/app_2/Assets/Common/icon_chevron_left.jsx");
+
+var _icon_chevron_right = __webpack_require__(/*! ../../../../../Assets/Common/icon_chevron_right.jsx */ "./src/javascript/app_2/Assets/Common/icon_chevron_right.jsx");
+
+var _trade_categories = __webpack_require__(/*! ../../../../../Assets/Trading/Categories/trade_categories.jsx */ "./src/javascript/app_2/Assets/Trading/Categories/trade_categories.jsx");
+
+var _button = __webpack_require__(/*! ../../../../../App/Components/Form/button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
+
+var _button2 = _interopRequireDefault(_button);
+
 var _localize = __webpack_require__(/*! ../../../../../../_common/localize */ "./src/javascript/_common/localize.js");
-
-var _DropDown = __webpack_require__(/*! ../../../../../App/Components/Form/DropDown */ "./src/javascript/app_2/App/Components/Form/DropDown/index.js");
-
-var _DropDown2 = _interopRequireDefault(_DropDown);
-
-var _fieldset = __webpack_require__(/*! ../../../../../App/Components/Form/fieldset.jsx */ "./src/javascript/app_2/App/Components/Form/fieldset.jsx");
-
-var _fieldset2 = _interopRequireDefault(_fieldset);
-
-var _time_picker = __webpack_require__(/*! ../../../../../App/Components/Form/time_picker.jsx */ "./src/javascript/app_2/App/Components/Form/time_picker.jsx");
-
-var _time_picker2 = _interopRequireDefault(_time_picker);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* TODO:
-    1. update sessions list when the selected one doesn’t have any enabled time
-*/
-
-var StartDate = function StartDate(_ref) {
-    var is_minimized = _ref.is_minimized,
-        is_nativepicker = _ref.is_nativepicker,
-        onChange = _ref.onChange,
-        sessions = _ref.sessions,
-        start_date = _ref.start_date,
-        start_dates_list = _ref.start_dates_list,
-        start_time = _ref.start_time,
-        validation_errors = _ref.validation_errors;
-
-    // Number(0) refers to 'now'
-    var is_today = start_date === Number(0);
-    var current_date_config = '';
-    if (!is_today) {
-        current_date_config = start_dates_list.find(function (o) {
-            return o.value === +start_date;
-        }) || {};
-    }
-    if (is_minimized) {
-        return _react2.default.createElement(
-            'div',
-            { className: 'fieldset-minimized start-date' },
-            _react2.default.createElement('span', { className: 'icon start-time' }),
-            is_today ? (0, _localize.localize)('Now') : current_date_config.text + '\n' + start_time
-        );
-    }
+var TradeTypeInfoItem = function TradeTypeInfoItem(_ref) {
+    var handleNavigationClick = _ref.handleNavigationClick,
+        handleNextClick = _ref.handleNextClick,
+        handlePrevClick = _ref.handlePrevClick,
+        is_mobile = _ref.is_mobile,
+        item = _ref.item,
+        navigationList = _ref.navigationList,
+        onBackButtonClick = _ref.onBackButtonClick,
+        onSubmitButtonClick = _ref.onSubmitButtonClick;
     return _react2.default.createElement(
-        _fieldset2.default,
+        _react2.default.Fragment,
         null,
-        _react2.default.createElement(_DropDown2.default, {
-            is_alignment_left: true,
-            is_nativepicker: is_nativepicker,
-            list: start_dates_list,
-            name: 'start_date',
-            value: start_date,
-            onChange: onChange
-        }),
-        !is_today && start_time && _react2.default.createElement(_time_picker2.default, {
-            onChange: onChange,
-            is_align_right: true,
-            name: 'start_time',
-            value: start_time,
-            placeholder: '12:00',
-            start_date: start_date,
-            sessions: sessions,
-            is_clearable: false,
-            is_nativepicker: is_nativepicker,
-            validation_errors: validation_errors.start_time
-        })
+        !is_mobile && _react2.default.createElement(
+            'div',
+            { className: 'info-header' },
+            _react2.default.createElement(
+                'span',
+                { onClick: function onClick() {
+                        return onBackButtonClick();
+                    } },
+                _react2.default.createElement(_icon_back.IconBack, null)
+            ),
+            _react2.default.createElement(
+                'span',
+                { className: 'title' },
+                item.text
+            )
+        ),
+        _react2.default.createElement(
+            'div',
+            { className: 'info-gif' },
+            'gif explanation'
+        ),
+        _react2.default.createElement(
+            'div',
+            { className: 'info-content' },
+            _react2.default.createElement(
+                _ttReactCustomScrollbars.Scrollbars,
+                {
+                    autoHide: true,
+                    style: { height: '215px' }
+                },
+                _react2.default.createElement(_trade_categories.TradeCategories, { category: item.value })
+            )
+        ),
+        _react2.default.createElement(
+            'div',
+            { className: 'info-choose' },
+            _react2.default.createElement(_button2.default, { text: (0, _localize.localize)('Choose'), onClick: function onClick() {
+                    return onSubmitButtonClick(item);
+                } })
+        ),
+        _react2.default.createElement(
+            'div',
+            { className: 'info-navigation' },
+            _react2.default.createElement(
+                'div',
+                { className: 'info-navigation__icon', onClick: function onClick() {
+                        return handlePrevClick(navigationList);
+                    } },
+                _react2.default.createElement(_icon_chevron_left.IconChevronLeft, null)
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'info-navigation__list' },
+                navigationList.map(function (contract, idx) {
+                    return _react2.default.createElement(
+                        _react2.default.Fragment,
+                        { key: idx },
+                        _react2.default.createElement('div', {
+                            className: 'circle-button ' + (contract.value === item.value ? 'active' : ''),
+                            onClick: function onClick() {
+                                return handleNavigationClick(contract);
+                            }
+                        })
+                    );
+                })
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'info-navigation__icon', onClick: function onClick() {
+                        return handleNextClick(navigationList);
+                    } },
+                _react2.default.createElement(_icon_chevron_right.IconChevronRight, null)
+            )
+        )
     );
 };
 
-StartDate.propTypes = {
-    is_minimized: _propTypes2.default.bool,
-    is_nativepicker: _propTypes2.default.bool,
-    onChange: _propTypes2.default.func,
-    sessions: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_date: _propTypes2.default.number,
-    start_dates_list: _mobxReact.PropTypes.arrayOrObservableArray,
-    start_time: _propTypes2.default.string,
-    validation_errors: _propTypes2.default.object
+TradeTypeInfoItem.propTypes = {
+    handleNavigationClick: _propTypes2.default.func,
+    handleNextClick: _propTypes2.default.func,
+    handlePrevClick: _propTypes2.default.func,
+    is_mobile: _propTypes2.default.bool,
+    item: _propTypes2.default.object,
+    navigationList: _propTypes2.default.array,
+    onBackButtonClick: _propTypes2.default.func,
+    onSubmitButtonClick: _propTypes2.default.func
 };
 
-exports.default = (0, _mobxReact.observer)(StartDate);
+exports.default = TradeTypeInfoItem;
 
 /***/ }),
 
@@ -15693,6 +17353,10 @@ var _ui_loader = __webpack_require__(/*! ../../../../App/Components/Elements/ui_
 
 var _ui_loader2 = _interopRequireDefault(_ui_loader);
 
+var _fieldset = __webpack_require__(/*! ../../../../App/Components/Form/fieldset.jsx */ "./src/javascript/app_2/App/Components/Form/fieldset.jsx");
+
+var _fieldset2 = _interopRequireDefault(_fieldset);
+
 var _contract_type = __webpack_require__(/*! ../../Containers/contract_type.jsx */ "./src/javascript/app_2/Modules/Trading/Containers/contract_type.jsx");
 
 var _contract_type2 = _interopRequireDefault(_contract_type);
@@ -15720,14 +17384,14 @@ var ScreenLarge = function ScreenLarge(_ref) {
             _react2.default.Fragment,
             null,
             _react2.default.createElement(
-                'fieldset',
-                { className: 'trade-types' },
+                _fieldset2.default,
+                { className: 'trade-container__fieldset trade-types' },
                 _react2.default.createElement(_contract_type2.default, null)
             ),
             _react2.default.createElement(_trade_params2.default, null),
             _react2.default.createElement(
                 'div',
-                { className: 'purchase-wrapper' },
+                { className: 'purchase-container' },
                 _react2.default.createElement(_purchase2.default, null)
             )
         )
@@ -15791,7 +17455,7 @@ var ScreenSmall = function ScreenSmall() {
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'purchase-wrapper' },
+                { className: 'purchase-container' },
                 _react2.default.createElement(_purchase2.default, null)
             )
         )
@@ -15955,12 +17619,11 @@ var Purchase = function Purchase(_ref) {
             {
                 is_disabled: is_disabled,
                 id: 'purchase_' + type,
-                className: 'primary green btn-purchase',
+                className: 'primary btn-purchase',
                 has_effect: true,
                 onClick: function onClick() {
                     onClickPurchase(info.id, info.stake, type);
-                },
-                wrapperClassName: 'submit-section'
+                }
             },
             _react2.default.createElement(
                 _react2.default.Fragment,
@@ -15976,7 +17639,7 @@ var Purchase = function Purchase(_ref) {
                         _react2.default.createElement(_Types.IconTradeType, { type: type.toLowerCase() }),
                         _react2.default.createElement(
                             'span',
-                            null,
+                            { className: 'btn-purchase__trade-type-text' },
                             (0, _localize.localize)('[_1]', trade_types[type])
                         )
                     )
@@ -15992,7 +17655,7 @@ var Purchase = function Purchase(_ref) {
                     _react2.default.createElement(
                         'div',
                         { className: 'btn-purchase__profit' },
-                        is_disabled ? '--,--' : _react2.default.createElement(_money2.default, { amount: info.profit, currency: currency })
+                        is_disabled ? '--,--' : _react2.default.createElement(_money2.default, { amount: info.profit, currency: currency, className: 'btn-purchase__currency' })
                     )
                 )
             )
@@ -16003,7 +17666,7 @@ var Purchase = function Purchase(_ref) {
         return _react2.default.createElement(
             _fieldset2.default,
             {
-                className: 'purchase-option',
+                className: 'trade-container__fieldset purchase-container__option',
                 key: idx,
                 onMouseEnter: function onMouseEnter() {
                     onHoverPurchase(true, type);
@@ -16020,7 +17683,7 @@ var Purchase = function Purchase(_ref) {
             }) : _react2.default.createElement(
                 _react2.default.Fragment,
                 null,
-                !is_purchase_enabled && idx === 0 && _react2.default.createElement(_ui_loader2.default, null),
+                !is_purchase_enabled && idx === 0 && _react2.default.createElement(_ui_loader2.default, { classNameBlock: 'purchase-container__loading' }),
                 _react2.default.createElement(_contract_info2.default, {
                     currency: currency,
                     proposal_info: info,
@@ -16304,7 +17967,7 @@ var Trade = function (_React$Component) {
                 { id: 'trade_container', className: 'trade-container' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'chart-container notice-msg' },
+                    { className: 'chart-container' },
                     this.props.symbol && _react2.default.createElement(
                         _react2.default.Suspense,
                         { fallback: _react2.default.createElement(_ui_loader2.default, null) },
@@ -16465,7 +18128,7 @@ var TradeParams = function (_React$Component) {
                     is_nativepicker: _this2.props.is_nativepicker
                 }, (0, _component.getComponentProperties)(Component, _this2.props.trade_store, {
                     server_time: _this2.props.server_time
-                }, _this2.props.client_store)));
+                }, _this2.props.client_store, _this2.props.ui_store)));
             });
         }
     }, {
@@ -16490,12 +18153,14 @@ TradeParams.propTypes = {
 exports.default = (0, _connect.connect)(function (_ref3) {
     var client = _ref3.client,
         common = _ref3.common,
-        modules = _ref3.modules;
+        modules = _ref3.modules,
+        ui = _ref3.ui;
     return {
         client_store: client,
         server_time: common.server_time,
         form_components: modules.trade.form_components,
-        trade_store: modules.trade
+        trade_store: modules.trade,
+        ui_store: ui
     };
 })(TradeParams);
 
@@ -16823,7 +18488,7 @@ var BinarySocketGeneral = function () {
                         (0, _logout.requestLogout)();
                     } else {
                         client_store.responseAuthorize(response);
-                        _ws_methods2.default.subscribeBalance(ResponseHandlers.balance);
+                        _ws_methods2.default.subscribeBalance(ResponseHandlers.balance, true);
                         _ws_methods2.default.getSettings();
                         _ws_methods2.default.getAccountStatus();
                         _ws_methods2.default.payoutCurrencies();
@@ -17089,8 +18754,8 @@ var WS = function () {
         return _subscription_manager2.default.forgetAll.apply(_subscription_manager2.default, arguments);
     };
 
-    var subscribeBalance = function subscribeBalance(cb) {
-        return _subscription_manager2.default.subscribe('balance', { balance: 1, subscribe: 1 }, cb);
+    var subscribeBalance = function subscribeBalance(cb, is_forced) {
+        return _subscription_manager2.default.subscribe('balance', { balance: 1, subscribe: 1 }, cb, is_forced);
     };
 
     var subscribeProposal = function subscribeProposal(req, cb, should_forget_first) {
@@ -18290,7 +19955,9 @@ var CONTRACT_SHADES = exports.CONTRACT_SHADES = {
     RANGE: 'BETWEEN',
     UPORDOWN: 'OUTSIDE',
     ONETOUCH: 'NONE_SINGLE', // no shade
-    NOTOUCH: 'NONE_SINGLE' // no shade
+    NOTOUCH: 'NONE_SINGLE', // no shade
+    ASIANU: 'ABOVE',
+    ASIAND: 'BELOW'
 };
 
 // Default non-shade according to number of barriers
@@ -18815,6 +20482,8 @@ function _initializerWarningHelper(descriptor, context) {
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
+var store_name = 'smart_chart_store';
+
 var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, (_class = function (_BaseStore) {
     _inherits(SmartChartStore, _BaseStore);
 
@@ -18825,7 +20494,7 @@ var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _d
 
         var local_storage_properties = ['chart_type', 'granularity'];
 
-        var _this = _possibleConstructorReturn(this, (SmartChartStore.__proto__ || Object.getPrototypeOf(SmartChartStore)).call(this, { root_store: root_store, local_storage_properties: local_storage_properties }));
+        var _this = _possibleConstructorReturn(this, (SmartChartStore.__proto__ || Object.getPrototypeOf(SmartChartStore)).call(this, { root_store: root_store, local_storage_properties: local_storage_properties, store_name: store_name }));
 
         _initDefineProp(_this, 'symbol', _descriptor, _this);
 
@@ -19751,21 +21420,21 @@ var _barrier = __webpack_require__(/*! ../../../../Modules/Trading/Components/Fo
 
 var _barrier2 = _interopRequireDefault(_barrier);
 
-var _duration = __webpack_require__(/*! ../../../../Modules/Trading/Components/Form/TradeParams/duration.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/duration.jsx");
+var _Duration = __webpack_require__(/*! ../../../../Modules/Trading/Components/Form/TradeParams/Duration */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/Duration/index.js");
 
-var _duration2 = _interopRequireDefault(_duration);
+var _Duration2 = _interopRequireDefault(_Duration);
 
 var _last_digit = __webpack_require__(/*! ../../../../Modules/Trading/Components/Form/TradeParams/last_digit.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/last_digit.jsx");
 
 var _last_digit2 = _interopRequireDefault(_last_digit);
 
-var _start_date = __webpack_require__(/*! ../../../../Modules/Trading/Components/Form/TradeParams/start_date.jsx */ "./src/javascript/app_2/Modules/Trading/Components/Form/TradeParams/start_date.jsx");
-
-var _start_date2 = _interopRequireDefault(_start_date);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var form_components = exports.form_components = [{ name: 'start_date', Component: _start_date2.default }, { name: 'duration', Component: _duration2.default }, { name: 'barrier', Component: _barrier2.default }, { name: 'last_digit', Component: _last_digit2.default }, { name: 'amount', Component: _amount2.default }];
+// import StartDate from 'Modules/Trading/Components/Form/TradeParams/start_date.jsx';
+
+var form_components = exports.form_components = [
+// { name: 'start_date', Component: StartDate },
+{ name: 'duration', Component: _Duration2.default }, { name: 'barrier', Component: _barrier2.default }, { name: 'last_digit', Component: _last_digit2.default }, { name: 'amount', Component: _amount2.default }];
 
 /***/ }),
 
@@ -20962,7 +22631,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21, _descriptor22, _descriptor23, _descriptor24, _descriptor25, _descriptor26, _descriptor27, _descriptor28, _descriptor29, _descriptor30, _descriptor31, _descriptor32, _descriptor33, _descriptor34;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21, _descriptor22, _descriptor23, _descriptor24, _descriptor25, _descriptor26, _descriptor27, _descriptor28, _descriptor29, _descriptor30, _descriptor31, _descriptor32, _descriptor33, _descriptor34;
 
 var _lodash = __webpack_require__(/*! lodash.debounce */ "./node_modules/lodash.debounce/index.js");
 
@@ -21079,7 +22748,9 @@ function _initializerWarningHelper(descriptor, context) {
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, _dec14 = _mobx.action.bound, _dec15 = _mobx.action.bound, _dec16 = _mobx.action.bound, _dec17 = _mobx.action.bound, (_class = function (_BaseStore) {
+var store_name = 'trade_store';
+
+var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, _dec14 = _mobx.action.bound, _dec15 = _mobx.action.bound, _dec16 = _mobx.action.bound, _dec17 = _mobx.action.bound, _dec18 = _mobx.action.bound, (_class = function (_BaseStore) {
     _inherits(TradeStore, _BaseStore);
 
     // Chart
@@ -21113,6 +22784,7 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
 
         var _this = _possibleConstructorReturn(this, (TradeStore.__proto__ || Object.getPrototypeOf(TradeStore)).call(this, {
             root_store: root_store,
+            store_name: store_name,
             session_storage_properties: _query_string.allowed_query_string_variables,
             validation_rules: (0, _validation_rules2.default)()
         }));
@@ -21312,6 +22984,19 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
             return prepareTradeStore;
         }()
     }, {
+        key: 'onChangeMultiple',
+        value: function onChangeMultiple(values) {
+            var _this3 = this;
+
+            Object.keys(values).forEach(function (name) {
+                if (!(name in _this3)) {
+                    throw new Error('Invalid Argument: ' + name);
+                }
+            });
+
+            this.processNewValuesAsync(_extends({}, values), true);
+        }
+    }, {
         key: 'onChange',
         value: function onChange(e) {
             var _e$target = e.target,
@@ -21348,29 +23033,29 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
     }, {
         key: 'onPurchase',
         value: function onPurchase(proposal_id, price, type) {
-            var _this3 = this;
+            var _this4 = this;
 
             if (proposal_id) {
                 (0, _purchase.processPurchase)(proposal_id, price).then((0, _mobx.action)(function (response) {
-                    if (_this3.proposal_info[type].id !== proposal_id) {
+                    if (_this4.proposal_info[type].id !== proposal_id) {
                         throw new Error('Proposal ID does not match.');
                     }
                     if (response.buy) {
-                        var contract_data = _extends({}, _this3.proposal_requests[type], _this3.proposal_info[type], {
+                        var contract_data = _extends({}, _this4.proposal_requests[type], _this4.proposal_info[type], {
                             buy_price: response.buy.buy_price
                         });
-                        _gtm2.default.pushPurchaseData(contract_data, _this3.root_store);
+                        _gtm2.default.pushPurchaseData(contract_data, _this4.root_store);
                     }
                     _Services.WS.forgetAll('proposal');
-                    _this3.purchase_info = response;
+                    _this4.purchase_info = response;
                 }));
             }
         }
     }, {
         key: 'onClickNewTrade',
         value: function onClickNewTrade(e) {
-            this.requestProposal();
             e.preventDefault();
+            _Services.WS.forgetAll('proposal').then(this.requestProposal());
         }
 
         /**
@@ -21382,16 +23067,16 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
     }, {
         key: 'updateStore',
         value: function updateStore(new_state) {
-            var _this4 = this;
+            var _this5 = this;
 
             Object.keys((0, _utility.cloneObject)(new_state)).forEach(function (key) {
                 if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency', 'smart_chart'].indexOf(key) > -1) return;
-                if (JSON.stringify(_this4[key]) === JSON.stringify(new_state[key])) {
+                if (JSON.stringify(_this5[key]) === JSON.stringify(new_state[key])) {
                     delete new_state[key];
                 } else {
                     if (key === 'symbol') {
-                        _this4.is_purchase_enabled = false;
-                        _this4.is_trade_enabled = false;
+                        _this5.is_purchase_enabled = false;
+                        _this5.is_trade_enabled = false;
                     }
 
                     if (new_state.start_date && typeof new_state.start_date === 'string') {
@@ -21399,16 +23084,16 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                     }
 
                     // Add changes to queryString of the url
-                    if (_query_string.allowed_query_string_variables.indexOf(key) !== -1 && _this4.is_trade_component_mounted) {
+                    if (_query_string.allowed_query_string_variables.indexOf(key) !== -1 && _this5.is_trade_component_mounted) {
                         _url_helper2.default.setQueryParam(_defineProperty({}, key, new_state[key]));
                     }
 
-                    _this4[key] = new_state[key];
+                    _this5[key] = new_state[key];
 
                     // validation is done in mobx intercept (base_store.js)
                     // when barrier_1 is set, it is compared with store.barrier_2 (which is not updated yet)
                     if (key === 'barrier_2' && new_state.barrier_1) {
-                        _this4.barrier_1 = new_state.barrier_1; // set it again, after barrier_2 is updated in store
+                        _this5.barrier_1 = new_state.barrier_1; // set it again, after barrier_2 is updated in store
                     }
                 }
             });
@@ -21428,6 +23113,8 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                             case 0:
                                 // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
                                 // The source of default values is the website_status response.
+                                _Services.WS.forgetAll('proposal');
+
                                 if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values)) && (0, _currency_base.isCryptocurrency)(obj_new_values.currency) !== (0, _currency_base.isCryptocurrency)(this.currency)) {
                                     obj_new_values.amount = obj_new_values.amount || (0, _currency_base.getMinPayout)(obj_new_values.currency);
                                 }
@@ -21435,19 +23122,19 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                                 new_state = this.updateStore((0, _utility.cloneObject)(obj_new_values));
 
                                 if (!(is_changed_by_user || /\b(symbol|contract_types_list)\b/.test(Object.keys(new_state)))) {
-                                    _context3.next = 17;
+                                    _context3.next = 18;
                                     break;
                                 }
 
                                 if (!('symbol' in new_state)) {
-                                    _context3.next = 6;
+                                    _context3.next = 7;
                                     break;
                                 }
 
-                                _context3.next = 6;
+                                _context3.next = 7;
                                 return _Symbol.onChangeSymbolAsync(new_state.symbol);
 
-                            case 6:
+                            case 7:
 
                                 this.updateStore({ // disable purchase button(s), clear contract info
                                     is_purchase_enabled: false,
@@ -21464,10 +23151,10 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                                     }
                                 }
 
-                                _context3.next = 10;
+                                _context3.next = 11;
                                 return (0, _process.processTradeParams)(this, new_state);
 
-                            case 10:
+                            case 11:
                                 snapshot = _context3.sent;
                                 query_string_values = this.updateQueryString();
 
@@ -21484,7 +23171,7 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
 
                                 this.debouncedProposal();
 
-                            case 17:
+                            case 18:
                             case 'end':
                                 return _context3.stop();
                         }
@@ -21501,7 +23188,7 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
     }, {
         key: 'requestProposal',
         value: function requestProposal() {
-            var _this5 = this;
+            var _this6 = this;
 
             var requests = (0, _proposal.createProposalRequests)(this);
 
@@ -21523,10 +23210,8 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                 this.proposal_info = {};
                 this.purchase_info = {};
 
-                _Services.WS.forgetAll('proposal').then(function () {
-                    Object.keys(_this5.proposal_requests).forEach(function (type) {
-                        _Services.WS.subscribeProposal(_this5.proposal_requests[type], _this5.onProposalResponse);
-                    });
+                Object.keys(this.proposal_requests).forEach(function (type) {
+                    _Services.WS.subscribeProposal(_this6.proposal_requests[type], _this6.onProposalResponse);
                 });
             }
         }
@@ -21594,15 +23279,16 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
     }, {
         key: 'changeAllowEquals',
         value: function changeAllowEquals() {
-            var _this6 = this;
+            var hasCallPutEqual = function hasCallPutEqual(contract_type_list) {
+                if (!contract_type_list) return false;
 
-            var hasCallPutEqual = function hasCallPutEqual() {
-                var up_down_contracts = (0, _utility.getPropertyValue)(_this6.contract_types_list, 'Up/Down');
-                return up_down_contracts.some(function (contract) {
+                return (0, _utility.getPropertyValue)(contract_type_list, 'Up/Down').some(function (contract) {
                     return contract.value === 'rise_fall_equal';
                 });
             };
             var hasDurationForCallPutEqual = function hasDurationForCallPutEqual(contract_type_list, duration_unit, contract_start_type) {
+                if (!contract_type_list || !duration_unit || !contract_start_type) return false;
+
                 var contract_list = Object.keys(contract_type_list || {}).reduce(function (key, list) {
                     return [].concat(_toConsumableArray(key), _toConsumableArray(contract_type_list[list].map(function (contract) {
                         return contract.value;
@@ -21614,7 +23300,7 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                 });
 
                 // Check whether rise fall equal is exists and has the current store duration unit
-                return hasCallPutEqual() ? contract_duration_list.filter(function (contract) {
+                return hasCallPutEqual(contract_type_list) ? contract_duration_list.filter(function (contract) {
                     return contract.rise_fall_equal;
                 })[0].rise_fall_equal.some(function (duration) {
                     return duration.value === duration_unit;
@@ -21622,7 +23308,12 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
             };
             var check_callput_equal_duration = hasDurationForCallPutEqual(this.contract_types_list, this.duration_unit, this.contract_start_type);
 
-            if (/^(rise_fall|rise_fall_equal)$/.test(this.contract_type) && (check_callput_equal_duration || this.expiry_type === 'endtime') && hasCallPutEqual()) {
+            if (!/^(rise_fall|rise_fall_equal)$/.test(this.contract_type)) {
+                this.is_allow_equal = false;
+                this.is_equal_checked = 0;
+            }
+
+            if (/^(rise_fall|rise_fall_equal)$/.test(this.contract_type) && (check_callput_equal_duration || this.expiry_type === 'endtime') && hasCallPutEqual(this.contract_types_list)) {
                 this.is_allow_equal = true;
             } else {
                 this.is_allow_equal = false;
@@ -21891,7 +23582,7 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
             }, _callee6, _this9);
         }));
     }
-}), _applyDecoratedDescriptor(_class.prototype, 'refresh', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'refresh'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'prepareTradeStore', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'prepareTradeStore'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChange', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'onChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onHoverPurchase', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'onHoverPurchase'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onPurchase', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'onPurchase'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onClickNewTrade', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'onClickNewTrade'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateStore', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'updateStore'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'requestProposal', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'requestProposal'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onProposalResponse', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'onProposalResponse'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChartBarrierChange', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'onChartBarrierChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateQueryString', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'updateQueryString'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'changeDurationValidationRules', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'changeDurationValidationRules'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'changeAllowEquals', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'changeAllowEquals'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec15], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec16], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec17], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype)), _class));
+}), _applyDecoratedDescriptor(_class.prototype, 'refresh', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'refresh'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'prepareTradeStore', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'prepareTradeStore'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChangeMultiple', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'onChangeMultiple'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChange', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'onChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onHoverPurchase', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'onHoverPurchase'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onPurchase', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'onPurchase'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onClickNewTrade', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'onClickNewTrade'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateStore', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'updateStore'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'requestProposal', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'requestProposal'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onProposalResponse', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'onProposalResponse'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChartBarrierChange', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'onChartBarrierChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateQueryString', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'updateQueryString'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'changeDurationValidationRules', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'changeDurationValidationRules'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'changeAllowEquals', [_dec15], Object.getOwnPropertyDescriptor(_class.prototype, 'changeAllowEquals'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec16], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec17], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec18], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype)), _class));
 exports.default = TradeStore;
 
 /***/ }),
@@ -22046,6 +23737,7 @@ var BaseStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = 
      *     @property {String[]} local_storage_properties - A list of properties' names that should be kept in localStorage.
      *     @property {String[]} session_storage_properties - A list of properties' names that should be kept in sessionStorage.
      *     @property {Object}   validation_rules - An object that contains the validation rules for each property of the store.
+     *     @property {String}   store_name - Explicit store name for browser application storage (to bypass minification)
      */
     function BaseStore() {
         var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -22061,7 +23753,8 @@ var BaseStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = 
         var root_store = options.root_store,
             local_storage_properties = options.local_storage_properties,
             session_storage_properties = options.session_storage_properties,
-            validation_rules = options.validation_rules;
+            validation_rules = options.validation_rules,
+            store_name = options.store_name;
 
 
         Object.defineProperty(this, 'root_store', {
@@ -22076,6 +23769,20 @@ var BaseStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = 
             enumerable: false,
             writable: true
         });
+
+        var has_local_or_session_storage = local_storage_properties && local_storage_properties.length || session_storage_properties && session_storage_properties.length;
+
+        if (has_local_or_session_storage) {
+            if (!store_name) {
+                throw new Error('store_name is required for local/session storage');
+            }
+
+            Object.defineProperty(this, 'store_name', {
+                value: store_name,
+                enumerable: false,
+                writable: false
+            });
+        }
 
         this.root_store = root_store;
         this.local_storage_properties = local_storage_properties || [];
@@ -22180,9 +23887,9 @@ var BaseStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = 
             });
 
             if (storage === BaseStore.STORAGES.LOCAL_STORAGE) {
-                localStorage.setItem(this.constructor.name, snapshot);
+                localStorage.setItem(this.store_name, snapshot);
             } else if (storage === BaseStore.STORAGES.SESSION_STORAGE) {
-                sessionStorage.setItem(this.constructor.name, snapshot);
+                sessionStorage.setItem(this.store_name, snapshot);
             }
         }
 
@@ -22196,8 +23903,8 @@ var BaseStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = 
         value: function retrieveFromStorage() {
             var _this3 = this;
 
-            var local_storage_snapshot = JSON.parse(localStorage.getItem(this.constructor.name, {}));
-            var session_storage_snapshot = JSON.parse(sessionStorage.getItem(this.constructor.name, {}));
+            var local_storage_snapshot = JSON.parse(localStorage.getItem(this.store_name, {}));
+            var session_storage_snapshot = JSON.parse(sessionStorage.getItem(this.store_name, {}));
 
             var snapshot = _extends({}, local_storage_snapshot, session_storage_snapshot);
 
@@ -22584,6 +24291,7 @@ var ClientStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
             this.accounts[this.loginid].session_start = parseInt((0, _moment2.default)().valueOf() / 1000);
             this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
             this.updateAccountList(response.authorize.account_list);
+            this.upgrade_info = this.getBasicUpgradeInfo();
         }
     }, {
         key: 'updateAccountList',
@@ -22634,23 +24342,22 @@ var ClientStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
                             case 0:
                                 this.loginid = _storage.LocalStore.get('active_loginid');
                                 this.accounts = _storage.LocalStore.getObject(storage_key);
-                                this.upgrade_info = this.getBasicUpgradeInfo();
                                 this.switched = '';
 
                                 this.selectCurrency('');
 
                                 _context.t0 = this;
-                                _context.next = 8;
+                                _context.next = 7;
                                 return _Services.WS.payoutCurrencies();
 
-                            case 8:
+                            case 7:
                                 _context.t1 = _context.sent;
 
                                 _context.t0.responsePayoutCurrencies.call(_context.t0, _context.t1);
 
                                 this.registerReactions();
 
-                            case 11:
+                            case 10:
                             case 'end':
                                 return _context.stop();
                         }
@@ -22869,7 +24576,7 @@ var ClientStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
             var _this6 = this;
 
             return this.all_loginids.map(function (id) {
-                return id !== _this6.loginid && !_this6.isDisabled(id) && _this6.getToken(id) ? _this6.getAccountInfo(id) : undefined;
+                return !_this6.isDisabled(id) && _this6.getToken(id) ? _this6.getAccountInfo(id) : undefined;
             }).filter(function (account) {
                 return account;
             });
@@ -22926,12 +24633,17 @@ var ClientStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
     }, {
         key: 'is_virtual',
         get: function get() {
-            return !!this.accounts[this.loginid].is_virtual;
+            return this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
         }
     }, {
         key: 'can_upgrade',
         get: function get() {
-            return this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi;
+            return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
+        }
+    }, {
+        key: 'can_upgrade_to',
+        get: function get() {
+            return this.upgrade_info && this.upgrade_info.can_upgrade_to;
         }
     }, {
         key: 'virtual_account_loginid',
@@ -22994,7 +24706,7 @@ var ClientStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
     initializer: function initializer() {
         return '';
     }
-}), _applyDecoratedDescriptor(_class.prototype, 'balance', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'balance'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_client_allowed_to_visit', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_client_allowed_to_visit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'account_list', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'account_list'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'active_accounts', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'active_accounts'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'all_loginids', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'all_loginids'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'account_title', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'account_title'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'currency', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'currency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'default_currency', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'default_currency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_valid_login', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_valid_login'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_logged_in', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_logged_in'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_virtual', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_virtual'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'can_upgrade', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'can_upgrade'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'virtual_account_loginid', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'virtual_account_loginid'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_single_currency', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_single_currency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetLocalStorageValues', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'resetLocalStorageValues'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getBasicUpgradeInfo', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'getBasicUpgradeInfo'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'responsePayoutCurrencies', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'responsePayoutCurrencies'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'responseAuthorize', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'responseAuthorize'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateAccountList', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'updateAccountList'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'switchAccount', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'switchAccount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'switchEndSignal', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'switchEndSignal'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'init', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'init'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'broadcastAccountChange', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'broadcastAccountChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'switchAccountHandler', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'switchAccountHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'registerReactions', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'registerReactions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setBalance', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'setBalance'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'selectCurrency', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'selectCurrency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setResidence', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'setResidence'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setEmail', [_dec15], Object.getOwnPropertyDescriptor(_class.prototype, 'setEmail'), _class.prototype)), _class));
+}), _applyDecoratedDescriptor(_class.prototype, 'balance', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'balance'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_client_allowed_to_visit', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_client_allowed_to_visit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'account_list', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'account_list'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'active_accounts', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'active_accounts'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'all_loginids', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'all_loginids'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'account_title', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'account_title'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'currency', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'currency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'default_currency', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'default_currency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_valid_login', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_valid_login'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_logged_in', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_logged_in'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_virtual', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_virtual'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'can_upgrade', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'can_upgrade'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'can_upgrade_to', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'can_upgrade_to'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'virtual_account_loginid', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'virtual_account_loginid'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_single_currency', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_single_currency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resetLocalStorageValues', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'resetLocalStorageValues'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getBasicUpgradeInfo', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'getBasicUpgradeInfo'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'responsePayoutCurrencies', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'responsePayoutCurrencies'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'responseAuthorize', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'responseAuthorize'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'updateAccountList', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'updateAccountList'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'switchAccount', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'switchAccount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'switchEndSignal', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'switchEndSignal'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'init', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'init'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'broadcastAccountChange', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'broadcastAccountChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'switchAccountHandler', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'switchAccountHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'registerReactions', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'registerReactions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setBalance', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'setBalance'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'selectCurrency', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'selectCurrency'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setResidence', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'setResidence'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setEmail', [_dec15], Object.getOwnPropertyDescriptor(_class.prototype, 'setEmail'), _class.prototype)), _class));
 exports.default = ClientStore;
 
 /***/ }),
@@ -23373,7 +25085,7 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _dec21, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _dec21, _dec22, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21, _descriptor22, _descriptor23, _descriptor24, _descriptor25;
 
 var _mobx = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
 
@@ -23434,22 +25146,24 @@ function _initializerWarningHelper(descriptor, context) {
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, _dec14 = _mobx.action.bound, _dec15 = _mobx.action.bound, _dec16 = _mobx.action.bound, _dec17 = _mobx.action.bound, _dec18 = _mobx.action.bound, _dec19 = _mobx.action.bound, _dec20 = _mobx.action.bound, _dec21 = _mobx.action.bound, (_class = function (_BaseStore) {
+var store_name = 'ui_store';
+
+var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, _dec14 = _mobx.action.bound, _dec15 = _mobx.action.bound, _dec16 = _mobx.action.bound, _dec17 = _mobx.action.bound, _dec18 = _mobx.action.bound, _dec19 = _mobx.action.bound, _dec20 = _mobx.action.bound, _dec21 = _mobx.action.bound, _dec22 = _mobx.action.bound, (_class = function (_BaseStore) {
     _inherits(UIStore, _BaseStore);
 
     // PWA event and config
     function UIStore() {
         _classCallCheck(this, UIStore);
 
-        var local_storage_properties = ['is_chart_asset_info_visible', 'is_chart_countdown_visible', 'is_chart_layout_default', 'is_dark_mode_on', 'is_portfolio_drawer_on', 'is_purchase_confirm_on', 'is_purchase_lock_on'];
+        var local_storage_properties = ['advanced_duration_unit', 'is_advanced_duration', 'advanced_expiry_type', 'simple_duration_unit', 'duration_t', 'duration_s', 'duration_m', 'duration_h', 'duration_d', 'is_chart_asset_info_visible', 'is_chart_countdown_visible', 'is_chart_layout_default', 'is_dark_mode_on', 'is_positions_drawer_on', 'is_purchase_confirm_on', 'is_purchase_lock_on'];
 
-        var _this = _possibleConstructorReturn(this, (UIStore.__proto__ || Object.getPrototypeOf(UIStore)).call(this, { local_storage_properties: local_storage_properties }));
+        var _this = _possibleConstructorReturn(this, (UIStore.__proto__ || Object.getPrototypeOf(UIStore)).call(this, { local_storage_properties: local_storage_properties, store_name: store_name }));
 
         _initDefineProp(_this, 'is_main_drawer_on', _descriptor, _this);
 
         _initDefineProp(_this, 'is_notifications_drawer_on', _descriptor2, _this);
 
-        _initDefineProp(_this, 'is_portfolio_drawer_on', _descriptor3, _this);
+        _initDefineProp(_this, 'is_positions_drawer_on', _descriptor3, _this);
 
         _initDefineProp(_this, 'is_dark_mode_on', _descriptor4, _this);
 
@@ -23477,9 +25191,31 @@ var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _m
 
         _initDefineProp(_this, 'toast_messages', _descriptor16, _this);
 
+        _initDefineProp(_this, 'is_advanced_duration', _descriptor17, _this);
+
+        _initDefineProp(_this, 'advanced_duration_unit', _descriptor18, _this);
+
+        _initDefineProp(_this, 'advanced_expiry_type', _descriptor19, _this);
+
+        _initDefineProp(_this, 'simple_duration_unit', _descriptor20, _this);
+
+        _initDefineProp(_this, 'duration_t', _descriptor21, _this);
+
+        _initDefineProp(_this, 'duration_s', _descriptor22, _this);
+
+        _initDefineProp(_this, 'duration_m', _descriptor23, _this);
+
+        _initDefineProp(_this, 'duration_h', _descriptor24, _this);
+
+        _initDefineProp(_this, 'duration_d', _descriptor25, _this);
+
+        _this.getDurationFromUnit = function (unit) {
+            return _this['duration_' + unit];
+        };
+
         window.addEventListener('resize', _this.handleResize);
         (0, _mobx.autorun)(function () {
-            return document.body.classList[_this.is_dark_mode_on ? 'add' : 'remove']('dark');
+            return document.body.classList[_this.is_dark_mode_on ? 'add' : 'remove']('theme--dark');
         });
         return _this;
     }
@@ -23491,11 +25227,22 @@ var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _m
 
 
     _createClass(UIStore, [{
+        key: 'onChangeUiStore',
+        value: function onChangeUiStore(_ref) {
+            var name = _ref.name,
+                value = _ref.value;
+
+            if (!(name in this)) {
+                throw new Error('Invalid Argument: ' + name);
+            }
+            this[name] = value;
+        }
+    }, {
         key: 'handleResize',
         value: function handleResize() {
             this.screen_width = window.innerWidth;
             if (this.is_mobile) {
-                this.is_portfolio_drawer_on = false;
+                this.is_positions_drawer_on = false;
             }
         }
     }, {
@@ -23550,10 +25297,10 @@ var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _m
             this.is_language_dialog_on = false;
         }
     }, {
-        key: 'togglePortfolioDrawer',
-        value: function togglePortfolioDrawer() {
-            // show and hide Portfolio Drawer
-            this.is_portfolio_drawer_on = !this.is_portfolio_drawer_on;
+        key: 'togglePositionsDrawer',
+        value: function togglePositionsDrawer() {
+            // show and hide Positions Drawer
+            this.is_positions_drawer_on = !this.is_positions_drawer_on;
         }
     }, {
         key: 'showMainDrawer',
@@ -23631,7 +25378,7 @@ var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _m
     initializer: function initializer() {
         return false;
     }
-}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'is_portfolio_drawer_on', [_mobx.observable], {
+}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'is_positions_drawer_on', [_mobx.observable], {
     enumerable: true,
     initializer: function initializer() {
         return false;
@@ -23701,7 +25448,52 @@ var UIStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _m
     initializer: function initializer() {
         return [];
     }
-}), _applyDecoratedDescriptor(_class.prototype, 'handleResize', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'handleResize'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_mobile', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_mobile'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_tablet', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_tablet'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleAccountsDialog', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleAccountsDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChartLayout', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChartLayout'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChartAssetInfo', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChartAssetInfo'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChartCountdown', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChartCountdown'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'togglePurchaseLock', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'togglePurchaseLock'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'togglePurchaseConfirmation', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'togglePurchaseConfirmation'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleDarkMode', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleDarkMode'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleSettingsDialog', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleSettingsDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showLanguageDialog', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'showLanguageDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'hideLanguageDialog', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'hideLanguageDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'togglePortfolioDrawer', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'togglePortfolioDrawer'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showMainDrawer', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'showMainDrawer'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showNotificationsDrawer', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'showNotificationsDrawer'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'hideDrawers', [_dec15], Object.getOwnPropertyDescriptor(_class.prototype, 'hideDrawers'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showInstallButton', [_dec16], Object.getOwnPropertyDescriptor(_class.prototype, 'showInstallButton'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'hideInstallButton', [_dec17], Object.getOwnPropertyDescriptor(_class.prototype, 'hideInstallButton'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setPWAPromptEvent', [_dec18], Object.getOwnPropertyDescriptor(_class.prototype, 'setPWAPromptEvent'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'addToastMessage', [_dec19], Object.getOwnPropertyDescriptor(_class.prototype, 'addToastMessage'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removeToastMessage', [_dec20], Object.getOwnPropertyDescriptor(_class.prototype, 'removeToastMessage'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removeAllToastMessages', [_dec21], Object.getOwnPropertyDescriptor(_class.prototype, 'removeAllToastMessages'), _class.prototype)), _class));
+}), _descriptor17 = _applyDecoratedDescriptor(_class.prototype, 'is_advanced_duration', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return false;
+    }
+}), _descriptor18 = _applyDecoratedDescriptor(_class.prototype, 'advanced_duration_unit', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 't';
+    }
+}), _descriptor19 = _applyDecoratedDescriptor(_class.prototype, 'advanced_expiry_type', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 'duration';
+    }
+}), _descriptor20 = _applyDecoratedDescriptor(_class.prototype, 'simple_duration_unit', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 't';
+    }
+}), _descriptor21 = _applyDecoratedDescriptor(_class.prototype, 'duration_t', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 5;
+    }
+}), _descriptor22 = _applyDecoratedDescriptor(_class.prototype, 'duration_s', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 15;
+    }
+}), _descriptor23 = _applyDecoratedDescriptor(_class.prototype, 'duration_m', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 3;
+    }
+}), _descriptor24 = _applyDecoratedDescriptor(_class.prototype, 'duration_h', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 1;
+    }
+}), _descriptor25 = _applyDecoratedDescriptor(_class.prototype, 'duration_d', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return 1;
+    }
+}), _applyDecoratedDescriptor(_class.prototype, 'onChangeUiStore', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'onChangeUiStore'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleResize', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'handleResize'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_mobile', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_mobile'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_tablet', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_tablet'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleAccountsDialog', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleAccountsDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChartLayout', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChartLayout'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChartAssetInfo', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChartAssetInfo'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChartCountdown', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChartCountdown'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'togglePurchaseLock', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'togglePurchaseLock'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'togglePurchaseConfirmation', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'togglePurchaseConfirmation'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleDarkMode', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleDarkMode'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleSettingsDialog', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleSettingsDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showLanguageDialog', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'showLanguageDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'hideLanguageDialog', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'hideLanguageDialog'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'togglePositionsDrawer', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'togglePositionsDrawer'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showMainDrawer', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'showMainDrawer'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showNotificationsDrawer', [_dec15], Object.getOwnPropertyDescriptor(_class.prototype, 'showNotificationsDrawer'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'hideDrawers', [_dec16], Object.getOwnPropertyDescriptor(_class.prototype, 'hideDrawers'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'showInstallButton', [_dec17], Object.getOwnPropertyDescriptor(_class.prototype, 'showInstallButton'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'hideInstallButton', [_dec18], Object.getOwnPropertyDescriptor(_class.prototype, 'hideInstallButton'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setPWAPromptEvent', [_dec19], Object.getOwnPropertyDescriptor(_class.prototype, 'setPWAPromptEvent'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'addToastMessage', [_dec20], Object.getOwnPropertyDescriptor(_class.prototype, 'addToastMessage'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removeToastMessage', [_dec21], Object.getOwnPropertyDescriptor(_class.prototype, 'removeToastMessage'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removeAllToastMessages', [_dec22], Object.getOwnPropertyDescriptor(_class.prototype, 'removeAllToastMessages'), _class.prototype)), _class));
 exports.default = UIStore;
 
 /***/ }),
@@ -23719,7 +25511,7 @@ exports.default = UIStore;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.minDate = exports.subYears = exports.subMonths = exports.subDays = exports.addYears = exports.addMonths = exports.addDays = exports.isDateValid = exports.isMinuteValid = exports.isHourValid = exports.isTimeValid = exports.formatDuration = exports.getDiffDuration = exports.daysFromTodayTo = exports.formatDate = exports.toGMTFormat = exports.convertToUnix = exports.setTime = exports.toMoment = exports.epochToMoment = undefined;
+exports.getStartOfMonth = exports.minDate = exports.subYears = exports.subMonths = exports.subDays = exports.addYears = exports.addMonths = exports.addDays = exports.isDateValid = exports.isMinuteValid = exports.isHourValid = exports.isTimeValid = exports.formatDuration = exports.getDiffDuration = exports.daysFromTodayTo = exports.formatDate = exports.toGMTFormat = exports.convertToUnix = exports.setTime = exports.toMoment = exports.epochToMoment = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -23749,8 +25541,11 @@ var epochToMoment = exports.epochToMoment = function epochToMoment(epoch) {
 var toMoment = exports.toMoment = function toMoment(value) {
   if (!value) return (0, _moment2.default)().utc(); // returns 'now' moment object
   if (value instanceof _moment2.default && value.isValid() && value.isUTC()) return value; // returns if already a moment object
-  var moment_obj = epochToMoment(value);
-  return moment_obj.isValid() ? moment_obj : _moment2.default.utc(value);
+  var is_number = typeof value === 'number';
+  // need to explicitly convert date string to a JS Date object then pass that into Moment
+  // to get rid of the warning: Deprecation warning: moment construction falls back to js Date
+  var formatted_date = (0, _moment2.default)(new Date(value)).format('YYYY-MM-DD');
+  return is_number ? epochToMoment(value) : _moment2.default.utc(formatted_date);
 };
 
 /**
@@ -23920,6 +25715,14 @@ var subYears = exports.subYears = function subYears(date, num_of_years) {
  */
 var minDate = exports.minDate = function minDate(date_1, date_2) {
   return _moment2.default.min(toMoment(date_1), toMoment(date_2));
+};
+
+/**
+ * returns a new date
+ * @param {moment|string|epoch} date date
+ */
+var getStartOfMonth = exports.getStartOfMonth = function getStartOfMonth(date) {
+  return toMoment(date).clone().startOf('month').format('YYYY-MM-DD');
 };
 
 /***/ }),
@@ -24345,7 +26148,6 @@ var URLHelper = function () {
                     }
                 });
             }
-
             return query_params;
         }
 
@@ -24847,7 +26649,7 @@ var GTM = function () {
             },
             settings: {
                 theme: root_store.ui.is_dark_mode_on ? 'dark' : 'light',
-                portfolio_drawer: root_store.ui.is_portfolio_drawer_on ? 'open' : 'closed',
+                positions_drawer: root_store.ui.is_positions_drawer_on ? 'open' : 'closed',
                 purchase_confirm: root_store.ui.is_purchase_confirm_on ? 'enabled' : 'disabled',
                 chart: {
                     toolbar_position: root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
@@ -25035,7 +26837,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '15863'; // you can insert Application ID of your registered application here
+    var user_app_id = ''; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {

@@ -607,7 +607,7 @@ a.previous-wrapper {
     #mt_account_management #account_selector #mt5_account {
       height: 38px;
       line-height: 38px;
-      padding: 0 20px;
+      padding: 0 10px;
       -webkit-box-sizing: border-box;
               box-sizing: border-box;
       margin: 0;
@@ -2422,6 +2422,29 @@ a.previous-wrapper {
   .api_token table button, #applications-container table button {
     font-size: 0.7561436673rem;
     padding: 10px 15px; } }
+
+.cashier_note .notice-circle {
+  color: #e98024;
+  border-color: #e98024; }
+
+.cashier_note p {
+  color: #2a3052; }
+
+#have_real_account {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%; }
+  #have_real_account div {
+    margin-right: 10px; }
+  @media screen and (max-width: 480px) {
+    #have_real_account {
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center; } }
 
 .markets {
   min-width: 120px;
