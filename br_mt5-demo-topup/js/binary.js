@@ -31950,32 +31950,37 @@ var MetaTrader = function () {
 
     var getAllAccountsInfo = function getAllAccountsInfo() {
         MetaTraderUI.init(submit, sendTopupDemo);
-        BinarySocket.send({ mt5_login_list: 1 }).then(function (response) {
-            if (response.error) {
-                MetaTraderUI.displayPageError(response.error.message || localize('Sorry, an error occurred while processing your request.'));
-                return;
-            }
-            // Ignore old accounts which are not linked to any group or has deprecated group
-            var mt5_login_list = (response.mt5_login_list || []).filter(function (obj) {
-                return obj.group && Client.getMT5AccountType(obj.group) in accounts_info;
-            });
+        return new Promise(function (resolve, reject) {
+            BinarySocket.send({ mt5_login_list: 1 }).then(function (response) {
+                if (response.error) {
+                    MetaTraderUI.displayPageError(response.error.message || localize('Sorry, an error occurred while processing your request.'));
+                    reject();
+                    return;
+                }
+                // Ignore old accounts which are not linked to any group or has deprecated group
+                var mt5_login_list = (response.mt5_login_list || []).filter(function (obj) {
+                    return obj.group && Client.getMT5AccountType(obj.group) in accounts_info;
+                });
 
-            // Update account info
-            mt5_login_list.forEach(function (obj) {
-                var acc_type = Client.getMT5AccountType(obj.group);
-                accounts_info[acc_type].info = { login: obj.login };
-                setAccountDetails(obj.login, acc_type, response);
-            });
+                // Update account info
+                mt5_login_list.forEach(function (obj) {
+                    var acc_type = Client.getMT5AccountType(obj.group);
+                    accounts_info[acc_type].info = { login: obj.login };
+                    setAccountDetails(obj.login, acc_type, response);
+                });
 
-            var current_acc_type = getDefaultAccount();
-            Client.set('mt5_account', current_acc_type);
-            MetaTraderUI.showHideMAM(current_acc_type);
+                var current_acc_type = getDefaultAccount();
+                Client.set('mt5_account', current_acc_type);
+                MetaTraderUI.showHideMAM(current_acc_type);
 
-            // Update types with no account
-            Object.keys(accounts_info).filter(function (acc_type) {
-                return !MetaTraderConfig.hasAccount(acc_type);
-            }).forEach(function (acc_type) {
-                MetaTraderUI.updateAccount(acc_type);
+                // Update types with no account
+                Object.keys(accounts_info).filter(function (acc_type) {
+                    return !MetaTraderConfig.hasAccount(acc_type);
+                }).forEach(function (acc_type) {
+                    MetaTraderUI.updateAccount(acc_type);
+                });
+
+                resolve();
             });
         });
     };
@@ -32112,7 +32117,7 @@ var MetaTrader = function () {
                 MetaTraderUI.setTopupLoading(false);
             } else {
                 MetaTraderUI.displayMainMessage(localize('[_1] has been credited into your MT5 Demo Account: [_2].', [MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00', login.toString()]));
-                BinarySocket.send({ mt5_login_list: 1 }).then(function () {
+                getAllAccountsInfo().finally(function () {
                     return MetaTraderUI.setTopupLoading(false);
                 });
             }
@@ -32759,8 +32764,8 @@ var MetaTraderUI = function () {
 
     var setDemoTopupStatus = function setDemoTopupStatus() {
         var el_demo_topup_btn = getElementById('demo_topup_btn');
-        var el_demo_topup_info = el_demo_topup_btn.previousSibling;
-        var el_loading = el_demo_topup_btn.parentElement.firstChild;
+        var el_demo_topup_info = getElementById('demo_topup_info');
+        var el_loading = getElementById('demo_topup_loading');
         var acc_type = Client.get('mt5_account');
         var is_demo = accounts_info[acc_type].is_demo;
         var topup_info_text = localize('You can top up your demo account with an additional [_1] if your balance falls below [_2].', [MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00', MetaTraderConfig.getCurrency(acc_type) + ' 1,000.00']);
