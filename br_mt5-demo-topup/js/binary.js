@@ -14733,6 +14733,7 @@ var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var isCryptocurrency = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").isCryptocurrency;
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
+var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var paramsHash = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").paramsHash;
 var urlFor = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlFor;
 var getPropertyValue = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
@@ -14772,6 +14773,7 @@ var Cashier = function () {
 
     var displayTopUpButton = function displayTopUpButton() {
         BinarySocket.wait('balance').then(function (response) {
+            var el_virtual_topup_info = getElementById('virtual_topup_info');
             var balance = +response.balance.balance;
             var can_topup = balance <= 1000;
             var top_up_id = '#VRT_topup_link';
@@ -14785,6 +14787,7 @@ var Cashier = function () {
                 href = href || urlFor('/cashier/top_up_virtualws');
                 new_el.href = href;
             }
+            el_virtual_topup_info.innerText = can_topup ? localize('Your virtual account balance is currently below [_1]. You may top up your account with an additional [_2].', [Client.get('currency') + ' 1,000.00', Client.get('currency') + ' 10,000.00']) : localize('You can top up your virtual account with an additional [_1] if your balance falls below [_2].', [Client.get('currency') + ' 10,000.00', Client.get('currency') + ' 1,000.00']);
             $a.replaceWith($('<a/>', new_el));
             $(top_up_id).parent().setVisibility(1);
         });
@@ -32764,15 +32767,12 @@ var MetaTraderUI = function () {
 
     var setDemoTopupStatus = function setDemoTopupStatus() {
         var el_demo_topup_btn = getElementById('demo_topup_btn');
-        var el_demo_topup_info = getElementById('demo_topup_info');
         var el_loading = getElementById('demo_topup_loading');
         var acc_type = Client.get('mt5_account');
         var is_demo = accounts_info[acc_type].is_demo;
-        var topup_info_text = localize('You can top up your demo account with an additional [_1] if your balance falls below [_2].', [MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00', MetaTraderConfig.getCurrency(acc_type) + ' 1,000.00']);
         var topup_btn_text = localize('Get [_1]', MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00');
 
         el_loading.setVisibility(0);
-        el_demo_topup_info.innerText = topup_info_text;
         el_demo_topup_btn.firstChild.innerText = topup_btn_text;
 
         if (is_demo) {
@@ -32780,21 +32780,24 @@ var MetaTraderUI = function () {
             var min_balance = 1000;
 
             if (balance < min_balance) {
-                enableDemoTopup(true);
+                enableDemoTopup(true, acc_type);
             } else {
-                enableDemoTopup(false);
+                enableDemoTopup(false, acc_type);
             }
         }
     };
 
-    var enableDemoTopup = function enableDemoTopup(is_enabled) {
+    var enableDemoTopup = function enableDemoTopup(is_enabled, acc_type) {
         var el_demo_topup_btn = getElementById('demo_topup_btn');
+        var el_demo_topup_info = getElementById('demo_topup_info');
 
         var function_to_call = is_enabled ? 'addEventListener' : 'removeEventListener';
         el_demo_topup_btn[function_to_call]('click', topup_demo);
 
         el_demo_topup_btn.classList.add(is_enabled ? 'button' : 'button-disabled');
         el_demo_topup_btn.classList.remove(is_enabled ? 'button-disabled' : 'button');
+
+        el_demo_topup_info.innerText = is_enabled ? localize('Your demo account balance is currently below [_1]. You may top up your account with an additional [_2].', [MetaTraderConfig.getCurrency(acc_type) + ' 1,000.00', MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00']) : localize('You can top up your demo account with an additional [_1] if your balance falls below [_2].', [MetaTraderConfig.getCurrency(acc_type) + ' 10,000.00', MetaTraderConfig.getCurrency(acc_type) + ' 1,000.00']);
     };
 
     var setTopupLoading = function setTopupLoading(is_loading) {
