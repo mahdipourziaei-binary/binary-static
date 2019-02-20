@@ -32795,7 +32795,6 @@ var MetaTraderUI = function () {
 
         el_demo_topup_btn.classList.add(is_enabled ? 'button' : 'button-disabled');
         el_demo_topup_btn.classList.remove(is_enabled ? 'button-disabled' : 'button');
-        el_demo_topup_btn.previousSibling.setVisibility(!is_enabled);
     };
 
     var setTopupLoading = function setTopupLoading(is_loading) {
