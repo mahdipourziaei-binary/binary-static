@@ -32779,7 +32779,7 @@ var MetaTraderUI = function () {
             var balance = +accounts_info[acc_type].info.balance;
             var min_balance = 1000;
 
-            if (balance < min_balance) {
+            if (balance <= min_balance) {
                 enableDemoTopup(true, acc_type);
             } else {
                 enableDemoTopup(false, acc_type);
