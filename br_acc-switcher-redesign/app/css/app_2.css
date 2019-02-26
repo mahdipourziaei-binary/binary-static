@@ -219,7 +219,6 @@ html {
 .symbols:before {
   font-family: 'BinarySymbols';
   font-style: normal;
-  margin-right: 0.2em;
   pointer-events: none; }
 
 .symbols, .symbols:before {
