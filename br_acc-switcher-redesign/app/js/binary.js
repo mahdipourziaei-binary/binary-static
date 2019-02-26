@@ -7195,7 +7195,8 @@ var AccountInfo = function AccountInfo(_ref) {
                     className: 'acc-info__id',
                     title: loginid
                 },
-                loginid
+                loginid,
+                '\xA0'
             ),
             typeof balance !== 'undefined' && _react2.default.createElement(
                 'p',
