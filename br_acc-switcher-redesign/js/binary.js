@@ -8988,6 +8988,7 @@ var ThirdPartyLinks = function () {
             return false;
         }
         return !!destination.host && !new RegExp('^.*\\.' + (getCurrentBinaryDomain() || 'binary\\.com') + '$').test(destination.host) // destination host is not binary subdomain
+        && !new RegExp('^.*\\.binary\\.bot$').test(destination.host) // destination host is not binary subdomain
         && !/www.(betonmarkets|xodds).com/.test(destination.host) // destination host is not binary old domain
         && window.location.host !== destination.host;
     };
@@ -23055,8 +23056,8 @@ var TradingEvents = function () {
                 // as submarket change has modified the underlying list so we need to manually
                 // fire change event for underlying
                 document.querySelectorAll('#underlying option:enabled')[0].selected = 'selected';
-                var _event = new Event('change');
-                elem.dispatchEvent(_event);
+                var event = new Event('change');
+                elem.dispatchEvent(event);
             }
         });
 
@@ -23083,7 +23084,7 @@ var TradingEvents = function () {
             var id = e.currentTarget.getAttribute('data-purchase-id');
             var ask_price = e.currentTarget.getAttribute('data-ask-price');
             var params = { buy: id, price: ask_price, passthrough: {} };
-            Array.prototype.slice.call(event.currentTarget.attributes).filter(function (attr) {
+            Array.prototype.slice.call(e.currentTarget.attributes).filter(function (attr) {
                 if (!/^data/.test(attr.name) || /^data-balloon$/.test(attr.name) || /data-balloon/.test(attr.name)) {
                     return false;
                 }

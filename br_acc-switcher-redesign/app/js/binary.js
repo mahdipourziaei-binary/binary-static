@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio":"portfolio","self_exclusion":"self_exclusion","settings":"settings","statement":"statement","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"65bbc216d15848354232","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"8b3665b7e8bf3e4a7c08","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio":"27783daaa5e678e49540","self_exclusion":"226ac0134b0354423868","settings":"897ff546fbd9f45f9d55","statement":"abc9ff34c0540fd8fbb7","vendors~smart_chart":"4ef1863eda19bb87af24","smart_chart":"914a40831d33d765d320"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio":"portfolio","self_exclusion":"self_exclusion","settings":"settings","statement":"statement","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"a07416dc903d3942d9a3","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"8b3665b7e8bf3e4a7c08","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio":"27783daaa5e678e49540","self_exclusion":"226ac0134b0354423868","settings":"897ff546fbd9f45f9d55","statement":"fedc491c185e8c17849d","vendors~smart_chart":"c2ded38486a6d9befede","smart_chart":"914a40831d33d765d320"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -2345,8 +2345,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _iconError = __webpack_require__(/*! ../../../../Assets/Common/icon-error.jsx */ "./src/javascript/app_2/Assets/Common/icon-error.jsx");
 
-var _iconError2 = _interopRequireDefault(_iconError);
-
 var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
 
 var _localize2 = __webpack_require__(/*! ../localize.jsx */ "./src/javascript/app_2/App/Components/Elements/localize.jsx");
@@ -2371,7 +2369,7 @@ var ErrorComponent = function ErrorComponent(_ref) {
     return _react2.default.createElement(
         'div',
         { className: 'error-container' },
-        _react2.default.createElement(_iconError2.default, { type: type }),
+        _react2.default.createElement(_iconError.IconError, { type: type }),
         _react2.default.createElement(
             'p',
             null,
@@ -2473,7 +2471,7 @@ var FullPageModal = function FullPageModal(_ref) {
                     _react2.default.createElement(
                         'div',
                         {
-                            className: 'full-page-modal__button btn flat effect primary',
+                            className: 'full-page-modal__button btn btn--flat effect btn--primary',
                             onClick: onCancel
                         },
                         _react2.default.createElement(
@@ -2485,7 +2483,7 @@ var FullPageModal = function FullPageModal(_ref) {
                     _react2.default.createElement(
                         'div',
                         {
-                            className: 'full-page-modal__button btn flat effect primary',
+                            className: 'full-page-modal__button btn btn--flat effect btn--primary',
                             onClick: onConfirm
                         },
                         _react2.default.createElement(
@@ -2759,7 +2757,7 @@ var PopConfirmElement = function PopConfirmElement(_ref) {
             _react2.default.createElement(
                 'div',
                 {
-                    className: 'popconfirm__button btn flat effect',
+                    className: 'popconfirm__button btn btn--flat effect',
                     onClick: onClose
                 },
                 _react2.default.createElement(
@@ -2771,7 +2769,7 @@ var PopConfirmElement = function PopConfirmElement(_ref) {
             _react2.default.createElement(
                 'div',
                 {
-                    className: 'popconfirm__button btn flat effect',
+                    className: 'popconfirm__button btn btn--flat effect',
                     onClick: onConfirm
                 },
                 _react2.default.createElement(
@@ -5229,9 +5227,9 @@ var Dropdown = function (_React$Component) {
                 {
                     ref: this.setWrapperRef,
                     className: (0, _classnames2.default)('dropdown-container', this.props.className, {
-                        'dropdown-container--left': this.props.is_alignment_left,
-                        'dropdown-container--show': this.state.is_list_visible,
-                        'dropdown-container--disabled': is_single_option
+                        'dropdown--left': this.props.is_alignment_left,
+                        'dropdown--show': this.state.is_list_visible,
+                        'dropdown--disabled': is_single_option
                     })
                 },
                 _react2.default.createElement(
@@ -5246,12 +5244,12 @@ var Dropdown = function (_React$Component) {
                     },
                     _react2.default.createElement(
                         'span',
-                        { name: this.props.name, value: this.props.value },
+                        { name: this.props.name, value: this.props.value, className: 'dropdown__display-text' },
                         (0, _helpers.getDisplayText)(this.props.list, this.props.value)
                     )
                 ),
-                !is_single_option && _react2.default.createElement(_Common.IconArrow, { className: (0, _classnames2.default)('select-arrow', {
-                        'select-arrow--left': this.props.is_alignment_left
+                !is_single_option && _react2.default.createElement(_Common.IconArrow, { className: (0, _classnames2.default)('dropdown__select-arrow', {
+                        'dropdown__select-arrow--left': this.props.is_alignment_left
                     })
                 }),
                 _react2.default.createElement(
@@ -5260,9 +5258,9 @@ var Dropdown = function (_React$Component) {
                         'in': this.state.is_list_visible,
                         timeout: 100,
                         classNames: {
-                            enter: 'dropdown__list--enter',
-                            enterDone: 'dropdown__list--enter--done',
-                            exit: 'dropdown__list--exit'
+                            enter: 'dropdown__list--enter ' + (this.props.is_alignment_left ? 'dropdown__list--left--enter' : ''),
+                            enterDone: 'dropdown__list--enter-done ' + (this.props.is_alignment_left ? 'dropdown__list--left--enter-done' : ''),
+                            exit: 'dropdown__list--exit ' + (this.props.is_alignment_left ? 'dropdown__list--left--exit' : '')
                         },
                         onEntered: setListWidth,
                         unmountOnExit: true
@@ -5308,11 +5306,7 @@ var Dropdown = function (_React$Component) {
                                         _react2.default.createElement(
                                             'div',
                                             { className: 'list__label' },
-                                            _react2.default.createElement(
-                                                'span',
-                                                null,
-                                                key
-                                            )
+                                            key
                                         ),
                                         _react2.default.createElement(_items2.default, {
                                             highlightedIdx: _this2.state.curr_index,
@@ -5506,7 +5500,7 @@ var Items = function Items(_ref) {
                 },
                 _react2.default.createElement(
                     'span',
-                    null,
+                    { className: 'list__item-text' },
                     item.text
                 )
             )
@@ -5852,6 +5846,8 @@ var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var Dialog = function Dialog(_ref) {
@@ -5895,16 +5891,16 @@ var Dialog = function Dialog(_ref) {
 
     return _react2.default.createElement(
         'div',
-        { className: (0, _classnames2.default)(preClass + '-dialog', '' + className) },
+        { className: (0, _classnames2.default)(preClass + '__dialog', '' + className) },
         _react2.default.createElement(
             'div',
-            { className: preClass + '-selector' },
+            { className: preClass + '__selector' },
             _react2.default.createElement(
                 'div',
-                { className: preClass + '-hours' },
+                { className: preClass + '__selector--hours' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'list-title center-text' },
+                    { className: (0, _classnames2.default)(preClass + '__selector-list-title', 'center-text') },
                     _react2.default.createElement(
                         'strong',
                         null,
@@ -5913,14 +5909,14 @@ var Dialog = function Dialog(_ref) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'list-container' },
+                    null,
                     hours.map(function (h, key) {
                         to_compare_moment.hour(h).minute(minute);
                         var is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment);
                         return _react2.default.createElement(
                             'div',
                             {
-                                className: (0, _classnames2.default)('list-item', { 'selected': hour === h }, { 'disabled': !is_enabled }),
+                                className: (0, _classnames2.default)(preClass + '__selector-list-item', _defineProperty({}, preClass + '__selector-list-item--selected', hour === h), _defineProperty({}, preClass + '__selector-list-item--disabled', !is_enabled)),
                                 key: key,
                                 onClick: function onClick() {
                                     selectOption('h', h, value, is_enabled);
@@ -5933,10 +5929,10 @@ var Dialog = function Dialog(_ref) {
             ),
             _react2.default.createElement(
                 'div',
-                { className: preClass + '-minutes' },
+                { className: preClass + '__selector--minutes' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'list-title center-text' },
+                    { className: (0, _classnames2.default)(preClass + '__selector-list-title', 'center-text') },
                     _react2.default.createElement(
                         'strong',
                         null,
@@ -5945,14 +5941,14 @@ var Dialog = function Dialog(_ref) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'list-container' },
+                    null,
                     minutes.map(function (mm, key) {
                         to_compare_moment.hour(hour).minute(mm);
                         var is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment, 'minute');
                         return _react2.default.createElement(
                             'div',
                             {
-                                className: (0, _classnames2.default)('list-item', { 'selected': minute === mm }, { 'disabled': !is_enabled }),
+                                className: (0, _classnames2.default)(preClass + '__selector-list-item', _defineProperty({}, preClass + '__selector-list-item--selected', minute === mm), _defineProperty({}, preClass + '__selector-list-item--disabled', !is_enabled)),
                                 key: key,
                                 onClick: function onClick() {
                                     selectOption('m', mm, value, is_enabled);
@@ -6051,6 +6047,8 @@ var _iconClock = __webpack_require__(/*! ../../../../Assets/Common/icon-clock.js
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -6125,7 +6123,7 @@ var TimePicker = function (_React$Component) {
                 'div',
                 {
                     ref: this.saveRef,
-                    className: (0, _classnames2.default)(prefix_class, { 'padding': this.props.padding })
+                    className: (0, _classnames2.default)(prefix_class, _defineProperty({}, prefix_class + '--padding', this.props.padding))
                 },
                 is_nativepicker ? _react2.default.createElement('input', {
                     type: 'time',
@@ -6138,7 +6136,6 @@ var TimePicker = function (_React$Component) {
                 }) : _react2.default.createElement(
                     _react2.default.Fragment,
                     null,
-                    _react2.default.createElement(_iconClock.IconClock, { className: 'time-picker-icon' }),
                     _react2.default.createElement(_inputField2.default, {
                         error_messages: validation_errors,
                         type: 'text',
@@ -6150,14 +6147,15 @@ var TimePicker = function (_React$Component) {
                         name: name,
                         placeholder: placeholder
                     }),
+                    _react2.default.createElement(_iconClock.IconClock, { className: prefix_class + '__icon' }),
                     _react2.default.createElement(
                         _reactTransitionGroup.CSSTransition,
                         {
                             'in': this.state.is_open,
                             classNames: {
-                                enter: 'time-picker-dialog-enter',
-                                enterDone: 'time-picker-dialog-enter-done',
-                                exit: 'time-picker-dialog-exit'
+                                enter: 'time-picker__dialog--enter',
+                                enterDone: 'time-picker__dialog--enter-done',
+                                exit: 'time-picker__dialog--exit'
                             },
                             timeout: 100,
                             unmountOnExit: true
@@ -6321,7 +6319,7 @@ var Button = function Button(_ref) {
         },
         _react2.default.createElement(
             'span',
-            { className: classNameSpan || undefined },
+            { className: (0, _classnames2.default)('btn__text', classNameSpan) },
             text
         ),
         children
@@ -6565,9 +6563,11 @@ var InputField = function InputField(_ref) {
         display_value = is_unit_at_right ? value + ' ' + unit : unit + ' ' + value;
     }
 
+    var is_increment_input = is_incrementable && type === 'number';
+
     var input = _react2.default.createElement('input', {
         checked: checked ? 'checked' : '',
-        className: (0, _classnames2.default)('input', { error: has_error }, classNameInput),
+        className: (0, _classnames2.default)(is_increment_input ? 'input-wrapper__input' : '', 'input', { 'input--error': has_error }, classNameInput),
         disabled: is_disabled,
         'data-for': 'error_tooltip_' + name,
         'data-value': data_value,
@@ -6622,16 +6622,16 @@ var InputField = function InputField(_ref) {
             { className: (0, _classnames2.default)('', { 'with-label': label }), alignment: 'left', message: has_error ? error_messages[0] : null },
             !!label && _react2.default.createElement(
                 'label',
-                { htmlFor: name, className: 'input-label' },
+                { htmlFor: name, className: 'input-field__label' },
                 label
             ),
             !!prefix && _react2.default.createElement('span', { className: (0, _classnames2.default)(classNamePrefix, 'symbols', prefix.toLowerCase()) }),
             !!helper && _react2.default.createElement(
                 'span',
-                { className: 'input-helper' },
+                { className: 'input-field__helper' },
                 helper
             ),
-            is_incrementable && type === 'number' ? input_increment : input
+            is_increment_input ? input_increment : input
         )
     );
 };
@@ -7287,7 +7287,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var DepositButton = function DepositButton(_ref) {
     var className = _ref.className;
     return _react2.default.createElement(_button2.default, {
-        className: (0, _classnames2.default)(className, 'primary orange'),
+        className: (0, _classnames2.default)(className, 'btn--primary btn--primary--orange'),
         has_effect: true,
         text: (0, _localize.localize)('Deposit')
         // TODO: Redirect to Deposit page in Cashier
@@ -7468,7 +7468,7 @@ var InstallPWAButton = function InstallPWAButton(_ref) {
     };
 
     return _react2.default.createElement(_button2.default, {
-        className: (0, _classnames2.default)(className, 'primary orange'),
+        className: (0, _classnames2.default)(className, 'btn--primary btn--primary--orange'),
         has_effect: true,
         text: (0, _localize.localize)('Install'),
         onClick: showPrompt
@@ -7525,7 +7525,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var LoginButton = function LoginButton(_ref) {
     var className = _ref.className;
     return _react2.default.createElement(_button2.default, {
-        className: (0, _classnames2.default)(className, 'secondary orange'),
+        className: (0, _classnames2.default)(className, 'btn--secondary btn--secondary--orange'),
         has_effect: true,
         text: (0, _localize.localize)('Log in'),
         onClick: _login.redirectToLogin
@@ -7742,7 +7742,7 @@ var UpgradeButton = function UpgradeButton(_ref) {
         onClick = _ref.onClick;
     return _react2.default.createElement(_button2.default, {
         id: 'acc-balance-btn',
-        className: (0, _classnames2.default)(className, 'primary orange'),
+        className: (0, _classnames2.default)(className, 'btn--primary btn--primary--orange'),
         has_effect: true,
         text: (0, _localize.localize)('Upgrade'),
         onClick: onClick
@@ -7920,7 +7920,7 @@ var ButtonLink = function ButtonLink(_ref) {
     return _react2.default.createElement(
         _reactRouterDom.Link,
         {
-            className: (0, _classnames2.default)('btn is-link', className, 'effect'),
+            className: (0, _classnames2.default)('btn btn--link', className, 'effect'),
             to: to
         },
         children
@@ -11522,6 +11522,18 @@ Object.keys(_iconClose).forEach(function (key) {
   });
 });
 
+var _iconError = __webpack_require__(/*! ./icon-error.jsx */ "./src/javascript/app_2/Assets/Common/icon-error.jsx");
+
+Object.keys(_iconError).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _iconError[key];
+    }
+  });
+});
+
 var _iconExclamation = __webpack_require__(/*! ./icon-exclamation.jsx */ "./src/javascript/app_2/Assets/Common/icon-exclamation.jsx");
 
 Object.keys(_iconExclamation).forEach(function (key) {
@@ -12835,6 +12847,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IconTradeCategory = undefined;
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -12848,7 +12864,8 @@ var _Types = __webpack_require__(/*! ../Types */ "./src/javascript/app_2/Assets/
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var IconTradeCategory = function IconTradeCategory(_ref) {
-    var category = _ref.category;
+    var category = _ref.category,
+        className = _ref.className;
 
     var IconCategory = void 0;
     if (category) {
@@ -13117,13 +13134,14 @@ var IconTradeCategory = function IconTradeCategory(_ref) {
     }
     return _react2.default.createElement(
         'div',
-        { className: 'categories-container' },
+        { className: (0, _classnames2.default)('categories-container', className) },
         IconCategory
     );
 };
 
 IconTradeCategory.propTypes = {
-    category: _propTypes2.default.string
+    category: _propTypes2.default.string,
+    className: _propTypes2.default.string
 };
 
 exports.IconTradeCategory = IconTradeCategory;
@@ -14761,7 +14779,7 @@ var SellButton = function SellButton(_ref) {
         null,
         _react2.default.createElement(_tooltip2.default, { alignment: 'left', icon: 'question', message: sell_message }),
         _react2.default.createElement(_button2.default, {
-            className: 'secondary green',
+            className: 'btn--secondary btn--secondary--green',
             is_disabled: !is_valid_to_sell || is_sell_requested,
             text: (0, _localize.localize)('Sell'),
             onClick: onClickSell
@@ -15027,7 +15045,7 @@ var ContractDetails = function (_React$Component) {
                         _react2.default.createElement(
                             _reactRouterDom.Link,
                             {
-                                className: 'btn secondary orange',
+                                className: 'btn btn--link btn--secondary btn--secondary--orange',
                                 to: _routes2.default.trade,
                                 onClick: this.props.onClickNewTrade
                             },
@@ -15727,7 +15745,7 @@ var ContractTypeDialog = function ContractTypeDialog(_ref) {
     return is_mobile ? _react2.default.createElement(
         _react2.default.Fragment,
         null,
-        _react2.default.createElement('span', { className: 'select-arrow' }),
+        _react2.default.createElement('span', { className: 'contract-type-widget__select-arrow' }),
         _react2.default.createElement(
             _fullScreenDialog2.default,
             {
@@ -15742,15 +15760,19 @@ var ContractTypeDialog = function ContractTypeDialog(_ref) {
         {
             'in': open,
             timeout: 100,
-            classNames: 'contracts-popup-list',
+            classNames: {
+                enter: 'contracts-type-dialog--enter',
+                enterDone: 'contracts-type-dialog--enterDone',
+                exit: 'contracts-type-dialog--exit'
+            },
             unmountOnExit: true
         },
         _react2.default.createElement(
             'div',
-            { className: 'contracts-popup-list' },
+            { className: 'contracts-type-dialog' },
             _react2.default.createElement(
                 'div',
-                { className: 'list-container' },
+                { className: 'contracts-type-dialog__list-wrapper' },
                 children
             )
         )
@@ -15809,22 +15831,22 @@ var ContractTypeItem = function ContractTypeItem(_ref) {
             'div',
             {
                 key: idx,
-                className: 'list-item ' + (value === contract.value ? 'selected' : ''),
+                className: 'contract-type-item ' + (value === contract.value ? 'contract-type-item--selected' : ''),
                 name: name,
                 value: contract.value,
                 onClick: function onClick(e) {
                     return handleSelect(contract, e);
                 }
             },
-            _react2.default.createElement(_Categories.IconTradeCategory, { category: contract.value }),
+            _react2.default.createElement(_Categories.IconTradeCategory, { category: contract.value, className: 'contract-type-item__icon-wrapper' }),
             _react2.default.createElement(
                 'span',
-                { className: 'contract-title' },
+                { className: 'contract-type-item__title' },
                 contract.text
             ),
             _react2.default.createElement(
                 'div',
-                { id: 'info-icon', className: 'trade-type-info-icon', onClick: function onClick() {
+                { id: 'info-icon', className: 'contract-type-item__icon', onClick: function onClick() {
                         return handleInfoClick(contract);
                     } },
                 _react2.default.createElement(_Common.IconInfoOutline, null)
@@ -15889,10 +15911,10 @@ var ContractTypeList = function ContractTypeList(_ref) {
                 { key: key },
                 _react2.default.createElement(
                     'div',
-                    { className: 'list-group' },
+                    { className: 'contract-type-list' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'list-label' },
+                        { className: 'contract-type-list__label' },
                         _react2.default.createElement(
                             'span',
                             null,
@@ -15901,7 +15923,7 @@ var ContractTypeList = function ContractTypeList(_ref) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'list-items' },
+                        { className: 'contract-type-list__contracts-wrapper' },
                         _react2.default.createElement(_contractTypeItem2.default, {
                             contracts: list[key],
                             name: name,
@@ -15943,6 +15965,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -16094,17 +16120,6 @@ var ContractTypeWidget = function (_React$PureComponent) {
             return text;
         };
 
-        _this.getStyles = function () {
-            var container_classes = ['contracts-popup-container'];
-            if (_this.props.is_mobile) {
-                container_classes.push('mobile-only');
-            } else {
-                container_classes.push('desktop-only');
-            }
-            if (_this.state.is_dialog_open) container_classes.push('show');
-            return container_classes;
-        };
-
         _this.getNavigationList = function () {
             var navigationList = [];
             var list = _this.props.list;
@@ -16139,22 +16154,22 @@ var ContractTypeWidget = function (_React$PureComponent) {
     }, {
         key: 'render',
         value: function render() {
-            var container_classes = this.getStyles();
-
             return _react2.default.createElement(
                 'div',
                 {
                     ref: this.setWrapperRef,
-                    className: container_classes.join(' '),
+                    className: 'contract-type-widget',
                     tabIndex: '0'
                 },
                 _react2.default.createElement(
                     'div',
                     {
-                        className: 'contracts-popup-display ' + (this.state.is_dialog_open ? 'clicked' : ''),
+                        className: (0, _classnames2.default)('contract-type-widget__display', {
+                            'contract-type-widget__display--clicked': this.state.is_dialog_open
+                        }),
                         onClick: this.onWidgetClick
                     },
-                    _react2.default.createElement(_Categories.IconTradeCategory, { category: this.props.value }),
+                    _react2.default.createElement(_Categories.IconTradeCategory, { category: this.props.value, className: 'contract-type-widget__icon-wrapper' }),
                     _react2.default.createElement(
                         'span',
                         { name: this.props.name, value: this.props.value },
@@ -16405,7 +16420,7 @@ var ErrorBalance = function ErrorBalance() {
             (0, _localize.localize)('You have an insufficient amount of balance.')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'purchase-container__error-login-btn secondary orange',
+            className: 'purchase-container__error-login-btn btn--secondary btn--secondary--orange',
             classNameSpan: 'purchase-container__error-login-btn-span',
             has_effect: true,
             text: (0, _localize.localize)('Deposit')
@@ -16502,7 +16517,7 @@ var ErrorLogin = function ErrorLogin() {
             (0, _localize.localize)('Please log in to purchase the contract')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'purchase-container__error-login-btn secondary orange',
+            className: 'purchase-container__error-login-btn btn--secondary btn--secondary--orange',
             classNameSpan: 'purchase-container__error-login-btn-span',
             has_effect: true,
             text: (0, _localize.localize)('log in'),
@@ -16899,7 +16914,7 @@ var PurchaseLock = function PurchaseLock(_ref) {
             (0, _localize.localize)('Purchase Locked')
         ),
         _react2.default.createElement(_button2.default, {
-            className: 'purchase-container__lock-button flat secondary orange',
+            className: 'purchase-container__lock-button btn--flat btn--secondary btn--secondary--orange',
             has_effect: true,
             onClick: onClick,
             text: (0, _localize.localize)('Unlock')
@@ -18112,7 +18127,7 @@ var Amount = function Amount(_ref) {
                 name: 'basis',
                 value: basis,
                 onChange: onChange,
-                className: 'no-margin'
+                className: 'dropdown--no-margin'
             }),
             !is_single_currency && _react2.default.createElement(_DropDown2.default, {
                 is_alignment_left: true,
@@ -18424,17 +18439,21 @@ var TradeTypeInfoDialog = function TradeTypeInfoDialog(_ref) {
     ) : _react2.default.createElement(
         _reactTransitionGroup.CSSTransition,
         {
-            classNames: 'trade-type-info-popup',
+            classNames: {
+                enter: 'trade-type-info-dialog--enter',
+                enterDone: 'trade-type-info-dialog--enterDone',
+                exit: 'trade-type-info-dialog--exit'
+            },
             'in': open,
             timeout: 100,
             unmountOnExit: true
         },
         _react2.default.createElement(
             'div',
-            { className: 'trade-type-info-popup' },
+            { className: 'trade-type-info-dialog' },
             _react2.default.createElement(
                 'div',
-                { className: 'trade-type-info' },
+                { className: 'trade-type-info-dialog__info-wrapper' },
                 children
             )
         )
@@ -18466,6 +18485,10 @@ exports.default = TradeTypeInfoDialog;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
@@ -18507,7 +18530,7 @@ var TradeTypeInfoItem = function TradeTypeInfoItem(_ref) {
         null,
         !is_mobile && _react2.default.createElement(
             'div',
-            { className: 'info-header' },
+            { className: 'trade-type-info-dialog__header' },
             _react2.default.createElement(
                 'span',
                 { onClick: function onClick() {
@@ -18523,12 +18546,12 @@ var TradeTypeInfoItem = function TradeTypeInfoItem(_ref) {
         ),
         _react2.default.createElement(
             'div',
-            { className: 'info-gif' },
+            { className: 'trade-type-info-dialog__gif' },
             'gif explanation'
         ),
         _react2.default.createElement(
             'div',
-            { className: 'info-content' },
+            { className: 'trade-type-info-dialog__content' },
             _react2.default.createElement(
                 _ttReactCustomScrollbars.Scrollbars,
                 {
@@ -18540,30 +18563,32 @@ var TradeTypeInfoItem = function TradeTypeInfoItem(_ref) {
         ),
         _react2.default.createElement(
             'div',
-            { className: 'info-choose' },
-            _react2.default.createElement(_button2.default, { text: (0, _localize.localize)('Choose'), onClick: function onClick() {
+            null,
+            _react2.default.createElement(_button2.default, { className: 'trade-type-info-dialog__choose-button', text: (0, _localize.localize)('Choose'), onClick: function onClick() {
                     return onSubmitButtonClick(item);
                 } })
         ),
         _react2.default.createElement(
             'div',
-            { className: 'info-navigation' },
+            { className: 'trade-type-info-navigation' },
             _react2.default.createElement(
                 'div',
-                { className: 'info-navigation__icon', onClick: function onClick() {
+                { className: 'trade-type-info-navigation__icon', onClick: function onClick() {
                         return handlePrevClick(navigationList);
                     } },
                 _react2.default.createElement(_iconChevronLeft.IconChevronLeft, null)
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'info-navigation__list' },
+                { className: 'trade-type-info-navigation__list' },
                 navigationList.map(function (contract, idx) {
                     return _react2.default.createElement(
                         _react2.default.Fragment,
                         { key: idx },
                         _react2.default.createElement('div', {
-                            className: 'circle-button ' + (contract.value === item.value ? 'active' : ''),
+                            className: (0, _classnames2.default)('trade-type-info-navigation__circle-button', {
+                                'trade-type-info-navigation__circle-button--active': contract.value === item.value
+                            }),
                             onClick: function onClick() {
                                 return handleNavigationClick(contract);
                             }
@@ -18573,7 +18598,7 @@ var TradeTypeInfoItem = function TradeTypeInfoItem(_ref) {
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'info-navigation__icon', onClick: function onClick() {
+                { className: 'trade-type-info-navigation__icon', onClick: function onClick() {
                         return handleNextClick(navigationList);
                     } },
                 _react2.default.createElement(_iconChevronRight.IconChevronRight, null)
@@ -18947,7 +18972,7 @@ var Purchase = function Purchase(_ref) {
             {
                 is_disabled: is_disabled,
                 id: 'purchase_' + type,
-                className: 'primary btn-purchase',
+                className: 'btn--primary btn-purchase',
                 has_effect: true,
                 onClick: function onClick() {
                     onClickPurchase(info.id, info.stake, type);

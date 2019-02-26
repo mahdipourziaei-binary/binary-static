@@ -1,5 +1,5 @@
 {
-  "404.js": "/br_acc-switcher-redesign/app/js/404-65bbc216d15848354232.js",
+  "404.js": "/br_acc-switcher-redesign/app/js/404-a07416dc903d3942d9a3.js",
   "account_password.js": "/br_acc-switcher-redesign/app/js/account_password-5b98c5e0011cf272df7f.js",
   "api_toke.js": "/br_acc-switcher-redesign/app/js/api_toke-856a16352b5b0f7b5fb2.js",
   "authorized_application.js": "/br_acc-switcher-redesign/app/js/authorized_application-41eb62c13df5f986ea68.js",
@@ -18,7 +18,7 @@
   "self_exclusion.js": "/br_acc-switcher-redesign/app/js/self_exclusion-226ac0134b0354423868.js",
   "settings.js": "/br_acc-switcher-redesign/app/js/settings-897ff546fbd9f45f9d55.js",
   "smart_chart.js": "/br_acc-switcher-redesign/app/js/smart_chart-914a40831d33d765d320.js",
-  "statement.js": "/br_acc-switcher-redesign/app/js/statement-abc9ff34c0540fd8fbb7.js",
+  "statement.js": "/br_acc-switcher-redesign/app/js/statement-fedc491c185e8c17849d.js",
   "vendor.js": "/br_acc-switcher-redesign/app/js/vendor.min.js",
-  "vendors~smart_chart.js": "/br_acc-switcher-redesign/app/js/vendors~smart_chart-4ef1863eda19bb87af24.js"
+  "vendors~smart_chart.js": "/br_acc-switcher-redesign/app/js/vendors~smart_chart-c2ded38486a6d9befede.js"
 }
