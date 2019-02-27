@@ -6065,6 +6065,9 @@ hr {
         .theme--dark .acc-switcher__list .acc-switcher__account--selected .acc-switcher__id {
           color: #ffffff;
           font-weight: 700; }
+          .theme--dark .acc-switcher__list .acc-switcher__account--selected .acc-switcher__id--virtual:before {
+            color: #ff9933;
+            border: 1px solid #ff9933; }
   .theme--dark .acc-switcher__logout span {
     color: #7f8397; }
   .theme--dark .acc-switcher__new-account-title {
