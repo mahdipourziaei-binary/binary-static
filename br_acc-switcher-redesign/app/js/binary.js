@@ -9969,7 +9969,13 @@ var IconArrow = function IconArrow(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', xmlns: 'http://www.w3.org/2000/svg' },
-        _react2.default.createElement('path', { className: (0, _classnames2.default)(classNamePath, 'color1-fill'), d: 'M13.164 5.13a.5.5 0 1 1 .672.74l-5.5 5a.5.5 0 0 1-.672 0l-5.5-5a.5.5 0 0 1 .672-.74L8 9.824l5.164-4.694z', fill: 'rgba(0, 0, 0, 0.8)', fillRule: 'nonzero' })
+        _react2.default.createElement('path', {
+            className: (0, _classnames2.default)(classNamePath, 'color1-fill'),
+            fill: '#000',
+            fillOpacity: '.8',
+            fillRule: 'evenodd',
+            d: 'M8 6.414l-5.293 5.293a1 1 0 0 1-1.414-1.414l6-6a1 1 0 0 1 1.414 0l6 6a1 1 0 1 1-1.414 1.414L8 6.414z'
+        })
     );
 };
 
@@ -12247,14 +12253,13 @@ var IconLogout = function IconLogout(_ref) {
     return _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 16 16' },
-        _react2.default.createElement(
-            'g',
-            { className: 'color1-fill', fill: '#2A3052', fillRule: 'nonzero' },
-            _react2.default.createElement('path', { d: 'M8.4 13.8c0 .8-.4 1.4-.9 1.4H2c-.5 0-1-.6-1-1.4V2.4C1 1.6 1.5 1 2 1h5.6c.5 0 .9.6.9 1.4 0 .2.1.4.4.4.2 0 .3-.2.3-.4C9.1 1.2 8.4.2 7.5.2H2C.9.2.2 1.2.2 2.4v11.4C.2 15 1 16 2 16h5.6c1 0 1.6-1 1.6-2.2 0-.2-.1-.4-.3-.4-.3 0-.4.2-.4.4z' }),
-            _react2.default.createElement('path', { d: 'M4.8 8.5h10.4c.2 0 .4-.2.4-.4s-.2-.4-.4-.4H4.8c-.2 0-.3.2-.3.4s.1.4.3.4z' }),
-            _react2.default.createElement('path', { d: 'M11.3 4.4l3.8 4h.6v-.6l-4-4a.4.4 0 0 0-.4 0c-.2.2-.2.4 0 .6z' }),
-            _react2.default.createElement('path', { d: 'M11.8 12.4l3.9-4v-.6a.4.4 0 0 0-.6 0l-3.8 4c-.2.2-.2.4 0 .6.1.2.3.2.5 0z' })
-        )
+        _react2.default.createElement('path', {
+            className: 'color1-fill',
+            fill: '#000',
+            fillOpacity: '.8',
+            fillRule: 'evenodd',
+            d: 'M14.293 8.5H8.5a.5.5 0 0 1 0-1h5.793l-1.647-1.646a.5.5 0 1 1 .708-.708l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 1 1-.708-.708L14.293 8.5zM11 10.962a.5.5 0 0 1 1 0v1.692C12 13.4 11.38 14 10.625 14h-5.25C4.619 14 4 13.401 4 12.654V3.346C4 2.6 4.62 2 5.375 2h5.25C11.381 2 12 2.599 12 3.346v1.692a.5.5 0 0 1-1 0V3.346C11 3.16 10.836 3 10.625 3h-5.25C5.165 3 5 3.159 5 3.346v9.308c0 .187.164.346.375.346h5.25c.21 0 .375-.159.375-.346v-1.692z'
+        })
     );
 };
 

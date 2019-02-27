@@ -2170,8 +2170,8 @@ hr {
     transition: -webkit-transform 0.25s ease;
     transition: transform 0.25s ease;
     transition: transform 0.25s ease, -webkit-transform 0.25s ease;
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
     -webkit-transform-origin: 50% 45%;
             transform-origin: 50% 45%; }
   .acc-info:hover:not(.show) {
@@ -2192,8 +2192,8 @@ hr {
     border-radius: 16px;
     pointer-events: none; }
   .acc-info--show .acc-info__select-arrow {
-    -webkit-transform: rotate(180deg);
-            transform: rotate(180deg); }
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
   .acc-info__button {
     margin: 0 1.6em; }
 
@@ -2335,6 +2335,9 @@ hr {
     .acc-switcher__account--selected .acc-switcher__id {
       color: #ffffff;
       font-weight: 700; }
+      .acc-switcher__account--selected .acc-switcher__id--virtual:before {
+        color: #ffffff;
+        border: 1px solid #ffffff; }
 
 .acc-switcher__logout {
   margin-top: 1.6em;
