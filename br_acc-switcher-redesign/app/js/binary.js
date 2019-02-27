@@ -7206,7 +7206,7 @@ var AccountInfo = function AccountInfo(_ref) {
                 }),
                 balance
             ),
-            _react2.default.createElement(_Common.IconArrow, { className: 'acc-info__select-arrow' })
+            _react2.default.createElement(_Common.IconArrow, { className: 'acc-info__select-arrow', is_bold: true })
         ),
         _react2.default.createElement(
             _reactTransitionGroup.CSSTransition,
@@ -9965,8 +9965,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var IconArrow = function IconArrow(_ref) {
     var className = _ref.className,
-        classNamePath = _ref.classNamePath;
-    return _react2.default.createElement(
+        classNamePath = _ref.classNamePath,
+        _ref$is_bold = _ref.is_bold,
+        is_bold = _ref$is_bold === undefined ? false : _ref$is_bold;
+    return is_bold ? _react2.default.createElement(
         'svg',
         { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', xmlns: 'http://www.w3.org/2000/svg' },
         _react2.default.createElement('path', {
@@ -9974,7 +9976,16 @@ var IconArrow = function IconArrow(_ref) {
             fill: '#000',
             fillOpacity: '.8',
             fillRule: 'evenodd',
-            d: 'M8 6.414l-5.293 5.293a1 1 0 0 1-1.414-1.414l6-6a1 1 0 0 1 1.414 0l6 6a1 1 0 1 1-1.414 1.414L8 6.414z'
+            d: 'M8 9.586l5.293-5.293a1 1 0 0 1 1.414 1.414l-6 6a1 1 0 0 1-1.414 0l-6-6a1 1 0 0 1 1.414-1.414L8 9.586z'
+        })
+    ) : _react2.default.createElement(
+        'svg',
+        { className: (0, _classnames2.default)('inline-icon', className), width: '16', height: '16', xmlns: 'http://www.w3.org/2000/svg' },
+        _react2.default.createElement('path', {
+            className: (0, _classnames2.default)(classNamePath, 'color1-fill'),
+            fill: 'rgba(0, 0, 0, 0.8)',
+            fillRule: 'nonzero',
+            d: 'M13.164 5.13a.5.5 0 1 1 .672.74l-5.5 5a.5.5 0 0 1-.672 0l-5.5-5a.5.5 0 0 1 .672-.74L8 9.824l5.164-4.694z'
         })
     );
 };
@@ -28194,7 +28205,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '15863'; // you can insert Application ID of your registered application here
+    var user_app_id = ''; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
