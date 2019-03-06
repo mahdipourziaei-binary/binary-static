@@ -10738,16 +10738,15 @@ var Header = function () {
         BinarySocket.wait('authorize', 'landing_company').then(function () {
             var get_account_status = void 0,
                 status = void 0;
-            var necessary_withdrawal_fields = Client.get('landing_company_shortcode') === 'costarica' ? State.getResponse('landing_company.financial_company.requirements.withdrawal') : [];
+            var isCR = Client.get('landing_company_shortcode') === 'costarica';
+            var necessary_withdrawal_fields = isCR ? State.getResponse('landing_company.financial_company.requirements.withdrawal') : [];
+            var necessary_signup_fields = isCR ? State.getResponse('landing_company.financial_company.requirements.signup') : [];
 
             var hasMissingRequiredField = function hasMissingRequiredField() {
-                var required_fields = ['account_opening_reason', 'address_line_1', 'address_city', 'phone', 'tax_identification_number', 'tax_residence'].concat(_toConsumableArray(necessary_withdrawal_fields), _toConsumableArray(Client.get('residence') === 'gb' ? ['address_postcode'] : []));
+                // eslint-disable-next-line no-nested-ternary
+                var required_fields = isCR ? [].concat(_toConsumableArray(necessary_signup_fields), _toConsumableArray(necessary_withdrawal_fields)) : Client.isAccountOfType('financial') ? ['account_opening_reason', 'address_line_1', 'address_city', 'phone', 'tax_identification_number', 'tax_residence'].concat(_toConsumableArray(Client.get('residence') === 'gb' ? ['address_postcode'] : [])) : [];
+
                 var get_settings = State.getResponse('get_settings');
-                console.log('------ FROM HERE ------'); // eslint-disable-line no-console
-                console.log(necessary_withdrawal_fields); // eslint-disable-line no-console
-                console.log(get_settings); // eslint-disable-line no-console
-                console.log(required_fields); // eslint-disable-line no-console
-                console.log('------ TO HERE ------'); // eslint-disable-line no-console
                 return required_fields.some(function (field) {
                     return !get_settings[field];
                 });
