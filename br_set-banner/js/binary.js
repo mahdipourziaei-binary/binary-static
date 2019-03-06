@@ -10743,6 +10743,11 @@ var Header = function () {
             var hasMissingRequiredField = function hasMissingRequiredField() {
                 var required_fields = ['account_opening_reason', 'address_line_1', 'address_city', 'phone', 'tax_identification_number', 'tax_residence'].concat(_toConsumableArray(necessary_withdrawal_fields), _toConsumableArray(Client.get('residence') === 'gb' ? ['address_postcode'] : []));
                 var get_settings = State.getResponse('get_settings');
+                console.log('------ FROM HERE ------'); // eslint-disable-line no-console
+                console.log(necessary_withdrawal_fields); // eslint-disable-line no-console
+                console.log(get_settings); // eslint-disable-line no-console
+                console.log(required_fields); // eslint-disable-line no-console
+                console.log('------ TO HERE ------'); // eslint-disable-line no-console
                 return required_fields.some(function (field) {
                     return !get_settings[field];
                 });

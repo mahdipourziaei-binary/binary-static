@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"cbb3f11fff75dd57bfef","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"09dd0c21e65b199cae97","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"4b11346e99830481ee15","portfolio":"fdae1dad85e7457b80a9","statement":"83be0ace500a644e5479","self_exclusion":"226ac0134b0354423868","settings":"43136b8784d24e616ce1","vendors~smart_chart":"c2ded38486a6d9befede","smart_chart":"0ed58ff43f746c8e010e"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"cbb3f11fff75dd57bfef","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"09dd0c21e65b199cae97","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"4b11346e99830481ee15","portfolio":"fdae1dad85e7457b80a9","statement":"83be0ace500a644e5479","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"c2ded38486a6d9befede","smart_chart":"0ed58ff43f746c8e010e"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -1702,7 +1702,7 @@ var DrawerHeader = exports.DrawerHeader = function DrawerHeader(_ref) {
     var alignment = _ref.alignment,
         closeBtn = _ref.closeBtn;
 
-    var drawer_header_class = (0, _classnames2.default)('drawer-header', alignment);
+    var drawer_header_class = (0, _classnames2.default)('drawer__header', alignment);
     return _react2.default.createElement(
         _react2.default.Fragment,
         null,
@@ -1711,15 +1711,15 @@ var DrawerHeader = exports.DrawerHeader = function DrawerHeader(_ref) {
             { className: drawer_header_class },
             _react2.default.createElement(
                 'div',
-                { className: 'icons btn-close', onClick: closeBtn },
-                _react2.default.createElement(_Common.IconClose, null)
+                { className: 'drawer__icons drawer__icons-btn-close', onClick: closeBtn },
+                _react2.default.createElement(_Common.IconClose, { className: 'drawer__icons-icon-close' })
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'notifications-header' },
+                { className: 'drawer__notifications' },
                 _react2.default.createElement(
                     'h4',
-                    null,
+                    { className: 'drawer__notifications-header' },
                     (0, _localize.localize)('all notifications')
                 )
             )
@@ -1728,13 +1728,13 @@ var DrawerHeader = exports.DrawerHeader = function DrawerHeader(_ref) {
             { className: drawer_header_class },
             _react2.default.createElement(
                 'div',
-                { className: 'icons btn-close', onClick: closeBtn },
-                _react2.default.createElement(_Common.IconClose, null)
+                { className: 'drawer__icons drawer__icons-btn-close', onClick: closeBtn },
+                _react2.default.createElement(_Common.IconClose, { className: 'drawer__icons-icon-close' })
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'icons brand-logo' },
-                _react2.default.createElement('div', { className: 'img' })
+                { className: 'drawer__icons drawer__brand-logo' },
+                _react2.default.createElement('div', { className: 'drawer__image' })
             )
         )
     );
@@ -1818,22 +1818,22 @@ var DrawerItem = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'drawer-item', onClick: this.drawerItemClicked },
+                { className: 'drawer__item', onClick: this.drawerItemClicked },
                 custom_action ? _react2.default.createElement(
                     'a',
-                    { href: 'javascript:;', onClick: custom_action },
+                    { href: 'javascript:;', className: 'drawer__item-link', onClick: custom_action },
                     _react2.default.createElement(
                         'span',
-                        null,
+                        { className: 'drawer__item-link-text' },
                         icon,
                         text
                     )
                 ) : _react2.default.createElement(
                     _Routes.BinaryLink,
-                    { to: link_to },
+                    { className: 'drawer__item-link', to: link_to },
                     _react2.default.createElement(
                         'span',
-                        null,
+                        { className: 'drawer__item-link-text' },
                         icon,
                         text
                     )
@@ -1942,18 +1942,18 @@ var DrawerItems = function (_React$Component) {
             var list_is_collapsed = {
                 visibility: is_collapsed ? 'visible' : 'hidden'
             };
-            var parent_item_class = (0, _classnames2.default)('parent-item', {
-                'show': is_collapsed
+            var parent_item_class = (0, _classnames2.default)('drawer__parent-item', {
+                'drawer__parent-item--show': is_collapsed
             });
-            var drawer_items_class = (0, _classnames2.default)('drawer-items', {
-                'show': is_collapsed
+            var drawer_items_class = (0, _classnames2.default)('drawer__items', {
+                'drawer__items--show': is_collapsed
             });
             return _react2.default.createElement(
                 _react2.default.Fragment,
                 null,
                 _react2.default.createElement(
                     'div',
-                    { className: 'drawer-item', onClick: this.collapseItems },
+                    { className: 'drawer__item', onClick: this.collapseItems },
                     _react2.default.createElement(
                         'span',
                         { className: parent_item_class },
@@ -2084,6 +2084,8 @@ var _drawerHeader = __webpack_require__(/*! ./drawer-header.jsx */ "./src/javasc
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -2136,17 +2138,21 @@ var Drawer = function (_React$Component) {
                 children = _props.children;
 
 
-            var drawer_bg_class = (0, _classnames2.default)('drawer-bg', {
-                'show': is_this_drawer_on
+            var drawer_bg_class = (0, _classnames2.default)('drawer__bg', {
+                'drawer--show': is_this_drawer_on
             });
-            var drawer_class = (0, _classnames2.default)('drawer', alignment);
+            var drawer_class = (0, _classnames2.default)('drawer', _defineProperty({}, 'drawer--' + alignment, alignment));
 
             return _react2.default.createElement(
                 _reactTransitionGroup.CSSTransition,
                 {
                     'in': is_this_drawer_on,
                     timeout: 150,
-                    classNames: 'drawer-container',
+                    classNames: {
+                        enter: 'drawer__container--enter',
+                        enterDone: 'drawer__container--enter-done',
+                        exit: 'drawer__container--exit'
+                    },
                     unmountOnExit: true
                 },
                 _react2.default.createElement(
@@ -2716,26 +2722,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EmptyNotification = function EmptyNotification() {
     return _react2.default.createElement(
         'div',
-        { className: 'no-notifications-container' },
+        { className: 'drawer__no-notifications-container' },
         _react2.default.createElement(
             'div',
-            { className: 'notification-message' },
+            { className: 'drawer__no-notifications' },
             _react2.default.createElement(
                 'div',
-                { className: 'bell-icon' },
-                _react2.default.createElement(_NavBar.IconBell, null)
+                { className: 'drawer__bell' },
+                _react2.default.createElement(_NavBar.IconBell, { className: 'drawer__bell-icon' })
             ),
             _react2.default.createElement(
                 'div',
                 null,
                 _react2.default.createElement(
                     'h4',
-                    null,
+                    { className: 'drawer__no-notifications-header' },
                     (0, _localize.localize)('No Notifications')
                 ),
                 _react2.default.createElement(
                     'span',
-                    { className: 'no-notifications-message' },
+                    { className: 'drawer__no-notifications-message' },
                     (0, _localize.localize)('You have yet to receive any notifications')
                 )
             )
@@ -9515,7 +9521,7 @@ var AccountSwitcher = function (_React$Component) {
                         { className: 'acc-switcher__logout-text' },
                         (0, _localize.localize)('Log out')
                     ),
-                    _react2.default.createElement(_Drawer.IconLogout, { className: 'acc-switcher__logout-icon drawer-icon' })
+                    _react2.default.createElement(_Drawer.IconLogout, { className: 'acc-switcher__logout-icon drawer__icon' })
                 )
             );
         }
@@ -9767,7 +9773,7 @@ var MenuDrawer = function MenuDrawer(_ref) {
         togglePurchaseLock = _ref.togglePurchaseLock;
     return _react2.default.createElement(
         'div',
-        { className: 'drawer-items-container' },
+        { className: 'drawer__items-container' },
         _react2.default.createElement(
             'div',
             { className: 'list-items-container' },
@@ -9776,20 +9782,20 @@ var MenuDrawer = function MenuDrawer(_ref) {
                 null,
                 _react2.default.createElement(_Drawer.DrawerItem, {
                     text: (0, _localize.localize)('Trade'),
-                    icon: _react2.default.createElement(_NavBar.IconTrade, { className: 'drawer-icon' }),
+                    icon: _react2.default.createElement(_NavBar.IconTrade, { className: 'drawer__icon' }),
                     link_to: _routes2.default.trade
                 }),
                 _react2.default.createElement(_Drawer.DrawerItem, {
                     text: (0, _localize.localize)('Portfolio'),
-                    icon: _react2.default.createElement(_NavBar.IconPortfolio, { className: 'drawer-icon' }),
+                    icon: _react2.default.createElement(_NavBar.IconPortfolio, { className: 'drawer__icon' }),
                     link_to: _routes2.default.portfolio
                 }),
                 _react2.default.createElement(_Drawer.DrawerItem, {
                     text: (0, _localize.localize)('Statement'),
-                    icon: _react2.default.createElement(_NavBar.IconStatement, { className: 'drawer-icon' }),
+                    icon: _react2.default.createElement(_NavBar.IconStatement, { className: 'drawer__icon' }),
                     link_to: _routes2.default.statement
                 }),
-                _react2.default.createElement('hr', null),
+                _react2.default.createElement('hr', { className: 'hr' }),
                 _react2.default.createElement(_Drawer.DrawerToggle, {
                     text: (0, _localize.localize)('Dark Mode'),
                     toggle: toggleDarkMode,
@@ -9804,9 +9810,9 @@ var MenuDrawer = function MenuDrawer(_ref) {
         ),
         !!(is_logged_in && is_mobile) && _react2.default.createElement(
             'div',
-            { className: 'drawer-footer' },
+            { className: 'drawer__footer' },
             _react2.default.createElement(_Drawer.DrawerItem, {
-                icon: _react2.default.createElement(_Drawer2.IconLogout, { className: 'drawer-icon' }),
+                icon: _react2.default.createElement(_Drawer2.IconLogout, { className: 'drawer__icon' }),
                 text: (0, _localize.localize)('Logout'),
                 custom_action: function custom_action() {
                     if (is_positions_drawer_on) {
