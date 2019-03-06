@@ -10743,6 +10743,9 @@ var Header = function () {
             var necessary_signup_fields = isCR ? State.getResponse('landing_company.financial_company.requirements.signup') : [];
 
             var hasMissingRequiredField = function hasMissingRequiredField() {
+                necessary_signup_fields.map(function (field) {
+                    return field === 'residence' ? 'country' : field;
+                });
                 // eslint-disable-next-line no-nested-ternary
                 var required_fields = isCR ? [].concat(_toConsumableArray(necessary_signup_fields), _toConsumableArray(necessary_withdrawal_fields)) : Client.isAccountOfType('financial') ? ['account_opening_reason', 'address_line_1', 'address_city', 'phone', 'tax_identification_number', 'tax_residence'].concat(_toConsumableArray(Client.get('residence') === 'gb' ? ['address_postcode'] : [])) : [];
 
