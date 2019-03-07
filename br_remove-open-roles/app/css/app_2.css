@@ -2237,6 +2237,10 @@ html {
       outline: none; }
     .dropdown__display:hover {
       border-color: #999cac; }
+    .dropdown__display--has-symbol {
+      -webkit-box-pack: unset;
+          -ms-flex-pack: unset;
+              justify-content: unset; }
   .dropdown--no-margin .dropdown__display {
     margin: 0; }
   .dropdown__select-arrow {
@@ -2309,6 +2313,12 @@ html {
     text-align: center; }
     .dropdown--left .dropdown__display-text {
       padding-left: unset; }
+    .dropdown--left .dropdown__display-symbol {
+      right: 0;
+      float: right;
+      position: relative;
+      margin-left: auto;
+      margin-right: 0.6em; }
   .dropdown--left .dropdown__select-arrow {
     -webkit-transform: rotate(90deg);
             transform: rotate(90deg);
@@ -2332,7 +2342,6 @@ html {
   position: absolute;
   width: 100%;
   max-height: 200px;
-  overflow-x: hidden;
   overflow-y: auto;
   z-index: 2;
   cursor: pointer;
@@ -2342,7 +2351,7 @@ html {
           box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16); }
   .list--left {
     width: unset; }
-    .list--left .list__item-text {
+    .list--left .list__item-text, .list--left .list__item-symbol {
       padding-left: 2.286em;
       padding-right: 2.286em;
       overflow: hidden;
@@ -2355,25 +2364,31 @@ html {
     text-transform: capitalize;
     text-align: center;
     line-height: 1.5;
-    padding: 6.25px; }
+    padding: 6.25px;
+    display: block; }
   .list__item {
     width: 100%; }
-    .list__item-text {
+    .list__item-text, .list__item-symbol {
       font-size: 1.4em;
       color: rgba(0, 0, 0, 0.8);
       font-weight: 400;
       text-transform: capitalize;
       text-align: left;
       line-height: 1.5;
-      display: block;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      width: 100%;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
       pointer-events: none;
       vertical-align: middle;
-      padding-left: 1.6em;
-      height: 2.286em;
-      line-height: 2.286em !important; }
-    .list__item:hover, .list__item--highlighted {
+      padding: 6.25px 0;
+      padding-left: 1.6em; }
+    .list__item:hover {
       background-color: rgba(0, 0, 0, 0.04); }
-    .list__item--selected .list__item-text {
+    .list__item--selected .list__item-text, .list__item--selected .list__item-symbol {
       font-size: 1.4em;
       color: #ffffff;
       font-weight: 500;
@@ -2381,6 +2396,33 @@ html {
       text-align: left;
       line-height: 1.5;
       background-color: #999cac; }
+    .list__item-tooltip {
+      font-size: 1.4em;
+      color: rgba(0, 0, 0, 0.8);
+      font-weight: 400;
+      text-transform: capitalize;
+      text-align: left;
+      line-height: 1.5;
+      height: auto;
+      text-decoration: none; }
+      .list__item-tooltip-symbols {
+        width: 100%;
+        padding: 6.25px 0;
+        margin: 0;
+        text-align: center;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex; }
+      .list__item-tooltip:before {
+        font-size: 0.8em !important;
+        line-height: 1em;
+        padding: 0.4em !important;
+        left: 25px !important; }
+      .list__item-tooltip:after {
+        left: 25px !important; }
   @media not all and (min-resolution: 0.001dpcm) {
     @supports (-webkit-appearance: none) {
       .list {
@@ -2443,9 +2485,11 @@ html {
         -ms-flex-align: center;
             align-items: center; }
     .input-wrapper__button--increment {
-      right: 1px; }
+      right: 1px;
+      height: 28px; }
     .input-wrapper__button--decrement {
-      left: 1px; }
+      left: 1px;
+      height: 28px; }
     .input-wrapper__button:hover {
       cursor: pointer;
       background: rgba(0, 0, 0, 0.04); }
@@ -2534,6 +2578,9 @@ html {
     border-color: #999cac;
     -webkit-box-shadow: 0 0 0 2px rgba(127, 131, 151, 0.3);
             box-shadow: 0 0 0 2px rgba(127, 131, 151, 0.3); }
+  .input--has-inline-prefix {
+    padding-left: 50px !important;
+    border-radius: 4px !important; }
 
 /** @define time-picker */
 .time-picker {
@@ -5764,7 +5811,8 @@ html {
           appearance: none;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  background: #ffffff; }
+  background: #ffffff;
+  border-radius: 0 4px 4px 0; }
 
 .trade-container__error {
   -webkit-box-pack: center;
@@ -5791,13 +5839,28 @@ html {
     border-radius: 4px; }
 
 .trade-container__currency {
-  position: absolute;
-  display: block;
-  text-align: center;
-  z-index: 1;
   color: rgba(0, 0, 0, 0.8);
-  width: 3.2em;
-  line-height: 3.2em; }
+  position: absolute;
+  float: left;
+  font-size: 10px;
+  height: 32px;
+  left: 32px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: transparent;
+  border-color: transparent;
+  z-index: 2; }
+  .trade-container__currency--symbol {
+    font-size: 1.4em;
+    line-height: 1.5; }
   .trade-container__currency:before {
     font-size: 1.4em;
     color: rgba(0, 0, 0, 0.8);
@@ -5888,6 +5951,28 @@ html {
     right: 86.5%; }
   .trade-container__barriers--down {
     right: 39%; }
+
+.trade-container__currency-options {
+  border-radius: 4px 0 0 4px;
+  margin-right: 1px;
+  width: calc(25% - 1px);
+  display: inline-block; }
+  .trade-container__currency-options--display {
+    font-size: 1.4em;
+    line-height: 1.5;
+    height: 32px;
+    border-radius: 4px 0 0 4px !important;
+    margin-top: 0; }
+
+.trade-container__amount {
+  margin-left: 1px;
+  display: inline-block;
+  width: 100%; }
+  .trade-container__amount .trade-container__input {
+    padding: 0 30px; }
+  .trade-container__amount--has-currency-options {
+    width: calc(75% - 1px);
+    border-radius: 0 4px 4px 0; }
 
 /** @define purchase-container */
 .purchase-container {
@@ -6770,7 +6855,7 @@ html {
       color: #ffffff; }
       .theme--dark .list__label-text {
         color: #ffffff; }
-    .theme--dark .list__item-text {
+    .theme--dark .list__item-text, .theme--dark .list__item-tooltip-symbols {
       color: #7f8397; }
     .theme--dark .list__item--selected .list__item-text {
       color: #ffffff;
