@@ -26213,7 +26213,7 @@ var TickDisplay = function () {
                 width: 2,
                 zIndex: 2
             });
-            calculated_barrier = getDecimals(barrier_quote) < parseInt(display_decimals) ? parseFloat(barrier_quote).toFixed(parseInt(display_decimals)) : barrier_quote;
+            calculated_barrier = addComma(barrier_quote, parseInt(display_decimals));
             should_set_barrier = false;
         }
 
@@ -26238,7 +26238,7 @@ var TickDisplay = function () {
                 width: 2,
                 zIndex: 2
             });
-            calculated_barrier = getDecimals(calc_barrier) < decimal_places ? parseFloat(calc_barrier).toFixed(decimal_places) : calc_barrier;
+            calculated_barrier = addComma(calc_barrier, decimal_places);
         }
 
         if (barrier_type === 'highlowticks') {
@@ -26492,7 +26492,7 @@ var TickDisplay = function () {
                 dashStyle: 'dot'
             });
 
-            CommonFunctions.elementInnerHtml(CommonFunctions.getElementById('contract_purchase_barrier'), localize('Reset Barrier') + ': ' + reset_barrier);
+            CommonFunctions.elementInnerHtml(CommonFunctions.getElementById('contract_purchase_barrier'), localize('Reset Barrier') + ': ' + addComma(reset_barrier, parseInt(display_decimals)));
             reset_spot_plotted = true;
             HighchartUI.updateLabels(chart, {
                 contract_type: contract_category,
@@ -26583,11 +26583,6 @@ var TickDisplay = function () {
         } else {
             dispatch(data);
         }
-    };
-
-    var getDecimals = function getDecimals(val) {
-        var array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
-        return array_value && array_value.length > 1 ? array_value[1].length : 0;
     };
 
     return {
