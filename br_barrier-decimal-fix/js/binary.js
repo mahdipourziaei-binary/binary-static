@@ -26213,17 +26213,18 @@ var TickDisplay = function () {
                 width: 2,
                 zIndex: 2
             });
-            calculated_barrier = addComma(barrier_quote, parseInt(display_decimals));
+            calculated_barrier = getDecimals(barrier_quote) < parseInt(display_decimals) ? parseFloat(barrier_quote).toFixed(parseInt(display_decimals)) : barrier_quote;
             should_set_barrier = false;
         }
 
         if (barrier_type === 'asian') {
+            var decimal_places = parseInt(display_decimals) + 1;
             var total = 0;
             for (var i = 0; i < applicable_ticks.length; i++) {
                 total += parseFloat(applicable_ticks[i].quote);
             }
             // round calculated barrier
-            var calc_barrier = (total / applicable_ticks.length).toFixed(parseInt(display_decimals) + 1);
+            var calc_barrier = (total / applicable_ticks.length).toFixed(decimal_places);
 
             chart.yAxis[0].removePlotLine('tick-barrier');
             chart.yAxis[0].addPlotLine({
@@ -26237,7 +26238,7 @@ var TickDisplay = function () {
                 width: 2,
                 zIndex: 2
             });
-            calculated_barrier = addComma(calc_barrier, parseInt(display_decimals) + 1);
+            calculated_barrier = getDecimals(calc_barrier) < decimal_places ? parseFloat(calc_barrier).toFixed(decimal_places) : calc_barrier;
         }
 
         if (barrier_type === 'highlowticks') {
@@ -26582,6 +26583,11 @@ var TickDisplay = function () {
         } else {
             dispatch(data);
         }
+    };
+
+    var getDecimals = function getDecimals(val) {
+        var array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
+        return array_value && array_value.length > 1 ? array_value[1].length : 0;
     };
 
     return {
