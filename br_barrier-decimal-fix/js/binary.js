@@ -24989,6 +24989,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 var isCallputspread = __webpack_require__(/*! ./callputspread */ "./src/javascript/app/pages/trade/callputspread.js").isCallputspread;
 var Contract = __webpack_require__(/*! ./contract */ "./src/javascript/app/pages/trade/contract.js");
 var hidePriceOverlay = __webpack_require__(/*! ./common */ "./src/javascript/app/pages/trade/common.js").hidePriceOverlay;
+var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var getLookBackFormula = __webpack_require__(/*! ./lookback */ "./src/javascript/app/pages/trade/lookback.js").getFormula;
 var isLookback = __webpack_require__(/*! ./lookback */ "./src/javascript/app/pages/trade/lookback.js").isLookback;
 var processPriceRequest = __webpack_require__(/*! ./price */ "./src/javascript/app/pages/trade/price.js").processPriceRequest;
@@ -25002,6 +25003,7 @@ var Header = __webpack_require__(/*! ../../base/header */ "./src/javascript/app/
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var formatMoney = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").formatMoney;
 var TopUpVirtualPopup = __webpack_require__(/*! ../../pages/user/account/top_up_virtual/pop_up */ "./src/javascript/app/pages/user/account/top_up_virtual/pop_up.js");
+var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var CommonFunctions = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js");
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var localizeKeepPlaceholders = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localizeKeepPlaceholders;
@@ -25039,7 +25041,7 @@ var Purchase = function () {
                 var prev_quote_el = this_quote_el.parentElement.parentElement.previousSibling.querySelector('.quote');
                 var prev_quote = prev_quote_el.innerText;
                 DigitTicker.countUp(prev_quote, parseFloat(this_quote_el.innerText.replace(/,+/, '')), 700, this_quote_el, function (content) {
-                    return '<div class=\'quote\'>' + content.replace(/\d$/, makeBold) + '</div>';
+                    return '<div class=\'quote\'>' + addComma(content, countDecimalPlaces(content)).replace(/\d$/, makeBold) + '</div>';
                 });
             }
         } else {
@@ -25405,7 +25407,8 @@ var Purchase = function () {
                 if (!tick_config.is_digit) {
                     fragment.appendChild(el2);
                 }
-                var tick = tick_config.is_tick_high || tick_config.is_tick_low ? tick_d.quote : '<div class=\'quote\'>' + tick_d.quote.replace(/\d$/, makeBold) + '</div>';
+                var tick_with_comma = addComma(tick_d.quote, countDecimalPlaces(tick_d.quote));
+                var tick = tick_config.is_tick_high || tick_config.is_tick_low ? tick_with_comma : '<div class=\'quote\'>' + tick_with_comma.replace(/\d$/, makeBold) + '</div>';
                 var el3 = createElement('div', { class: 'col' });
                 CommonFunctions.elementInnerHtml(el3, tick);
 
@@ -25790,6 +25793,7 @@ module.exports = Symbols;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var displayPriceMovement = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").displayPriceMovement;
+var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var elementTextContent = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").elementTextContent;
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var isVisible = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").isVisible;
@@ -25843,21 +25847,26 @@ var Tick = function () {
     var display = function display() {
         $('#spot').fadeIn(200);
         var message = '';
+        var message_number = '';
         if (error_message) {
             message = error_message;
+            message_number = error_message;
         } else {
-            message = _quote;
+            var decimal_places = parseInt(countDecimalPlaces(Tick.quote()));
+            message = addComma(_quote, decimal_places);
+            message_number = _quote;
         }
 
         var spot_element = getElementById('spot');
-        if (parseFloat(message) !== +message) {
+        if (parseFloat(message_number) !== +message_number) {
             spot_element.className = 'error';
         } else {
             spot_element.classList.remove('error');
-            displayPriceMovement(spot_element, elementTextContent(spot_element), message);
+            displayPriceMovement(spot_element, spot_element.getAttribute('data-value'), message_number);
             displayIndicativeBarrier();
         }
 
+        spot_element.setAttribute('data-value', message_number);
         elementTextContent(spot_element, message);
     };
 
