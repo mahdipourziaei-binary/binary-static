@@ -23524,7 +23524,7 @@ var barriersToString = exports.barriersToString = function barriersToString(is_r
     }
 
     return barriers_list.filter(function (barrier) {
-        return barrier !== undefined || barrier !== null;
+        return barrier !== undefined && barrier !== null;
     }).map(function (barrier) {
         return '' + (is_relative && !/^[+-]/.test(barrier) ? '+' : '') + barrier;
     });
