@@ -18541,8 +18541,8 @@ var TradingAnalysis = function () {
                 image2: 'low-tick.svg'
             },
             runs: {
-                image1: 'ups.svg',
-                image2: 'downs.svg'
+                image1: 'only-ups.svg',
+                image2: 'only-downs.svg'
             }
         };
 
@@ -21118,7 +21118,7 @@ var Contract = function () {
         }
 
         if (trade_contract_forms.runs) {
-            trade_contract_forms.run = localize('Run');
+            trade_contract_forms.run = localize('Only Ups/Only Downs');
         }
 
         if (trade_contract_forms.endsinout || trade_contract_forms.staysinout) {
@@ -34449,8 +34449,8 @@ var ViewPopup = function () {
                 PUTSPREAD: localize('Put Spread'),
                 TICKHIGH: localize('High Tick'),
                 TICKLOW: localize('Low Tick'),
-                RUNHIGH: localize('Run Ups'),
-                RUNLOW: localize('Run Downs')
+                RUNHIGH: localize('Only Ups'),
+                RUNLOW: localize('Only Downs')
             };
         };
 
