@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"cbb3f11fff75dd57bfef","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"044ca017a6864b043a4d","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"4b11346e99830481ee15","portfolio":"90c69f17efacf0441d50","statement":"83be0ace500a644e5479","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"829a309c1e85fb2f6d22","smart_chart":"055a519715c79b34e33c"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"cbb3f11fff75dd57bfef","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"044ca017a6864b043a4d","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"4b11346e99830481ee15","portfolio":"90c69f17efacf0441d50","statement":"83be0ace500a644e5479","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"5d3eed514be162e6e45b","smart_chart":"055a519715c79b34e33c"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -7473,7 +7473,8 @@ var Dialog = function Dialog(_ref) {
                         var start_time_reset_minute = start_time_moment.clone().minute(0);
                         var is_hour_enabled = to_compare_moment.isBetween(start_time_reset_minute, end_time_moment);
                         var is_minute_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment, 'minute');
-                        var is_enabled = is_hour_enabled && is_minute_enabled;
+                        var last_interval_of_hour = 52;
+                        var is_enabled = to_compare_moment.minutes() > last_interval_of_hour ? is_hour_enabled && is_minute_enabled : is_hour_enabled;
                         return _react2.default.createElement(
                             'div',
                             {
@@ -27672,7 +27673,7 @@ var ClientStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
             this.accounts[this.loginid].email = response.authorize.email;
             this.accounts[this.loginid].currency = response.authorize.currency;
             this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-            this.accounts[this.loginid].session_start = parseInt((0, _moment2.default)().valueOf() / 1000);
+            this.accounts[this.loginid].session_start = parseInt((0, _moment2.default)().utc().valueOf() / 1000);
             this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
             this.updateAccountList(response.authorize.account_list);
             this.upgrade_info = this.getBasicUpgradeInfo();
@@ -28917,6 +28918,10 @@ var _localize = __webpack_require__(/*! ../../../_common/localize */ "./src/java
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_moment2.default.createFromInputFallback = function (config) {
+  config._d = new Date(NaN);
+};
+
 /**
  * Convert epoch to moment object
  * @param  {Number} epoch
@@ -28937,7 +28942,8 @@ var toMoment = exports.toMoment = function toMoment(value) {
   if (value instanceof _moment2.default && value.isValid() && value.isUTC()) return value; // returns if already a moment object
   if (typeof value === 'number') return epochToMoment(value); // returns epochToMoment() if not a date
 
-  return _moment2.default.utc(value);
+  return (/invalid/i.test((0, _moment2.default)(value)) ? _moment2.default.utc(value, 'DD MMM YYYY') : _moment2.default.utc(value)
+  );
 };
 
 /**
