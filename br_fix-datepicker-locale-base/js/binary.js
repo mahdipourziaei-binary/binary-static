@@ -1369,7 +1369,7 @@ var ServerTime = function () {
     var clock_started = false;
     var pending = new PromiseClass();
     var server_time = void 0,
-        indie_request_time = void 0,
+        client_time = void 0,
         get_time_interval = void 0,
         update_time_interval = void 0,
         onTimeUpdated = void 0;
@@ -1385,7 +1385,7 @@ var ServerTime = function () {
     };
 
     var requestTime = function requestTime() {
-        indie_request_time = performance.timing.navigationStart + performance.now();
+        client_time = moment().valueOf();
         BinarySocket.send({ time: 1 }).then(timeCounter);
     };
 
@@ -1400,11 +1400,11 @@ var ServerTime = function () {
         clearInterval(update_time_interval);
 
         var start_timestamp = response.time;
-        var indie_response_time = performance.timing.navigationStart + performance.now();
-        var server_time_at_response = start_timestamp * 1000 + (indie_response_time - indie_request_time);
+        var client_time_at_response = moment().valueOf();
+        var server_time_at_response = start_timestamp * 1000 + (client_time_at_response - client_time);
 
         var updateTime = function updateTime() {
-            server_time = moment(server_time_at_response + moment().valueOf() - indie_response_time).utc();
+            server_time = moment(server_time_at_response + moment().valueOf() - client_time_at_response).utc();
 
             if (typeof onTimeUpdated === 'function') {
                 onTimeUpdated();
