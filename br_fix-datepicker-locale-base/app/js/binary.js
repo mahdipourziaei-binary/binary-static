@@ -19100,13 +19100,15 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _connect = __webpack_require__(/*! ../../../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
-
-var _Date = __webpack_require__(/*! ../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
-
 var _DatePicker = __webpack_require__(/*! ../../../../../App/Components/Form/DatePicker */ "./src/javascript/app_2/App/Components/Form/DatePicker/index.js");
 
 var _DatePicker2 = _interopRequireDefault(_DatePicker);
+
+var _connect = __webpack_require__(/*! ../../../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
+
+var _duration = __webpack_require__(/*! ../../../../../Stores/Modules/Trading/Helpers/duration */ "./src/javascript/app_2/Stores/Modules/Trading/Helpers/duration.js");
+
+var _Date = __webpack_require__(/*! ../../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19129,7 +19131,8 @@ var TradingDatePicker = function TradingDatePicker(_ref) {
         min_date_expiry = void 0,
         has_today_btn = void 0,
         is_read_only = void 0;
-    var moment_contract_start_date_time = (0, _Date.setTime)((0, _Date.toMoment)(start_date || server_time), (0, _Date.isTimeValid)(start_time) ? start_time : server_time.format('HH:mm:ss'));
+    var min_duration = (0, _duration.hasIntradayDurationUnit)(duration_units_list) ? (0, _Date.toMoment)(server_time) : (0, _Date.toMoment)(server_time).add(duration_min_max.daily.min, 'second');
+    var moment_contract_start_date_time = (0, _Date.setTime)((0, _Date.toMoment)(min_duration), (0, _Date.isTimeValid)(start_time) ? start_time : server_time.format('HH:mm:ss'));
 
     var max_daily_duration = duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
 
@@ -24662,7 +24665,11 @@ var ChartBarrierStore = exports.ChartBarrierStore = (_dec = _mobx.action.bound, 
     _createClass(ChartBarrierStore, [{
         key: 'updateBarriers',
         value: function updateBarriers(high, low) {
-            this.relative = /^[+-]/.test(high);
+            var isFromChart = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+            if (!isFromChart) {
+                this.relative = /^[+-]/.test(high);
+            }
             this.high = +high || undefined;
             this.low = +low || undefined;
         }
@@ -24677,7 +24684,7 @@ var ChartBarrierStore = exports.ChartBarrierStore = (_dec = _mobx.action.bound, 
             var high = _ref2.high,
                 low = _ref2.low;
 
-            this.updateBarriers(high, low);
+            this.updateBarriers(high, low, true);
             this.onChartBarrierChange.apply(this, _toConsumableArray((0, _barriers2.barriersToString)(this.relative, high, low)));
         }
     }, {
@@ -25895,10 +25902,8 @@ var getValidationRules = function getValidationRules() {
             rules: [['req', { condition: function condition(store) {
                     return store.barrier_count && store.form_components.indexOf('barrier') > -1;
                 }, message: (0, _localize.localize)('Barrier is a required field.') }], ['barrier', { condition: function condition(store) {
-                    return store.contract_expiry_type !== 'daily' && store.barrier_count;
-                } }], ['number', { condition: function condition(store) {
-                    return store.contract_expiry_type === 'daily' && store.barrier_count;
-                }, type: 'float' }], ['custom', { func: function func(value, options, store, inputs) {
+                    return store.barrier_count;
+                } }], ['custom', { func: function func(value, options, store, inputs) {
                     return store.barrier_count > 1 ? +value > +inputs.barrier_2 : true;
                 }, message: (0, _localize.localize)('Higher barrier must be higher than lower barrier.') }]],
             trigger: 'barrier_2'
@@ -25907,10 +25912,8 @@ var getValidationRules = function getValidationRules() {
             rules: [['req', { condition: function condition(store) {
                     return store.barrier_count > 1 && store.form_components.indexOf('barrier') > -1;
                 }, message: (0, _localize.localize)('Barrier is a required field.') }], ['barrier', { condition: function condition(store) {
-                    return store.contract_expiry_type !== 'daily' && store.barrier_count;
-                } }], ['number', { condition: function condition(store) {
-                    return store.contract_expiry_type === 'daily' && store.barrier_count;
-                }, type: 'float' }], ['custom', { func: function func(value, options, store, inputs) {
+                    return store.barrier_count;
+                } }], ['custom', { func: function func(value, options, store, inputs) {
                     return (/^[+-]/g.test(inputs.barrier_1) && /^[+-]/g.test(value) || /^(?![+-])/g.test(inputs.barrier_1) && /^(?![+-])/g.test(value)
                     );
                 }, message: (0, _localize.localize)('Both barriers should be relative or absolute') }], ['custom', { func: function func(value, options, store, inputs) {

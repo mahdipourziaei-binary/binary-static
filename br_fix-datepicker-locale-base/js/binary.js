@@ -1369,7 +1369,7 @@ var ServerTime = function () {
     var clock_started = false;
     var pending = new PromiseClass();
     var server_time = void 0,
-        client_time = void 0,
+        perf_request_time = void 0,
         get_time_interval = void 0,
         update_time_interval = void 0,
         onTimeUpdated = void 0;
@@ -1385,7 +1385,7 @@ var ServerTime = function () {
     };
 
     var requestTime = function requestTime() {
-        client_time = moment().valueOf();
+        perf_request_time = performance.now();
         BinarySocket.send({ time: 1 }).then(timeCounter);
     };
 
@@ -1400,11 +1400,11 @@ var ServerTime = function () {
         clearInterval(update_time_interval);
 
         var start_timestamp = response.time;
-        var client_time_at_response = moment().valueOf();
-        var server_time_at_response = start_timestamp * 1000 + (client_time_at_response - client_time);
+        var perf_response_time = performance.now();
+        var server_time_at_response = start_timestamp * 1000 + (perf_response_time - perf_request_time);
 
         var updateTime = function updateTime() {
-            server_time = moment(server_time_at_response + moment().valueOf() - client_time_at_response).utc();
+            server_time = moment(server_time_at_response + (performance.now() - perf_response_time)).utc();
 
             if (typeof onTimeUpdated === 'function') {
                 onTimeUpdated();
@@ -17850,6 +17850,7 @@ var AssetIndexUI = function () {
 
     var onLoad = function onLoad() {
         $container = $('#asset-index');
+        $('#empty-asset-index').setVisibility(0);
         asset_index = market_columns = undefined;
         active_symbols = undefined;
 
@@ -17865,6 +17866,12 @@ var AssetIndexUI = function () {
 
     var populateTable = function populateTable() {
         if (!active_symbols || !asset_index) return;
+
+        if (!asset_index.length) {
+            $container.empty();
+            $('#empty-asset-index').setVisibility(1);
+            return;
+        }
 
         $('#errorMsg').setVisibility(0);
         asset_index = AssetIndex.getAssetIndexData(asset_index, active_symbols);
