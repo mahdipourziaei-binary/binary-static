@@ -5935,9 +5935,7 @@ var DatePicker = function (_React$Component) {
                 return { is_datepicker_visible: !state.is_datepicker_visible };
             });
         }, _this.onClickOutside = function (e) {
-            if (e.path.some(function (el) {
-                return Array.from(document.getElementsByClassName('btn-purchase__shadow-wrapper')).includes(el);
-            })) {
+            if (/purchase_/ig.test(e.target.id)) {
                 return;
             }
             if (!_this.mainNode.contains(e.target) && _this.state.is_datepicker_visible) {
