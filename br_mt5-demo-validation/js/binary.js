@@ -31905,13 +31905,13 @@ var MetaTraderConfig = function () {
                         $message.find('.citizen').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'personal_details_redirect\', \'' + acc_type + '\')');
                     };
 
-                    var has_financial = Client.hasAccountType('financial', 1);
+                    var has_financial_account = Client.hasAccountType('financial', 1);
                     var is_maltainvest = State.getResponse('landing_company.mt_financial_company.' + getMTFinancialAccountType(acc_type) + '.shortcode') === 'maltainvest';
                     var is_financial = accounts_info[acc_type].account_type === 'financial';
                     var is_demo = accounts_info[acc_type].account_type === 'demo';
                     var is_ok = true;
 
-                    if (is_maltainvest && (is_financial || is_demo) && !has_financial) {
+                    if (is_maltainvest && (is_financial || is_demo) && !has_financial_account) {
                         $message.find('.maltainvest').setVisibility(1);
                         is_ok = false;
                         $message.find(message_selector).setVisibility(1);
@@ -31921,7 +31921,7 @@ var MetaTraderConfig = function () {
                     if (is_financial) {
                         // financial accounts have their own checks
                         BinarySocket.wait('get_account_status', 'landing_company').then(function () {
-                            if (is_maltainvest && !has_financial) {
+                            if (!(is_maltainvest && !has_financial_account)) {
                                 var response_get_account_status = State.getResponse('get_account_status');
                                 if (/(financial_assessment|trading_experience)_not_complete/.test(response_get_account_status.status)) {
                                     $message.find('.assessment').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'financial_assessment_redirect\', \'' + urlFor('user/metatrader') + '#' + acc_type + '\')');
