@@ -15065,6 +15065,7 @@ var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javas
 var State = __webpack_require__(/*! ../../../_common/storage */ "./src/javascript/_common/storage.js").State;
 var paramsHash = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").paramsHash;
 var urlFor = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlFor;
+var urlForStatic = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlForStatic;
 var getPropertyValue = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
 
 var Cashier = function () {
@@ -15144,7 +15145,7 @@ var Cashier = function () {
 
         elementInnerHtml(el_current_currency, currency_message);
         elementInnerHtml(el_current_hint, currency_hint);
-        el_currency_image.src = '/images/pages/cashier/icons/icon-' + currency + '.svg';
+        el_currency_image.src = urlForStatic('/images/pages/cashier/icons/icon-' + currency + '.svg');
 
         if (has_no_mt5 && has_no_tx) {
             enablePopupOnDeposit();
