@@ -1367,6 +1367,9 @@ body #not_authenticated_financial ul.checked > li {
 .accounts-content #accounts_wrapper #no_new_accounts_wrapper {
   color: #c2c2c2; }
 
+#set_currency #frm_set_currency .section-divider {
+  max-width: 500px; }
+
 .set-currency-content .currency_list > div {
   padding: 15px;
   background-image: url("../images/pages/set_currency/tick-normal.svg");
