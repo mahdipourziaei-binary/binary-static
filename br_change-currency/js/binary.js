@@ -10844,7 +10844,7 @@ var Header = function () {
 
             var hasMissingRequiredField = function hasMissingRequiredField() {
                 // eslint-disable-next-line no-nested-ternary
-                var required_fields = is_costarica ? [].concat(_toConsumableArray(necessary_signup_fields), _toConsumableArray(necessary_withdrawal_fields)) : Client.isAccountOfType('financial') ? ['account_opening_reason', 'address_line_1', 'address_city', 'phone', 'tax_identification_number', 'tax_residence'].concat(_toConsumableArray(Client.get('residence') === 'gb' ? ['address_postcode'] : [])) : [];
+                var required_fields = is_costarica ? [].concat(_toConsumableArray(necessary_signup_fields), _toConsumableArray(necessary_withdrawal_fields)) : Client.isAccountOfType('financial') ? ['account_opening_reason', 'address_line_1', 'address_city', 'phone', 'tax_identification_number', 'tax_residence'].concat(_toConsumableArray(Client.get('residence') === 'gb' || Client.get('landing_company_shortcode') === 'iom' ? ['address_postcode'] : [])) : [];
 
                 var get_settings = State.getResponse('get_settings');
                 return required_fields.some(function (field) {
@@ -12039,7 +12039,7 @@ var AccountOpening = function () {
     };
 
     var commonValidations = function commonValidations() {
-        var req = [{ selector: '#salutation', validations: ['req'] }, { selector: '#first_name', validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]] }, { selector: '#last_name', validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]] }, { selector: '#date_of_birth', validations: ['req'] }, { selector: '#address_line_1', validations: ['req', 'address', ['length', { min: 1, max: 70 }]] }, { selector: '#address_line_2', validations: ['address', ['length', { min: 0, max: 70 }]] }, { selector: '#address_city', validations: ['req', 'letter_symbol', ['length', { min: 1, max: 35 }]] }, { selector: '#address_state', validations: $('#address_state').prop('nodeName') === 'SELECT' ? '' : ['letter_symbol', ['length', { min: 0, max: 35 }]] }, { selector: '#address_postcode', validations: [Client.get('residence') === 'gb' ? 'req' : '', 'postcode', ['length', { min: 0, max: 20 }]] }, { selector: '#phone', validations: ['req', 'phone', ['length', { min: 8, max: 35, value: function value() {
+        var req = [{ selector: '#salutation', validations: ['req'] }, { selector: '#first_name', validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]] }, { selector: '#last_name', validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]] }, { selector: '#date_of_birth', validations: ['req'] }, { selector: '#address_line_1', validations: ['req', 'address', ['length', { min: 1, max: 70 }]] }, { selector: '#address_line_2', validations: ['address', ['length', { min: 0, max: 70 }]] }, { selector: '#address_city', validations: ['req', 'letter_symbol', ['length', { min: 1, max: 35 }]] }, { selector: '#address_state', validations: $('#address_state').prop('nodeName') === 'SELECT' ? '' : ['letter_symbol', ['length', { min: 0, max: 35 }]] }, { selector: '#address_postcode', validations: [Client.get('residence') === 'gb' || State.getResponse('authorize.upgradeable_landing_companies').indexOf('iom') > -1 ? 'req' : '', 'postcode', ['length', { min: 0, max: 20 }]] }, { selector: '#phone', validations: ['req', 'phone', ['length', { min: 8, max: 35, value: function value() {
                     return $('#phone').val().replace(/\D/g, '');
                 } }]] }, { selector: '#secret_question', validations: ['req'] }, { selector: '#secret_answer', validations: ['req', 'general', ['length', { min: 4, max: 50 }]] }, { selector: '#tnc', validations: [['req', { message: localize('Please accept the terms and conditions.') }]], exclude_request: 1 }, { selector: '#tax_residence', validations: ['req', ['length', { min: 1, max: 20 }]] }, { selector: '#tax_identification_number', validations: ['req'] }, { request_field: 'residence', value: Client.get('residence') }, { request_field: 'client_type', value: function value() {
                 return $('#chk_professional').is(':checked') ? 'professional' : 'retail';
@@ -27278,6 +27278,11 @@ var Authenticate = function () {
                         link = Url.urlForCurrentDomain('https://marketing.binary.com/authentication/MF_Authentication_Process.pdf');
                     }
                     $not_authenticated.find('.learn_more').setVisibility(1).find('a').attr('href', link);
+
+                    if (isIdentificationNoExpiry(Client.get('residence'))) {
+                        $('#expiry_datepicker_proofid').setVisibility(0);
+                        $('#exp_date_2').datepicker('setDate', '2099-12-31');
+                    }
                 } else if (!/age_verification/.test(status)) {
                     $('#needs_age_verification').setVisibility(1);
                 } else {
@@ -27307,6 +27312,15 @@ var Authenticate = function () {
         });
 
         $('.file-picker').on('change', onFileSelected);
+    };
+
+    /**
+     * Checks for countries of residence with no ID expiry date.
+     * @param {string} residence
+    */
+    var isIdentificationNoExpiry = function isIdentificationNoExpiry(residence) {
+        return (/(ng|za|lk|in|sg|id|mm|vn|br|mx|co)/.test(residence)
+        );
     };
 
     /**
@@ -27629,7 +27643,7 @@ var Authenticate = function () {
             onErrorResolved('id_number', file.passthrough.class);
             return localize('Only letters, numbers, space, underscore, and hyphen are allowed for ID number ([_1]).', doc_name[file.documentType]);
         }
-        if (!file.expirationDate && required_docs.indexOf(file.documentType.toLowerCase()) !== -1) {
+        if (!file.expirationDate && required_docs.indexOf(file.documentType.toLowerCase()) !== -1 && !(isIdentificationNoExpiry(Client.get('residence')) && file.documentType === 'proofid')) {
             onErrorResolved('exp_date', file.passthrough.class);
             return localize('Expiry date is required for [_1].', doc_name[file.documentType]);
         }
@@ -30018,7 +30032,7 @@ var PersonalDetails = function () {
             var is_for_mt_tax = /real/.test(mt_acct_type) && mt_acct_type.split('_').length > 2; // demo and volatility mt accounts do not require tax info
             var is_tax_req = is_financial || is_for_mt_tax && +State.getResponse('landing_company.config.tax_details_required') === 1;
 
-            validations = [{ selector: '#address_line_1', validations: ['req', 'address'] }, { selector: '#address_line_2', validations: ['address'] }, { selector: '#address_city', validations: ['req', 'letter_symbol'] }, { selector: '#address_state', validations: $('#address_state').prop('nodeName') === 'SELECT' ? '' : ['letter_symbol'] }, { selector: '#address_postcode', validations: [Client.get('residence') === 'gb' ? 'req' : '', 'postcode', ['length', { min: 0, max: 20 }]] }, { selector: '#email_consent' }, { selector: '#phone', validations: ['req', 'phone', ['length', { min: 8, max: 35, value: function value() {
+            validations = [{ selector: '#address_line_1', validations: ['req', 'address'] }, { selector: '#address_line_2', validations: ['address'] }, { selector: '#address_city', validations: ['req', 'letter_symbol'] }, { selector: '#address_state', validations: $('#address_state').prop('nodeName') === 'SELECT' ? '' : ['letter_symbol'] }, { selector: '#address_postcode', validations: [Client.get('residence') === 'gb' || Client.get('landing_company_shortcode') === 'iom' ? 'req' : '', 'postcode', ['length', { min: 0, max: 20 }]] }, { selector: '#email_consent' }, { selector: '#phone', validations: ['req', 'phone', ['length', { min: 8, max: 35, value: function value() {
                         return $('#phone').val().replace(/\D/g, '');
                     } }]] }, { selector: '#place_of_birth', validations: ['req'] }, { selector: '#account_opening_reason', validations: ['req'] }, { selector: '#date_of_birth', validations: ['req'] }, { selector: '#tax_residence', validations: is_tax_req ? ['req'] : '' }, { selector: '#citizen', validations: is_financial || is_gaming || is_for_mt_citizen ? ['req'] : '' }, { selector: '#chk_tax_id', validations: is_financial ? [['req', { hide_asterisk: true, message: localize('Please confirm that all the information above is true and complete.') }]] : '', exclude_request: 1 }];
 
@@ -31553,11 +31567,13 @@ module.exports = TopUpVirtual;
 "use strict";
 
 
+var Dropdown = __webpack_require__(/*! @binary-com/binary-style */ "./node_modules/@binary-com/binary-style/binary.js").selectDropdown;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var setIsForNewAccount = __webpack_require__(/*! ./account/settings/personal_details */ "./src/javascript/app/pages/user/account/settings/personal_details.js").setIsForNewAccount;
-var getCurrencies = __webpack_require__(/*! ./get_currency */ "./src/javascript/app/pages/user/get_currency.js").getCurrencies;
+var GetCurrency = __webpack_require__(/*! ./get_currency */ "./src/javascript/app/pages/user/get_currency.js");
 var BinaryPjax = __webpack_require__(/*! ../../base/binary_pjax */ "./src/javascript/app/base/binary_pjax.js");
 var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
+var populateAccountsList = __webpack_require__(/*! ../../base/header */ "./src/javascript/app/base/header.js").populateAccountsList;
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var Currency = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js");
 var FormManager = __webpack_require__(/*! ../../common/form_manager */ "./src/javascript/app/common/form_manager.js");
@@ -31673,26 +31689,47 @@ var Accounts = function () {
     var addChangeCurrencyOption = function addChangeCurrencyOption() {
         var table_headers = TableHeaders.get();
         var loginid = Client.get('loginid');
-        var available_currencies = Client.getLandingCompanyValue(loginid, landing_company, 'legal_allowed_currencies');
-        var multi_currencies = available_currencies.length > 1;
 
         // Set the table row
         $(form_id).find('tbody').append($('<tr/>', { id: 'change_account_currency' }).append($('<td/>', { datath: table_headers.account }).html($('<span/>', {
             text: loginid
-        }))).append($('<td/>', { text: getAvailableMarkets(loginid), datath: table_headers.available_markets })).append($('<td/>', { class: 'account-currency', datath: table_headers.available_currencies })).append($('<td/>').html($('<button/>', { class: 'button', type: 'button', text: localize('Change') }).click(sendCurrencyChangeReq))));
+        }))).append($('<td/>', { text: getAvailableMarkets(loginid), datath: table_headers.available_markets })).append($('<td/>', { class: 'account-currency', datath: table_headers.available_currencies })).append($('<td/>', { id: 'change_currency_action' }).html($('<button/>', { id: 'change_currency_btn', class: 'button no-margin', type: 'button', text: localize('Change') }).click(sendCurrencyChangeReq)).append($('\n                        <svg width="24" height="24" id="change_currency_success_icon" class="invisible"><path fill="#e98024" d="M8.308 22.298L.399 14.39l3.535-3.536 4.374 4.374L20.066 3.47l3.535 3.535L8.308 22.298z"/></svg>\n                    '))));
 
-        // Make available currencies into dropdown if multi, or label if single
-        var $change_account_currency = $('#change_account_currency');
-        if (multi_currencies) {
-            var $currencies = $('<div/>');
-            $currencies.append(Currency.getCurrencyList(available_currencies).html());
-            $change_account_currency.find('.account-currency').html($('<select/>', { id: 'change_account_currencies' }).html($currencies.html()));
-        } else {
-            $change_account_currency.find('.account-currency').html($('<label/>', { id: 'change_account_currencies', 'data-value': available_currencies, text: Currency.getCurrencyFullName(available_currencies) }));
-        }
+        // Add and convert available currencies into dropdown if multi, or label if single
+        populateChangeCurrencyDropdown(getCurrencyChangeOptions());
 
         // Replace note to reflect ability to change currency
         $('#note > .hint').text('' + localize('Note: You are limited to one fiat currency account. The currency of your fiat account can be changed before you deposit into your fiat account for the first time or create an MT5 account. You may also open one account for each supported cryptocurrency.'));
+    };
+
+    var getCurrencyChangeOptions = function getCurrencyChangeOptions() {
+        var allowed_currencies = Client.getLandingCompanyValue(Client.get('loginid'), landing_company, 'legal_allowed_currencies');
+        var current_currencies = GetCurrency.getCurrenciesOfOtherAccounts();
+
+        current_currencies.push(Client.get('currency'));
+
+        return allowed_currencies.filter(function (currency) {
+            return !current_currencies.includes(currency) && !isCryptocurrency(currency);
+        });
+    };
+
+    var populateChangeCurrencyDropdown = function populateChangeCurrencyDropdown(available_currencies) {
+        var change_currency_id = 'change_account_currencies';
+        var $change_account_currency = $('#change_account_currency');
+
+        if (available_currencies.length > 1) {
+            var $currencies = $('<div/>');
+            $currencies.append(Currency.getCurrencyList(available_currencies).html());
+            $change_account_currency.find('.account-currency').html($('<select/>', { id: change_currency_id }).html($currencies.html()));
+            Dropdown('#' + change_currency_id, true);
+        } else {
+            $change_account_currency.find('.account-currency').html($('<label/>', { id: change_currency_id, 'data-value': available_currencies, text: Currency.getCurrencyFullName(available_currencies) }));
+        }
+
+        // Handler used to revert the check mark back to button
+        $('#' + change_currency_id).on('change', function () {
+            showChangeButtonOrSuccess(true);
+        });
     };
 
     var sendCurrencyChangeReq = function sendCurrencyChangeReq() {
@@ -31702,9 +31739,26 @@ var Accounts = function () {
             if (res.error) {
                 showError(res.error.message, true);
             } else if (res.set_account_currency === 1) {
-                window.location.reload();
+                showChangeButtonOrSuccess(false);
+                var balance = BinarySocket.send({ balance: 1 });
+                var authorize = BinarySocket.send({ authorize: Client.get('token') }, { forced: true });
+                Promise.all([balance, authorize]).then(function () {
+                    refreshExistingAccounts();
+                });
             }
         });
+    };
+
+    var refreshExistingAccounts = function refreshExistingAccounts() {
+        $('#existing_accounts').find('tbody').empty();
+        populateAccountsList();
+        populateExistingAccounts();
+        populateChangeCurrencyDropdown(getCurrencyChangeOptions());
+    };
+
+    var showChangeButtonOrSuccess = function showChangeButtonOrSuccess(has_button) {
+        $('#change_currency_btn').setVisibility(has_button);
+        $('#change_currency_success_icon').setVisibility(!has_button);
     };
 
     var populateExistingAccounts = function populateExistingAccounts() {
@@ -31799,7 +31853,7 @@ var Accounts = function () {
 
     var populateMultiAccount = function populateMultiAccount() {
         var table_headers = TableHeaders.get();
-        var currencies = getCurrencies(landing_company);
+        var currencies = GetCurrency.getCurrencies(landing_company);
         var account = { real: 1 };
         $(form_id).find('tbody').append($('<tr/>', { id: 'new_account_opening' }).append($('<td/>', { datath: table_headers.account }).html($('<span/>', {
             text: localize('Real Account'),
@@ -31854,11 +31908,11 @@ var Accounts = function () {
     var showError = function showError(localized_text) {
         var is_currency_change = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-        var error_message_id = is_currency_change ? '#change_currency_error' : '#new_account_error';
-        var error_message_parent_id = is_currency_change ? '#change_account_currency' : '#new_account_opening';
+        var error_message_id = is_currency_change ? 'change_currency_error' : 'new_account_error';
+        var error_message_parent_id = is_currency_change ? 'change_account_currency' : 'new_account_opening';
 
-        $(error_message_id).remove();
-        $(error_message_parent_id).find('button').parent().append($('<p/>', { class: 'error-msg', id: error_message_id, text: localized_text }));
+        $('#' + error_message_id).remove();
+        $('#' + error_message_parent_id).find('button').parent().append($('<p/>', { class: 'error-msg', id: error_message_id, text: localized_text }));
     };
 
     var populateReq = function populateReq() {
@@ -31963,6 +32017,7 @@ var GetCurrency = function () {
     };
 
     return {
+        getCurrenciesOfOtherAccounts: getCurrenciesOfOtherAccounts,
         getCurrencies: getCurrencies
     };
 }();
@@ -34577,6 +34632,10 @@ var SetCurrency = function () {
                                     if (!/authenticated/.test(get_account_status.status)) {
                                         redirect_url = Url.urlFor('user/authenticate');
                                     }
+                                }
+                                // Do not redirect MLT clients to cashier, because they need to set self exclusion before trading
+                                if (!redirect_url && /^(malta)$/i.test(Client.get('landing_company_shortcode'))) {
+                                    redirect_url = Url.urlFor('user/security/self_exclusionws');
                                 }
                                 // Do not redirect MX clients to cashier, because they need to set max limit before making deposit
                                 if (!redirect_url && !/^(iom)$/i.test(Client.get('landing_company_shortcode'))) {
