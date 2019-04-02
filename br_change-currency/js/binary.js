@@ -15057,7 +15057,6 @@ module.exports = AccountTransfer;
 /* eslint-disable no-nested-ternary */
 var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
-var Dialog = __webpack_require__(/*! ../../common/attach_dom/dialog */ "./src/javascript/app/common/attach_dom/dialog.js");
 var isCryptocurrency = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").isCryptocurrency;
 var elementInnerHtml = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").elementInnerHtml;
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
@@ -15147,37 +15146,7 @@ var Cashier = function () {
         elementInnerHtml(el_current_hint, currency_hint);
         el_currency_image.src = urlForStatic('/images/pages/cashier/icons/icon-' + currency + '.svg');
 
-        if (has_no_mt5 && has_no_tx && !isCryptocurrency(currency)) {
-            enablePopupOnDeposit();
-        }
-
         el_acc_currency.setVisibility(1);
-    };
-
-    var enablePopupOnDeposit = function enablePopupOnDeposit() {
-        var $deposit_btn = $('#deposit_btn_cashier > .deposit');
-        var setEventHandler = function setEventHandler() {
-            return $deposit_btn.one('click', showPopup);
-        };
-
-        var showPopup = function showPopup(e) {
-            e.preventDefault();
-
-            Dialog.confirm({
-                id: 'deposit_currency_change_popup_container',
-                ok_text: localize('Yes I\'m sure'),
-                cancel_text: localize('Cancel'),
-                localized_title: localize('Are you sure?'),
-                localized_message: localize('You will not be able to change your fiat account’s currency after making this deposit. Are you sure you want to proceed?'),
-                localized_footnote: localize('[_1]No, change my fiat account’s currency now[_2]', ['<a href=' + urlFor('user/accounts') + '>', '</a>']),
-                onConfirm: function onConfirm() {
-                    return $deposit_btn.click();
-                },
-                onAbort: setEventHandler
-            });
-        };
-
-        setEventHandler();
     };
 
     var onLoad = function onLoad() {
@@ -15245,6 +15214,7 @@ var setShouldRedirect = __webpack_require__(/*! ../user/account/settings/cashier
 var BinaryPjax = __webpack_require__(/*! ../../base/binary_pjax */ "./src/javascript/app/base/binary_pjax.js");
 var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
+var Dialog = __webpack_require__(/*! ../../common/attach_dom/dialog */ "./src/javascript/app/common/attach_dom/dialog.js");
 var showPopup = __webpack_require__(/*! ../../common/attach_dom/popup */ "./src/javascript/app/common/attach_dom/popup.js");
 var Currency = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js");
 var FormManager = __webpack_require__(/*! ../../common/form_manager */ "./src/javascript/app/common/form_manager.js");
@@ -15445,6 +15415,19 @@ var DepositWithdraw = function () {
         });
     };
 
+    var canChangeCurrency = function canChangeCurrency() {
+        var statement = State.getResponse('statement');
+        var has_no_mt5 = State.getResponse('mt5_login_list').length === 0;
+        var has_no_tx = statement.count === 0 && statement.transactions.length === 0;
+
+        // Current BE requirements for user successfully changing their account's currency:
+        // 1. User must not have made any transactions
+        // 2. User must not have any MT5 account
+        // 3. Not be a crypto account
+        // 4. Not be a virtual account
+        return !Client.get('is_virtual') && has_no_tx && has_no_mt5 && !Currency.isCryptocurrency(Client.get('currency'));
+    };
+
     var handleCashierResponse = function handleCashierResponse(response) {
         hideAll('#messages');
         var error = response.error;
@@ -15478,6 +15461,20 @@ var DepositWithdraw = function () {
                     showError('custom_error', error.message);
             }
         } else {
+            if (canChangeCurrency()) {
+                Dialog.confirm({
+                    id: 'deposit_currency_change_popup_container',
+                    ok_text: localize('Yes I\'m sure'),
+                    cancel_text: localize('Cancel'),
+                    localized_title: localize('Are you sure?'),
+                    localized_message: localize('You will not be able to change your fiat account’s currency after making this deposit. Are you sure you want to proceed?'),
+                    localized_footnote: localize('[_1]No, change my fiat account’s currency now[_2]', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']),
+                    onAbort: function onAbort() {
+                        return BinaryPjax.load(Url.urlFor('cashier'));
+                    }
+                });
+            }
+
             if (/^BCH/.test(Client.get('currency'))) {
                 getElementById('message_bitcoin_cash').setVisibility(1);
             }
@@ -15511,8 +15508,10 @@ var DepositWithdraw = function () {
         getCashierType();
         var req_cashier_password = BinarySocket.send({ cashier_password: 1 });
         var req_get_account_status = BinarySocket.send({ get_account_status: 1 });
+        var req_statement = BinarySocket.send({ statement: 1, limit: 1 });
+        var req_mt5_login_list = BinarySocket.send({ mt5_login_list: 1 });
 
-        Promise.all([req_cashier_password, req_get_account_status]).then(function () {
+        Promise.all([req_cashier_password, req_get_account_status, req_statement, req_mt5_login_list]).then(function () {
             // cannot use State.getResponse because we want to check error which is outside of response[msg_type]
             var response_cashier_password = State.get(['response', 'cashier_password']);
             var response_get_account_status = State.get(['response', 'get_account_status']);
@@ -31733,9 +31732,9 @@ var Accounts = function () {
     };
 
     var sendCurrencyChangeReq = function sendCurrencyChangeReq() {
-        BinarySocket.send({
-            set_account_currency: getElementById('change_account_currencies').value
-        }).then(function (res) {
+        var set_account_currency = getElementById('change_account_currencies').value || getElementById('change_account_currencies').getAttribute('data-value');
+
+        BinarySocket.send({ set_account_currency: set_account_currency }).then(function (res) {
             if (res.error) {
                 showError(res.error.message, true);
             } else if (res.set_account_currency === 1) {
@@ -34599,10 +34598,15 @@ var SetCurrency = function () {
                 $('#fiat_currencies').setVisibility(1);
                 $('#fiat_currency_list').html(fiat_currencies);
             }
-            var crytpo_currencies = $cryptocurrencies.html();
-            if (crytpo_currencies) {
+            var crypto_currencies = $cryptocurrencies.html();
+            if (crypto_currencies) {
                 $('#crypto_currencies').setVisibility(1);
-                $('#crypto_currency_list').html(crytpo_currencies);
+                $('#crypto_currency_list').html(crypto_currencies);
+            }
+            if (!fiat_currencies && crypto_currencies || fiat_currencies && !crypto_currencies) {
+                $('#set_currency_text').text(localize('Please select the currency for this account:'));
+            } else {
+                $('#set_currency_text').text(localize('Do you want this to be a fiat account or crypto account? Please choose one:'));
             }
 
             $('#set_currency_loading').remove();

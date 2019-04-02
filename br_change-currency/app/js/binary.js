@@ -5970,6 +5970,9 @@ var DatePicker = function (_React$Component) {
                 return { is_datepicker_visible: !state.is_datepicker_visible };
             });
         }, _this.onClickOutside = function (e) {
+            if (/purchase_/ig.test(e.target.id)) {
+                return;
+            }
             if (!_this.mainNode.contains(e.target) && _this.state.is_datepicker_visible) {
                 _this.setState({ is_datepicker_visible: false });
                 if (!!_this.state.value && _this.props.mode !== 'duration') {
@@ -19415,11 +19418,13 @@ var TradingDatePicker = function TradingDatePicker(_ref) {
         is_read_only = true;
     }
 
+    var error_messages = expiry_type === 'duration' ? validation_errors.duration : validation_errors.expiry_date;
+
     return _react2.default.createElement(_DatePicker2.default, {
         alignment: 'left',
         disable_year_selector: true,
         disable_trading_events: true,
-        error_messages: validation_errors.duration || [],
+        error_messages: error_messages || [],
         has_today_btn: has_today_btn,
         has_range_selection: mode === 'duration',
         is_nativepicker: false,
@@ -20242,7 +20247,6 @@ var AdvancedDuration = function AdvancedDuration(_ref) {
                 _react2.default.createElement(_DatePicker2.default, {
                     name: 'expiry_date',
                     is_24_hours_contract: is_24_hours_contract
-                    // validation_errors={validation_errors.expiry_date} TODO: add validation_errors for expiry date
                 }),
                 is_24_hours_contract && _react2.default.createElement(_TimePicker2.default, null)
                 // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
@@ -26174,6 +26178,9 @@ var getValidationRules = function getValidationRules() {
         start_date: {
             trigger: 'start_time'
         },
+        expiry_date: {
+            trigger: 'expiry_time'
+        },
         start_time: {
             rules: [['custom', { func: function func(value, options, store) {
                     return store.contract_start_type === 'spot' || (0, _Date.isTimeValid)(value);
@@ -26194,6 +26201,27 @@ var getValidationRules = function getValidationRules() {
 
                     return (0, _startDate.isSessionAvailable)(store.sessions, start_moment_clone.hour(h).minute(m), start_moment);
                 }, message: (0, _localize.localize)('Start time cannot be in the past.') }]]
+        },
+        expiry_time: {
+            rules: [['custom', { func: function func(value, options, store) {
+                    return store.contract_start_type === 'spot' || (0, _Date.isTimeValid)(value);
+                }, message: (0, _localize.localize)('Please enter the start time in the format "HH:MM".') }], ['custom', { func: function func(value, options, store) {
+                    return store.contract_start_type === 'spot' || (0, _Date.isHourValid)(value);
+                }, message: (0, _localize.localize)('Hour must be between 0 and 23.') }], ['custom', { func: function func(value, options, store) {
+                    return store.contract_start_type === 'spot' || (0, _Date.isMinuteValid)(value);
+                }, message: (0, _localize.localize)('Minute must be between 0 and 59.') }], ['custom', { func: function func(value, options, store) {
+                    if (store.contract_start_type === 'spot') return true;
+                    if (!(0, _Date.isTimeValid)(value)) return false;
+                    var start_moment = (0, _Date.toMoment)(store.start_date);
+                    var start_moment_clone = start_moment.clone();
+
+                    var _value$split3 = value.split(':'),
+                        _value$split4 = _slicedToArray(_value$split3, 2),
+                        h = _value$split4[0],
+                        m = _value$split4[1];
+
+                    return (0, _startDate.isSessionAvailable)(store.sessions, start_moment_clone.hour(h).minute(m), start_moment);
+                }, message: (0, _localize.localize)('Expiry time cannot be in the past.') }]]
         }
     };
 };
@@ -27812,6 +27840,7 @@ var TradeStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 =
                 throw new Error('Invalid Argument: ' + name);
             }
 
+            this.validateAllProperties();
             this.processNewValuesAsync(_defineProperty({}, name, value), true);
         }
     }, {
