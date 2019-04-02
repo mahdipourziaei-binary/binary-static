@@ -602,6 +602,18 @@ var ClientBase = function () {
         });
     };
 
+    var canChangeCurrency = function canChangeCurrency(statement, mt5_login_list) {
+        var has_no_mt5 = mt5_login_list.length === 0;
+        var has_no_tx = statement.count === 0 && statement.transactions.length === 0;
+
+        // Current API requirements for user successfully changing their account's currency:
+        // 1. User must not have made any transactions
+        // 2. User must not have any MT5 account
+        // 3. Not be a crypto account
+        // 4. Not be a virtual account
+        return !get('is_virtual') && has_no_tx && has_no_mt5 && !isCryptocurrency(get('currency'));
+    };
+
     return {
         init: init,
         isLoggedIn: isLoggedIn,
@@ -627,7 +639,8 @@ var ClientBase = function () {
         getLandingCompanyValue: getLandingCompanyValue,
         getRiskAssessment: getRiskAssessment,
         canTransferFunds: canTransferFunds,
-        hasCostaricaAccount: hasCostaricaAccount
+        hasCostaricaAccount: hasCostaricaAccount,
+        canChangeCurrency: canChangeCurrency
     };
 }();
 
@@ -12445,8 +12458,8 @@ var Dialog = function () {
                         elementInnerHtml(container.querySelector($selector), item);
                     };
 
-                    // Set title if `localized_title` field in `options` param exists
-                    if (options.localized_title && el_title) {
+                    var has_title = options.localized_title && el_title;
+                    if (has_title) {
                         el_title.setVisibility(1);
                         setMessage('localized_title', '#dialog_title');
                     }
@@ -12454,8 +12467,8 @@ var Dialog = function () {
                     // Set dialog message
                     setMessage('localized_message', '#dialog_message');
 
-                    // Set footnote if `localized_footnote` field in `options` param exists
-                    if (options.localized_footnote && el_footnote) {
+                    var has_footnote = options.localized_footnote && el_footnote;
+                    if (has_footnote) {
                         el_footnote.setVisibility(1);
                         setMessage('localized_footnote', '#dialog_footnote');
 
@@ -15054,7 +15067,6 @@ module.exports = AccountTransfer;
 "use strict";
 
 
-/* eslint-disable no-nested-ternary */
 var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var isCryptocurrency = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").isCryptocurrency;
@@ -15062,9 +15074,7 @@ var elementInnerHtml = __webpack_require__(/*! ../../../_common/common_functions
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var State = __webpack_require__(/*! ../../../_common/storage */ "./src/javascript/_common/storage.js").State;
-var paramsHash = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").paramsHash;
-var urlFor = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlFor;
-var urlForStatic = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlForStatic;
+var Url = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js");
 var getPropertyValue = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
 
 var Cashier = function () {
@@ -15072,7 +15082,7 @@ var Cashier = function () {
 
     var showContent = function showContent() {
         Client.activateByClientType();
-        var anchor = paramsHash().anchor;
+        var anchor = Url.paramsHash().anchor;
         var $toggler = void 0;
         if (anchor) {
             $toggler = $('[data-anchor=\'' + anchor + '\']');
@@ -15113,7 +15123,7 @@ var Cashier = function () {
             var classes = ['toggle', 'button-disabled'];
             var new_el = { class: $a.attr('class').replace(classes[+can_topup], classes[1 - +can_topup]), html: $a.html(), id: $a.attr('id') };
             if (can_topup) {
-                href = href || urlFor('/cashier/top_up_virtualws');
+                href = href || Url.urlFor('/cashier/top_up_virtualws');
                 new_el.href = href;
             }
             el_virtual_topup_info.innerText = can_topup ? localize('Your virtual account balance is currently [_1] or less. You may top up your account with an additional [_2].', [Client.get('currency') + ' 1,000.00', Client.get('currency') + ' 10,000.00']) : localize('You can top up your virtual account with an additional [_1] if your balance is [_2] or less.', [Client.get('currency') + ' 10,000.00', Client.get('currency') + ' 1,000.00']);
@@ -15129,22 +15139,22 @@ var Cashier = function () {
         var el_current_hint = getElementById('account_currency_hint');
 
         var missingCriteria = function missingCriteria(has_mt5, has_tx) {
-            var existing_mt5_msg = localize('You can no longer change the currency because you’ve created an MT5 account. [_1]Manage your accounts[_2].', ['<a href=' + urlFor('user/accounts') + '>', '</a>']);
-            var existing_tx_msg = localize('You can no longer change the currency because you’ve made a first-time deposit. [_1]Manage your accounts[_2].', ['<a href=' + urlFor('user/accounts') + '>', '</a>']);
+            var existing_mt5_msg = localize('You can no longer change the currency because you\'ve created an MT5 account. [_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']);
+            var existing_tx_msg = localize('You can no longer change the currency because you\'ve made a first-time deposit. [_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']);
 
-            return !has_mt5 && has_tx ? existing_tx_msg : has_mt5 && !has_tx ? existing_mt5_msg : existing_tx_msg;
+            return has_mt5 && !has_tx ? existing_mt5_msg : existing_tx_msg;
         };
 
-        // Set messages based on if currency is crypto or fiat
+        // Set messages based on currency being crypto or fiat
         // If fiat, set message based on if they're allowed to change currency or not
         // Condition is to have no MT5 accounts *and* have no transactions
-        var currency_message = isCryptocurrency(currency) ? localize('This is your [_1] account.', '' + currency) : has_no_mt5 && has_no_tx ? localize('Your fiat account’s currency is currently set to [_1].', '' + currency) : localize('Your fiat account’s currency is set to [_1].', '' + currency);
+        var currency_message = isCryptocurrency(currency) ? localize('This is your [_1] account.', '' + currency) : has_no_mt5 && has_no_tx ? localize('Your fiat account\'s currency is currently set to [_1].', '' + currency) : localize('Your fiat account\'s currency is set to [_1].', '' + currency);
 
-        var currency_hint = isCryptocurrency(currency) ? localize('Don\'t want to trade in [_1]? You can open another cryptocurrency account. [_2]Manage your accounts[_3].', ['' + currency, '<a href=' + urlFor('user/accounts') + '>', '</a>']) : has_no_mt5 && has_no_tx ? localize('You can set a new currency before you deposit for the first time or create an MT5 account. [_1]Manage your accounts[_2].', ['<a href=' + urlFor('user/accounts') + '>', '</a>']) : missingCriteria(!has_no_mt5, !has_no_tx);
+        var currency_hint = isCryptocurrency(currency) ? localize('Don\'t want to trade in [_1]? You can open another cryptocurrency account. [_2]Manage your accounts[_3].', ['' + currency, '<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : has_no_mt5 && has_no_tx ? localize('You can set a new currency before you deposit for the first time or create an MT5 account. [_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : missingCriteria(!has_no_mt5, !has_no_tx);
 
         elementInnerHtml(el_current_currency, currency_message);
         elementInnerHtml(el_current_hint, currency_hint);
-        el_currency_image.src = urlForStatic('/images/pages/cashier/icons/icon-' + currency + '.svg');
+        el_currency_image.src = Url.urlForStatic('/images/pages/cashier/icons/icon-' + currency + '.svg');
 
         el_acc_currency.setVisibility(1);
     };
@@ -15415,19 +15425,6 @@ var DepositWithdraw = function () {
         });
     };
 
-    var canChangeCurrency = function canChangeCurrency() {
-        var statement = State.getResponse('statement');
-        var has_no_mt5 = State.getResponse('mt5_login_list').length === 0;
-        var has_no_tx = statement.count === 0 && statement.transactions.length === 0;
-
-        // Current BE requirements for user successfully changing their account's currency:
-        // 1. User must not have made any transactions
-        // 2. User must not have any MT5 account
-        // 3. Not be a crypto account
-        // 4. Not be a virtual account
-        return !Client.get('is_virtual') && has_no_tx && has_no_mt5 && !Currency.isCryptocurrency(Client.get('currency'));
-    };
-
     var handleCashierResponse = function handleCashierResponse(response) {
         hideAll('#messages');
         var error = response.error;
@@ -15461,14 +15458,14 @@ var DepositWithdraw = function () {
                     showError('custom_error', error.message);
             }
         } else {
-            if (canChangeCurrency()) {
+            if (Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
                 Dialog.confirm({
                     id: 'deposit_currency_change_popup_container',
                     ok_text: localize('Yes I\'m sure'),
                     cancel_text: localize('Cancel'),
                     localized_title: localize('Are you sure?'),
-                    localized_message: localize('You will not be able to change your fiat account’s currency after making this deposit. Are you sure you want to proceed?'),
-                    localized_footnote: localize('[_1]No, change my fiat account’s currency now[_2]', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']),
+                    localized_message: localize('You will not be able to change your fiat account\'s currency after making this deposit. Are you sure you want to proceed?'),
+                    localized_footnote: localize('[_1]No, change my fiat account\'s currency now[_2]', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']),
                     onAbort: function onAbort() {
                         return BinaryPjax.load(Url.urlFor('cashier'));
                     }
@@ -31566,7 +31563,6 @@ module.exports = TopUpVirtual;
 "use strict";
 
 
-var Dropdown = __webpack_require__(/*! @binary-com/binary-style */ "./node_modules/@binary-com/binary-style/binary.js").selectDropdown;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var setIsForNewAccount = __webpack_require__(/*! ./account/settings/personal_details */ "./src/javascript/app/pages/user/account/settings/personal_details.js").setIsForNewAccount;
 var GetCurrency = __webpack_require__(/*! ./get_currency */ "./src/javascript/app/pages/user/get_currency.js");
@@ -31627,7 +31623,7 @@ var Accounts = function () {
                 element_to_show = '#new_accounts_wrapper';
             }
 
-            if (canChangeCurrency()) {
+            if (Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
                 addChangeCurrencyOption();
                 element_to_show = '#new_accounts_wrapper';
             }
@@ -31654,20 +31650,6 @@ var Accounts = function () {
         return Client.getLandingCompanyValue(account, landing_company, 'country');
     };
 
-    var canChangeCurrency = function canChangeCurrency() {
-        var statement = State.getResponse('statement');
-        var has_no_mt5 = State.getResponse('mt5_login_list').length === 0;
-        var has_no_tx = statement.count === 0 && statement.transactions.length === 0;
-        var currency = Client.get('currency');
-
-        // Current BE requirements for user successfully changing their account's currency:
-        // 1. User must not have made any transactions
-        // 2. User must not have any MT5 account
-        // 3. Not be a crypto account
-        // 4. Not be a virtual account
-        return !Client.get('is_virtual') && has_no_tx && has_no_mt5 && !isCryptocurrency(currency);
-    };
-
     var populateNewAccounts = function populateNewAccounts(upgrade_info) {
         var table_headers = TableHeaders.get();
         var new_account = upgrade_info;
@@ -31692,7 +31674,7 @@ var Accounts = function () {
         // Set the table row
         $(form_id).find('tbody').append($('<tr/>', { id: 'change_account_currency' }).append($('<td/>', { datath: table_headers.account }).html($('<span/>', {
             text: loginid
-        }))).append($('<td/>', { text: getAvailableMarkets(loginid), datath: table_headers.available_markets })).append($('<td/>', { class: 'account-currency', datath: table_headers.available_currencies })).append($('<td/>', { id: 'change_currency_action' }).html($('<button/>', { id: 'change_currency_btn', class: 'button no-margin', type: 'button', text: localize('Change') }).click(sendCurrencyChangeReq)).append($('\n                        <svg width="24" height="24" id="change_currency_success_icon" class="invisible"><path fill="#e98024" d="M8.308 22.298L.399 14.39l3.535-3.536 4.374 4.374L20.066 3.47l3.535 3.535L8.308 22.298z"/></svg>\n                    '))));
+        }))).append($('<td/>', { text: getAvailableMarkets(loginid), datath: table_headers.available_markets })).append($('<td/>', { class: 'account-currency', datath: table_headers.available_currencies })).append($('<td/>', { id: 'change_currency_action' }).html($('<button/>', { id: 'change_currency_btn', class: 'button no-margin', type: 'button', text: localize('Change') }).click(sendCurrencyChangeReq))));
 
         // Add and convert available currencies into dropdown if multi, or label if single
         populateChangeCurrencyDropdown(getCurrencyChangeOptions());
@@ -31720,15 +31702,9 @@ var Accounts = function () {
             var $currencies = $('<div/>');
             $currencies.append(Currency.getCurrencyList(available_currencies).html());
             $change_account_currency.find('.account-currency').html($('<select/>', { id: change_currency_id }).html($currencies.html()));
-            Dropdown('#' + change_currency_id, true);
         } else {
             $change_account_currency.find('.account-currency').html($('<label/>', { id: change_currency_id, 'data-value': available_currencies, text: Currency.getCurrencyFullName(available_currencies) }));
         }
-
-        // Handler used to revert the check mark back to button
-        $('#' + change_currency_id).on('change', function () {
-            showChangeButtonOrSuccess(true);
-        });
     };
 
     var sendCurrencyChangeReq = function sendCurrencyChangeReq() {
@@ -31736,28 +31712,21 @@ var Accounts = function () {
 
         BinarySocket.send({ set_account_currency: set_account_currency }).then(function (res) {
             if (res.error) {
-                showError(res.error.message, true);
+                showError(res.error.message, 'change_currency_error', 'change_account_currency');
             } else if (res.set_account_currency === 1) {
-                showChangeButtonOrSuccess(false);
                 var balance = BinarySocket.send({ balance: 1 });
                 var authorize = BinarySocket.send({ authorize: Client.get('token') }, { forced: true });
                 Promise.all([balance, authorize]).then(function () {
-                    refreshExistingAccounts();
+                    handleCurrencyChange();
                 });
             }
         });
     };
 
-    var refreshExistingAccounts = function refreshExistingAccounts() {
-        $('#existing_accounts').find('tbody').empty();
+    var handleCurrencyChange = function handleCurrencyChange() {
         populateAccountsList();
-        populateExistingAccounts();
-        populateChangeCurrencyDropdown(getCurrencyChangeOptions());
-    };
-
-    var showChangeButtonOrSuccess = function showChangeButtonOrSuccess(has_button) {
-        $('#change_currency_btn').setVisibility(has_button);
-        $('#change_currency_success_icon').setVisibility(!has_button);
+        localStorage.setItem('has_changed_currency', 1);
+        BinaryPjax.load(urlFor('user/set-currency'));
     };
 
     var populateExistingAccounts = function populateExistingAccounts() {
@@ -31890,7 +31859,7 @@ var Accounts = function () {
                 // ask client to set any missing information
                 BinaryPjax.load(urlFor('user/settings/detailsws'));
             } else {
-                showError(response.error.message);
+                showError(response.error.message, 'new_account_error', 'new_account_opening');
             }
         } else {
             var new_account = response.new_account_real;
@@ -31904,12 +31873,7 @@ var Accounts = function () {
         }
     };
 
-    var showError = function showError(localized_text) {
-        var is_currency_change = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-        var error_message_id = is_currency_change ? 'change_currency_error' : 'new_account_error';
-        var error_message_parent_id = is_currency_change ? 'change_account_currency' : 'new_account_opening';
-
+    var showError = function showError(localized_text, error_message_id, error_message_parent_id) {
         $('#' + error_message_id).remove();
         $('#' + error_message_parent_id).find('button').parent().append($('<p/>', { class: 'error-msg', id: error_message_id, text: localized_text }));
     };
@@ -34572,7 +34536,12 @@ var SetCurrency = function () {
         $('#upgrade_to_mf').setVisibility(can_upgrade && type === 'financial');
 
         if (Client.get('currency')) {
-            if (is_new_account) {
+            var has_changed_currency = localStorage.getItem('has_changed_currency');
+            if (has_changed_currency) {
+                $('#set_currency_loading').remove();
+                $('#deposit_btn, #set_currency, #show_new_account').setVisibility(1);
+                localStorage.removeItem('has_changed_currency');
+            } else if (is_new_account) {
                 $('#set_currency_loading').remove();
                 $('#deposit_btn, #set_currency').setVisibility(1);
             } else {
@@ -34603,7 +34572,8 @@ var SetCurrency = function () {
                 $('#crypto_currencies').setVisibility(1);
                 $('#crypto_currency_list').html(crypto_currencies);
             }
-            if (!fiat_currencies && crypto_currencies || fiat_currencies && !crypto_currencies) {
+            var has_one_group = !fiat_currencies && crypto_currencies || fiat_currencies && !crypto_currencies;
+            if (has_one_group) {
                 $('#set_currency_text').text(localize('Please select the currency for this account:'));
             } else {
                 $('#set_currency_text').text(localize('Do you want this to be a fiat account or crypto account? Please choose one:'));
