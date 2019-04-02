@@ -15170,7 +15170,7 @@ var Cashier = function () {
 
                 if (Client.get('is_virtual')) {
                     displayTopUpButton();
-                } else {
+                } else if (currency) {
                     showCurrentCurrency(currency, mt5_logins.length === 0, statement.count === 0 && statement.transactions.length === 0);
                 }
 
@@ -31563,6 +31563,7 @@ module.exports = TopUpVirtual;
 "use strict";
 
 
+var Dropdown = __webpack_require__(/*! @binary-com/binary-style */ "./node_modules/@binary-com/binary-style/binary.js").selectDropdown;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var setIsForNewAccount = __webpack_require__(/*! ./account/settings/personal_details */ "./src/javascript/app/pages/user/account/settings/personal_details.js").setIsForNewAccount;
 var GetCurrency = __webpack_require__(/*! ./get_currency */ "./src/javascript/app/pages/user/get_currency.js");
@@ -31702,6 +31703,7 @@ var Accounts = function () {
             var $currencies = $('<div/>');
             $currencies.append(Currency.getCurrencyList(available_currencies).html());
             $change_account_currency.find('.account-currency').html($('<select/>', { id: change_currency_id }).html($currencies.html()));
+            Dropdown('#' + change_currency_id, true); // Explicitly set true to enable option group
         } else {
             $change_account_currency.find('.account-currency').html($('<label/>', { id: change_currency_id, 'data-value': available_currencies, text: Currency.getCurrencyFullName(available_currencies) }));
         }
