@@ -6952,7 +6952,7 @@ html {
   font-size: 3em;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 700;
-  text-transform: capitalize;
+  text-transform: none;
   text-align: center;
   line-height: unset;
   line-height: 44px; }
