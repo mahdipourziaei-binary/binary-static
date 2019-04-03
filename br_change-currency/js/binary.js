@@ -11032,73 +11032,6 @@ module.exports = Header;
 
 /***/ }),
 
-/***/ "./src/javascript/app/base/interview_popup.js":
-/*!****************************************************!*\
-  !*** ./src/javascript/app/base/interview_popup.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Cookies = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
-var BinarySocket = __webpack_require__(/*! ./socket */ "./src/javascript/app/base/socket.js");
-var Client = __webpack_require__(/*! ../base/client */ "./src/javascript/app/base/client.js");
-var isEuCountry = __webpack_require__(/*! ../common/country_base */ "./src/javascript/app/common/country_base.js").isEuCountry;
-var RealityCheckData = __webpack_require__(/*! ../pages/user/reality_check/reality_check.data */ "./src/javascript/app/pages/user/reality_check/reality_check.data.js");
-
-var InterviewPopup = function () {
-    var onLoad = function onLoad() {
-        BinarySocket.wait('authorize', 'website_status', 'get_account_status').then(function () {
-            var is_interview_consent = Cookies.get('InterviewConsent');
-            var $interview_popup = $('#interview_popup_container');
-            var $interview_no_thanks = $('#interview_no_thanks');
-            var $interview_ask_later = $('#interview_ask_later');
-            var $interview_interested = $('#interview_interested');
-
-            if (Client.isLoggedIn() && isEuCountry() && !is_interview_consent && !(RealityCheckData.get('keep_open') === false || RealityCheckData.get('keep_open') === 1)) {
-                setTimeout(function () {
-                    $interview_popup.removeClass('invisible');
-                }, 2000);
-                $interview_no_thanks.one('click', function () {
-                    Cookies.set('InterviewConsent', 1);
-                    $interview_popup.addClass('invisible');
-                });
-                $interview_ask_later.one('click', function () {
-                    var interval_time = 1 / 12;
-                    Cookies.set('InterviewConsent', 1, {
-                        expires: interval_time
-                    });
-                    $interview_popup.addClass('invisible');
-                });
-                $interview_interested.one('click', function () {
-                    BinarySocket.wait('get_settings').then(function (response) {
-                        var get_settings = response.get_settings || {};
-                        var url = 'https://docs.google.com/forms/d/e/1FAIpQLSccg8p-GjoBufjAnMJJUZHJ_1YqlS_GyQyy5vQdgGm4VKmnMg/viewform?usp=pp_url';
-                        var pre_name = '&entry.909179306=' + get_settings.first_name + '%20' + get_settings.last_name;
-                        var pre_email = '&entry.81172074=' + get_settings.email;
-                        var pre_country = '&entry.141529718=' + get_settings.country;
-                        var pre_phone = '&entry.1442583433=' + get_settings.phone;
-                        var encode_uri = ('' + url + pre_name + pre_email + pre_country + pre_phone).replace(/\+/g, '%2B');
-                        $interview_popup.addClass('invisible');
-                        Cookies.set('InterviewConsent', 1);
-                        window.open(encode_uri, '_blank');
-                    });
-                });
-            }
-        });
-    };
-
-    return {
-        onLoad: onLoad
-    };
-}();
-
-module.exports = InterviewPopup;
-
-/***/ }),
-
 /***/ "./src/javascript/app/base/logged_in.js":
 /*!**********************************************!*\
   !*** ./src/javascript/app/base/logged_in.js ***!
@@ -11366,7 +11299,6 @@ var Client = __webpack_require__(/*! ./client */ "./src/javascript/app/base/clie
 var Contents = __webpack_require__(/*! ./contents */ "./src/javascript/app/base/contents.js");
 var Header = __webpack_require__(/*! ./header */ "./src/javascript/app/base/header.js");
 var Footer = __webpack_require__(/*! ./footer */ "./src/javascript/app/base/footer.js");
-var InterviewPopup = __webpack_require__(/*! ./interview_popup */ "./src/javascript/app/base/interview_popup.js");
 var Menu = __webpack_require__(/*! ./menu */ "./src/javascript/app/base/menu.js");
 var BinarySocket = __webpack_require__(/*! ./socket */ "./src/javascript/app/base/socket.js");
 var TrafficSource = __webpack_require__(/*! ../common/traffic_source */ "./src/javascript/app/common/traffic_source.js");
@@ -11444,7 +11376,8 @@ var Page = function () {
                 Language.setCookie(Language.urlLang());
 
                 if (!ClientBase.get('is_virtual')) {
-                    InterviewPopup.onLoad();
+                    // TODO: uncomment below to enable interview popup dialog
+                    // InterviewPopup.onLoad();
                 }
             }
             Header.onLoad();
@@ -15067,6 +15000,7 @@ module.exports = AccountTransfer;
 "use strict";
 
 
+var getCurrencies = __webpack_require__(/*! ../user/get_currency */ "./src/javascript/app/pages/user/get_currency.js").getCurrencies;
 var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var isCryptocurrency = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").isCryptocurrency;
@@ -15156,7 +15090,13 @@ var Cashier = function () {
         elementInnerHtml(el_current_hint, currency_hint);
         el_currency_image.src = Url.urlForStatic('/images/pages/cashier/icons/icon-' + currency + '.svg');
 
-        el_acc_currency.setVisibility(1);
+        var available_currencies = getCurrencies(State.getResponse('landing_company'));
+        var has_more_crypto = (available_currencies.find(function (cur) {
+            return isCryptocurrency(cur);
+        }) || []).length > 0;
+        var show_current_currency = !isCryptocurrency(currency) || isCryptocurrency(currency) && has_more_crypto;
+
+        el_acc_currency.setVisibility(show_current_currency);
     };
 
     var onLoad = function onLoad() {
@@ -31711,6 +31651,7 @@ var Accounts = function () {
 
     var sendCurrencyChangeReq = function sendCurrencyChangeReq() {
         var set_account_currency = getElementById('change_account_currencies').value || getElementById('change_account_currencies').getAttribute('data-value');
+        var currency_before_change = Client.get('currency');
 
         BinarySocket.send({ set_account_currency: set_account_currency }).then(function (res) {
             if (res.error) {
@@ -31719,15 +31660,15 @@ var Accounts = function () {
                 var balance = BinarySocket.send({ balance: 1 });
                 var authorize = BinarySocket.send({ authorize: Client.get('token') }, { forced: true });
                 Promise.all([balance, authorize]).then(function () {
-                    handleCurrencyChange();
+                    handleCurrencyChange(currency_before_change, set_account_currency);
                 });
             }
         });
     };
 
-    var handleCurrencyChange = function handleCurrencyChange() {
+    var handleCurrencyChange = function handleCurrencyChange(from, to) {
         populateAccountsList();
-        localStorage.setItem('has_changed_currency', 1);
+        localStorage.setItem('has_changed_currency', from + '-' + to);
         BinaryPjax.load(urlFor('user/set-currency'));
     };
 
@@ -33581,13 +33522,15 @@ var MetaTraderUI = function () {
     };
 
     var showNewAccountConfirmationPopup = function showNewAccountConfirmationPopup(e, _onConfirm, onAbort) {
+        var is_costarica = Client.get('landing_company_shortcode') === 'costarica';
+
         Dialog.confirm({
             id: 'create_mt5_popup_container',
             ok_text: localize('Yes, I\'m sure'),
             cancel_text: localize('Cancel'),
             localized_title: localize('Are you sure?'),
             localized_message: localize('You will not be able to change your fiat account\'s currency after creating this MT5 account. Are you sure you want to proceed?'),
-            localized_footnote: localize('Note:') + ' ' + localize('You may open one account for each supported cryptocurrency.'),
+            localized_footnote: is_costarica ? localize('Note:') + ' ' + localize('You may open one account for each supported cryptocurrency.') : undefined,
             onConfirm: function onConfirm() {
                 _onConfirm();
                 submit(e);
@@ -34282,7 +34225,6 @@ var RealityCheckData = __webpack_require__(/*! ./reality_check.data */ "./src/ja
 var showLocalTimeOnHover = __webpack_require__(/*! ../../../base/clock */ "./src/javascript/app/base/clock.js").showLocalTimeOnHover;
 var BinarySocket = __webpack_require__(/*! ../../../base/socket */ "./src/javascript/app/base/socket.js");
 var FormManager = __webpack_require__(/*! ../../../common/form_manager */ "./src/javascript/app/common/form_manager.js");
-var InterviewPopup = __webpack_require__(/*! ../../../base/interview_popup */ "./src/javascript/app/base/interview_popup.js");
 var urlFor = __webpack_require__(/*! ../../../../_common/url */ "./src/javascript/_common/url.js").urlFor;
 __webpack_require__(/*! ../../../../_common/lib/polyfills/array.includes */ "./src/javascript/_common/lib/polyfills/array.includes.js");
 __webpack_require__(/*! ../../../../_common/lib/polyfills/string.includes */ "./src/javascript/_common/lib/polyfills/string.includes.js");
@@ -34379,7 +34321,8 @@ var RealityCheckUI = function () {
     var closePopUp = function closePopUp() {
         $('#reality_check').remove();
         startSummaryTimer();
-        InterviewPopup.onLoad();
+        // TODO: uncomment below to enable interview popup dialog
+        // InterviewPopup.onLoad();
     };
 
     var startSummaryTimer = function startSummaryTimer() {
@@ -34511,6 +34454,8 @@ module.exports = ResetPassword;
 "use strict";
 
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var getCurrencies = __webpack_require__(/*! ./get_currency */ "./src/javascript/app/pages/user/get_currency.js").getCurrencies;
 var BinaryPjax = __webpack_require__(/*! ../../base/binary_pjax */ "./src/javascript/app/base/binary_pjax.js");
 var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
@@ -34540,7 +34485,14 @@ var SetCurrency = function () {
         if (Client.get('currency')) {
             var has_changed_currency = localStorage.getItem('has_changed_currency');
             if (has_changed_currency) {
+                var _has_changed_currency = has_changed_currency.split('-'),
+                    _has_changed_currency2 = _slicedToArray(_has_changed_currency, 2),
+                    from = _has_changed_currency2[0],
+                    to = _has_changed_currency2[1];
+
                 $('#set_currency_loading').remove();
+                $('#hide_new_account').setVisibility(0);
+                $('#congratulations_message').text(localize('You have successfully changed your account currency from [_1] to [_2].', [from, to]));
                 $('#deposit_btn, #set_currency, #show_new_account').setVisibility(1);
                 localStorage.removeItem('has_changed_currency');
             } else if (is_new_account) {
