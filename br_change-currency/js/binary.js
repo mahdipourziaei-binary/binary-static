@@ -15398,7 +15398,9 @@ var DepositWithdraw = function () {
                     showError('custom_error', error.message);
             }
         } else {
-            if (Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
+            var popup_valid_for_url = Url.urlFor('cashier/forwardws') + '?action=deposit';
+            var popup_valid = popup_valid_for_url === window.location.href;
+            if (popup_valid && Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
                 Dialog.confirm({
                     id: 'deposit_currency_change_popup_container',
                     ok_text: localize('Yes I\'m sure'),
@@ -31518,6 +31520,7 @@ var getElementById = __webpack_require__(/*! ../../../_common/common_functions *
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var State = __webpack_require__(/*! ../../../_common/storage */ "./src/javascript/_common/storage.js").State;
 var urlFor = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlFor;
+var showLoadingImage = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").showLoadingImage;
 
 var Accounts = function () {
     var landing_company = void 0;
@@ -31652,14 +31655,21 @@ var Accounts = function () {
     var sendCurrencyChangeReq = function sendCurrencyChangeReq() {
         var set_account_currency = getElementById('change_account_currencies').value || getElementById('change_account_currencies').getAttribute('data-value');
         var currency_before_change = Client.get('currency');
+        var $change_currency_btn = $('#change_currency_btn');
+        var setLoadingImage = function setLoadingImage(is_visible) {
+            return is_visible ? showLoadingImage($change_currency_btn, 'white') : $change_currency_btn.html(localize('Change'));
+        };
+        setLoadingImage(true);
 
         BinarySocket.send({ set_account_currency: set_account_currency }).then(function (res) {
             if (res.error) {
                 showError(res.error.message, 'change_currency_error', 'change_account_currency');
+                setLoadingImage(false);
             } else if (res.set_account_currency === 1) {
                 var balance = BinarySocket.send({ balance: 1 });
                 var authorize = BinarySocket.send({ authorize: Client.get('token') }, { forced: true });
                 Promise.all([balance, authorize]).then(function () {
+                    setLoadingImage(false);
                     handleCurrencyChange(currency_before_change, set_account_currency);
                 });
             }
