@@ -1350,7 +1350,7 @@ body #not_authenticated_financial ul.checked > li {
       .accounts-content .table-container table.responsive#existing_accounts tr:last-child {
         border: none; } }
   .accounts-content .table-container table.responsive#existing_accounts th, .accounts-content .table-container table.responsive#existing_accounts td {
-    text-align: left !important;
+    text-align: center !important;
     border: none; }
     @media screen and (max-width: 500px) {
       .accounts-content .table-container table.responsive#existing_accounts th, .accounts-content .table-container table.responsive#existing_accounts td {

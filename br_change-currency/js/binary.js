@@ -603,15 +603,18 @@ var ClientBase = function () {
     };
 
     var canChangeCurrency = function canChangeCurrency(statement, mt5_login_list) {
-        var has_no_mt5 = mt5_login_list.length === 0;
-        var has_no_tx = statement.count === 0 && statement.transactions.length === 0;
+        var is_current = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-        // Current API requirements for user successfully changing their account's currency:
+        var has_no_mt5 = mt5_login_list.length === 0;
+        var has_no_transaction = statement.count === 0 && statement.transactions.length === 0;
+        var has_account_criteria = has_no_transaction && has_no_mt5;
+
+        // Current API requirements for currently logged-in user successfully changing their account's currency:
         // 1. User must not have made any transactions
         // 2. User must not have any MT5 account
         // 3. Not be a crypto account
         // 4. Not be a virtual account
-        return !get('is_virtual') && has_no_tx && has_no_mt5 && !isCryptocurrency(get('currency'));
+        return is_current ? !get('is_virtual') && has_account_criteria && !isCryptocurrency(get('currency')) : has_account_criteria;
     };
 
     return {
@@ -15066,25 +15069,30 @@ var Cashier = function () {
         });
     };
 
-    var showCurrentCurrency = function showCurrentCurrency(currency, has_no_mt5, has_no_tx) {
+    var showCurrentCurrency = function showCurrentCurrency(currency, statement, mt5_logins) {
+        var has_no_mt5 = mt5_logins.length === 0;
+        var has_no_transaction = statement.count === 0 && statement.transactions.length === 0;
         var el_acc_currency = getElementById('account_currency');
         var el_currency_image = getElementById('account_currency_img');
         var el_current_currency = getElementById('account_currency_current');
         var el_current_hint = getElementById('account_currency_hint');
+        var upgrade_info = Client.getUpgradeInfo();
+        var has_upgrade = upgrade_info.can_upgrade || upgrade_info.can_open_multi || Client.canChangeCurrency(statement, mt5_logins);
+        var account_action_text = has_upgrade ? localize('[_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : '';
 
-        var missingCriteria = function missingCriteria(has_mt5, has_tx) {
-            var existing_mt5_msg = localize('You can no longer change the currency because you\'ve created an MT5 account. [_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']);
-            var existing_tx_msg = localize('You can no longer change the currency because you\'ve made a first-time deposit. [_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']);
+        var missingCriteria = function missingCriteria(has_mt5, has_transaction) {
+            var existing_mt5_msg = localize('You can no longer change the currency because you\'ve created an MT5 account.') + account_action_text;
+            var existing_transaction_msg = localize('You can no longer change the currency because you\'ve made a first-time deposit.') + account_action_text;
 
-            return has_mt5 && !has_tx ? existing_mt5_msg : existing_tx_msg;
+            return has_mt5 && !has_transaction ? existing_mt5_msg : existing_transaction_msg;
         };
 
         // Set messages based on currency being crypto or fiat
         // If fiat, set message based on if they're allowed to change currency or not
         // Condition is to have no MT5 accounts *and* have no transactions
-        var currency_message = isCryptocurrency(currency) ? localize('This is your [_1] account.', '' + currency) : has_no_mt5 && has_no_tx ? localize('Your fiat account\'s currency is currently set to [_1].', '' + currency) : localize('Your fiat account\'s currency is set to [_1].', '' + currency);
+        var currency_message = isCryptocurrency(currency) ? localize('This is your [_1] account.', '' + currency) : has_no_mt5 && has_no_transaction ? localize('Your fiat account\'s currency is currently set to [_1].', '' + currency) : localize('Your fiat account\'s currency is set to [_1].', '' + currency);
 
-        var currency_hint = isCryptocurrency(currency) ? localize('Don\'t want to trade in [_1]? You can open another cryptocurrency account. [_2]Manage your accounts[_3].', ['' + currency, '<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : has_no_mt5 && has_no_tx ? localize('You can set a new currency before you deposit for the first time or create an MT5 account. [_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : missingCriteria(!has_no_mt5, !has_no_tx);
+        var currency_hint = isCryptocurrency(currency) ? localize('Don\'t want to trade in [_1]? You can open another cryptocurrency account.', '' + currency) + account_action_text : has_no_mt5 && has_no_transaction ? localize('You can set a new currency before you deposit for the first time or create an MT5 account.') + account_action_text : missingCriteria(!has_no_mt5, !has_no_transaction);
 
         elementInnerHtml(el_current_currency, currency_message);
         elementInnerHtml(el_current_hint, currency_hint);
@@ -15103,15 +15111,13 @@ var Cashier = function () {
         if (Client.isLoggedIn()) {
             BinarySocket.send({ statement: 1, limit: 1 });
             BinarySocket.wait('authorize', 'mt5_login_list', 'statement').then(function () {
-                var mt5_logins = State.getResponse('mt5_login_list');
-                var statement = State.getResponse('statement');
                 var residence = Client.get('residence');
                 var currency = Client.get('currency');
 
                 if (Client.get('is_virtual')) {
                     displayTopUpButton();
                 } else if (currency) {
-                    showCurrentCurrency(currency, mt5_logins.length === 0, statement.count === 0 && statement.transactions.length === 0);
+                    showCurrentCurrency(currency, State.getResponse('statement'), State.getResponse('mt5_login_list'));
                 }
 
                 if (residence) {
@@ -31567,15 +31573,15 @@ var Accounts = function () {
                 element_to_show = '#new_accounts_wrapper';
             }
 
-            if (Client.get('currency') && Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
-                addChangeCurrencyOption();
-                element_to_show = '#new_accounts_wrapper';
-            }
-
             if (upgrade_info.can_open_multi) {
                 populateMultiAccount();
             } else {
                 doneLoading(element_to_show);
+            }
+
+            if (Client.get('currency') && Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
+                addChangeCurrencyOption();
+                element_to_show = '#new_accounts_wrapper';
             }
         });
     };
@@ -32587,7 +32593,8 @@ var MetaTrader = function () {
     var mt_company = {};
 
     var onLoad = function onLoad() {
-        BinarySocket.wait('landing_company', 'get_account_status').then(function () {
+        BinarySocket.send({ statement: 1, limit: 1 });
+        BinarySocket.wait('landing_company', 'get_account_status', 'statement').then(function () {
             setMTCompanies();
             if (isEligible()) {
                 if (Client.get('is_virtual')) {
@@ -32658,7 +32665,7 @@ var MetaTrader = function () {
     var getAllAccountsInfo = function getAllAccountsInfo() {
         MetaTraderUI.init(submit, sendTopupDemo);
         BinarySocket.send({ mt5_login_list: 1 }).then(function (response) {
-            show_new_account_popup = (response.mt5_login_list || []).length === 0;
+            show_new_account_popup = Client.canChangeCurrency(State.getResponse('statement'), response.mt5_login_list || [], false);
             allAccountsResponseHandler(response);
         });
     };

@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"cbb3f11fff75dd57bfef","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"044ca017a6864b043a4d","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"89c32cd4391ea5a712d9","portfolio":"90c69f17efacf0441d50","statement":"83be0ace500a644e5479","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"d8ee6cceb906412ef4ee","smart_chart":"34e6da84e355fdd9098f"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"9678f971aecc8fd8a2ee","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"044ca017a6864b043a4d","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"89c32cd4391ea5a712d9","portfolio":"90c69f17efacf0441d50","statement":"83be0ace500a644e5479","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"d8ee6cceb906412ef4ee","smart_chart":"34e6da84e355fdd9098f"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -20013,10 +20013,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
 
-var _money = __webpack_require__(/*! ../../../../App/Components/Elements/money.jsx */ "./src/javascript/app_2/App/Components/Elements/money.jsx");
-
-var _money2 = _interopRequireDefault(_money);
-
 var _button = __webpack_require__(/*! ../../../../App/Components/Form/button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
 
 var _button2 = _interopRequireDefault(_button);
@@ -20026,8 +20022,7 @@ var _Types = __webpack_require__(/*! ../../../../Assets/Trading/Types */ "./src/
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PurchaseButton = function PurchaseButton(_ref) {
-    var currency = _ref.currency,
-        info = _ref.info,
+    var info = _ref.info,
         is_contract_mode = _ref.is_contract_mode,
         is_disabled = _ref.is_disabled,
         is_high_low = _ref.is_high_low,
@@ -20051,13 +20046,13 @@ var PurchaseButton = function PurchaseButton(_ref) {
             null,
             _react2.default.createElement(
                 'div',
-                { className: 'btn-purchase__trade-type' },
+                { className: 'btn-purchase__info btn-purchase__info--left' },
                 _react2.default.createElement(
                     'div',
                     { className: 'btn-purchase__icon_wrapper' },
                     _react2.default.createElement(_Types.IconTradeType, {
                         className: 'btn-purchase__icon',
-                        type: is_high_low ? type.toLowerCase() + '_barrier' : type.toLowerCase()
+                        type: !is_loading && is_high_low ? type.toLowerCase() + '_barrier' : type.toLowerCase()
                     })
                 ),
                 _react2.default.createElement(
@@ -20066,38 +20061,21 @@ var PurchaseButton = function PurchaseButton(_ref) {
                     _react2.default.createElement(
                         'span',
                         { className: 'btn-purchase__text' },
-                        (0, _localize.localize)('[_1]', trade_types[type])
+                        !is_loading && (0, _localize.localize)('[_1]', trade_types[type])
                     )
                 )
             ),
             _react2.default.createElement('div', { className: 'btn-purchase__effect-detail' }),
             _react2.default.createElement(
                 'div',
-                { className: 'btn-purchase__info' },
+                { className: 'btn-purchase__info btn-purchase__info--right' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'btn-purchase__return' },
+                    { className: 'btn-purchase__text_wrapper' },
                     _react2.default.createElement(
-                        'div',
-                        { className: 'btn-purchase__text_wrapper' },
-                        _react2.default.createElement(
-                            'span',
-                            { className: 'btn-purchase__text' },
-                            is_disabled ? '' : info.returns
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'btn-purchase__profit' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'btn-purchase__text_wrapper' },
-                        _react2.default.createElement(
-                            'span',
-                            { className: 'btn-purchase__text' },
-                            is_disabled ? '' : _react2.default.createElement(_money2.default, { amount: info.profit, currency: currency, className: 'btn-purchase__currency' })
-                        )
+                        'span',
+                        { className: 'btn-purchase__text' },
+                        is_loading && is_disabled ? '' : info.returns
                     )
                 )
             )
@@ -28247,7 +28225,7 @@ var getProposalInfo = exports.getProposalInfo = function getProposalInfo(store, 
     var price = is_stake ? stake : proposal[contract_basis.value];
     var has_increased = price > obj_prev_contract_basis.value;
 
-    if (price === obj_prev_contract_basis.value) {
+    if (!obj_prev_contract_basis.value || price === obj_prev_contract_basis.value) {
         has_increased = null;
     }
 
