@@ -605,6 +605,7 @@ var ClientBase = function () {
     var canChangeCurrency = function canChangeCurrency(statement, mt5_login_list) {
         var is_current = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
+        var currency = get('currency');
         var has_no_mt5 = mt5_login_list.length === 0;
         var has_no_transaction = statement.count === 0 && statement.transactions.length === 0;
         var has_account_criteria = has_no_transaction && has_no_mt5;
@@ -614,7 +615,7 @@ var ClientBase = function () {
         // 2. User must not have any MT5 account
         // 3. Not be a crypto account
         // 4. Not be a virtual account
-        return is_current ? !get('is_virtual') && has_account_criteria && !isCryptocurrency(get('currency')) : has_account_criteria;
+        return is_current ? currency && !get('is_virtual') && has_account_criteria && !isCryptocurrency(currency) : has_account_criteria;
     };
 
     return {
@@ -31563,6 +31564,7 @@ var Accounts = function () {
         BinarySocket.send({ statement: 1, limit: 1 });
         BinarySocket.wait('landing_company', 'get_settings', 'statement', 'mt5_login_list').then(function () {
             landing_company = State.getResponse('landing_company');
+            var can_change_currency = Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'));
 
             populateExistingAccounts();
 
@@ -31575,13 +31577,16 @@ var Accounts = function () {
 
             if (upgrade_info.can_open_multi) {
                 populateMultiAccount();
-            } else {
+            } else if (!can_change_currency) {
                 doneLoading(element_to_show);
             }
 
-            if (Client.get('currency') && Client.canChangeCurrency(State.getResponse('statement'), State.getResponse('mt5_login_list'))) {
+            if (can_change_currency) {
                 addChangeCurrencyOption();
                 element_to_show = '#new_accounts_wrapper';
+                if (!upgrade_info.can_open_multi) {
+                    doneLoading(element_to_show);
+                }
             }
         });
     };
