@@ -15336,20 +15336,24 @@ var DepositWithdraw = function () {
 
     var showPersonalDetailsError = function showPersonalDetailsError(details) {
         var msg_id = 'personal_details_message';
-        var error_fields = void 0;
-        if (details) {
+        var error_fields = void 0,
+            details_fields = void 0;
+        if (details && details.fields) {
             error_fields = {
-                province: localize('State/Province'),
-                country: localize('Country'),
-                city: localize('Town/City'),
-                street: localize('First line of home address'),
-                pcode: localize('Postal Code / ZIP'),
+                address_city: localize('Town/City'),
+                address_line_1: localize('First line of home address'),
+                address_postcode: localize('Postal Code/ZIP'),
+                address_state: localize('State/Province'),
+                email: localize('Email address'),
                 phone: localize('Telephone'),
-                email: localize('Email address')
+                residence: localize('Country of Residence')
             };
+            details_fields = details.fields.map(function (field) {
+                return error_fields[field] || field;
+            });
         }
         var $el = $('#' + msg_id);
-        var err_msg = template($el.html(), [details ? error_fields[details] : localize('details')]);
+        var err_msg = template($el.html(), [details_fields ? details_fields.join(', ') : localize('details')]);
         $el.html(err_msg);
         showMessage(msg_id);
     };
