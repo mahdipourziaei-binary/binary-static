@@ -15079,7 +15079,7 @@ var Cashier = function () {
         var el_current_hint = getElementById('account_currency_hint');
         var upgrade_info = Client.getUpgradeInfo();
         var has_upgrade = upgrade_info.can_upgrade || upgrade_info.can_open_multi || Client.canChangeCurrency(statement, mt5_logins);
-        var account_action_text = has_upgrade ? localize('[_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : '';
+        var account_action_text = has_upgrade ? '&nbsp;' + localize('[_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : '';
 
         var missingCriteria = function missingCriteria(has_mt5, has_transaction) {
             var existing_mt5_msg = localize('You can no longer change the currency because you\'ve created an MT5 account.') + account_action_text;
@@ -33544,7 +33544,6 @@ var MetaTraderUI = function () {
     };
 
     var showNewAccountConfirmationPopup = function showNewAccountConfirmationPopup(e, _onConfirm, onAbort) {
-        var is_costarica = Client.get('landing_company_shortcode') === 'costarica';
 
         Dialog.confirm({
             id: 'create_mt5_popup_container',
@@ -33552,7 +33551,6 @@ var MetaTraderUI = function () {
             cancel_text: localize('Cancel'),
             localized_title: localize('Are you sure?'),
             localized_message: localize('You will not be able to change your fiat account\'s currency after creating this MT5 account. Are you sure you want to proceed?'),
-            localized_footnote: is_costarica ? localize('Note:') + ' ' + localize('You may open one account for each supported cryptocurrency.') : undefined,
             onConfirm: function onConfirm() {
                 _onConfirm();
                 submit(e);
@@ -34514,7 +34512,7 @@ var SetCurrency = function () {
 
                 $('#set_currency_loading').remove();
                 $('#hide_new_account').setVisibility(0);
-                $('#congratulations_message').text(localize('You have successfully changed your account currency from [_1] to [_2].', [from, to]));
+                $('#congratulations_message').html(localize('You have successfully changed your account currency from [_1] to [_2].', ['<strong>' + from + '</strong>', '<strong>' + to + '</strong>']));
                 $('#deposit_btn, #set_currency, #show_new_account').setVisibility(1);
                 localStorage.removeItem('has_changed_currency');
             } else if (is_new_account) {
