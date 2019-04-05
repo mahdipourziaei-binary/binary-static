@@ -15078,8 +15078,9 @@ var Cashier = function () {
         var el_current_currency = getElementById('account_currency_current');
         var el_current_hint = getElementById('account_currency_hint');
         var upgrade_info = Client.getUpgradeInfo();
-        var has_upgrade = upgrade_info.can_upgrade || upgrade_info.can_open_multi || Client.canChangeCurrency(statement, mt5_logins);
-        var account_action_text = has_upgrade ? '&nbsp;' + localize('[_1]Manage your accounts[_2].', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : '';
+        var can_change = Client.canChangeCurrency(statement, mt5_logins);
+        var has_upgrade = upgrade_info.can_upgrade || upgrade_info.can_open_multi || can_change;
+        var account_action_text = has_upgrade ? '<br />' + localize('[_1]Manage your accounts[_2]', ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>']) : '';
 
         var missingCriteria = function missingCriteria(has_mt5, has_transaction) {
             var existing_mt5_msg = localize('You can no longer change the currency because you\'ve created an MT5 account.') + account_action_text;
@@ -15093,7 +15094,7 @@ var Cashier = function () {
         // Condition is to have no MT5 accounts *and* have no transactions
         var currency_message = isCryptocurrency(currency) ? localize('This is your [_1] account.', '' + currency) : has_no_mt5 && has_no_transaction ? localize('Your fiat account\'s currency is currently set to [_1].', '' + currency) : localize('Your fiat account\'s currency is set to [_1].', '' + currency);
 
-        var currency_hint = isCryptocurrency(currency) ? localize('Don\'t want to trade in [_1]? You can open another cryptocurrency account.', '' + currency) + account_action_text : has_no_mt5 && has_no_transaction ? localize('You can set a new currency before you deposit for the first time or create an MT5 account.') + account_action_text : missingCriteria(!has_no_mt5, !has_no_transaction);
+        var currency_hint = isCryptocurrency(currency) ? localize('Don\'t want to trade in [_1]? You can open another cryptocurrency account.', '' + currency) + account_action_text : has_no_mt5 && has_no_transaction ? localize('You can [_1]set a new currency[_2] before you deposit for the first time or create an MT5 account.', can_change ? ['<a href=' + Url.urlFor('user/accounts') + '>', '</a>'] : ['', '']) : missingCriteria(!has_no_mt5, !has_no_transaction);
 
         elementInnerHtml(el_current_currency, currency_message);
         elementInnerHtml(el_current_hint, currency_hint);
