@@ -1400,7 +1400,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 /* eslint-disable no-console */
 var OnfidoSDK = __webpack_require__(/*! onfido-sdk-ui */ "./node_modules/onfido-sdk-ui/lib/index.js");
 var websiteUrl = __webpack_require__(/*! ../url */ "./src/javascript/_common/url.js").websiteUrl;
-var PromiseClass = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").PromiseClass;
 
 var Onfido = function () {
     var api_key = void 0,
@@ -1447,29 +1446,28 @@ var Onfido = function () {
 
     var sendRequest = function sendRequest(method, url) {
         var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+        return new Promise(function (resolve, reject) {
+            var xhttp = new XMLHttpRequest();
 
-        var responsePromise = new PromiseClass();
-        var xhttp = new XMLHttpRequest();
+            xhttp.overrideMimeType('application/json');
+            xhttp.open(method, url, true);
+            xhttp.setRequestHeader('Authorization', 'Token token=' + api_key);
 
-        xhttp.overrideMimeType('application/json');
-        xhttp.open(method, url, true);
-        xhttp.setRequestHeader('Authorization', 'Token token=' + api_key);
-
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState === 4) {
-                if (xhttp.status >= 200 && xhttp.status < 400) {
-                    responsePromise.resolve(JSON.parse(xhttp.responseText));
-                } else {
-                    responsePromise.reject({
-                        statusText: xhttp.statusText,
-                        response: JSON.parse(xhttp.responseText || null)
-                    });
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState === 4) {
+                    if (xhttp.status >= 200 && xhttp.status < 400) {
+                        resolve(JSON.parse(xhttp.responseText));
+                    } else {
+                        reject(new Error({
+                            statusText: xhttp.statusText,
+                            response: JSON.parse(xhttp.responseText || null)
+                        }));
+                    }
                 }
-            }
-        };
+            };
 
-        xhttp.send(method === 'POST' ? params : null);
-        return responsePromise;
+            xhttp.send(method === 'POST' ? params : null);
+        });
     };
 
     var createApplicant = function createApplicant(_ref2) {
