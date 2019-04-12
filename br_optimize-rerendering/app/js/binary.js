@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"9678f971aecc8fd8a2ee","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"c32b2b5dbf9407003f81","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"89c32cd4391ea5a712d9","portfolio":"aab793ab7fcad630040c","statement":"64dc835a679e2e68c64f","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"cb46f50490637cf4e2ac","smart_chart":"88116283be894294b9e5"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_toke":"api_toke","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_toke":"856a16352b5b0f7b5fb2","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"c32b2b5dbf9407003f81","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","personal_details":"716845b634031dd9cf95","portfolio~statement":"89c32cd4391ea5a712d9","portfolio":"aab793ab7fcad630040c","statement":"64dc835a679e2e68c64f","self_exclusion":"226ac0134b0354423868","settings":"90edf5f4d945de1a9104","vendors~smart_chart":"cb46f50490637cf4e2ac","smart_chart":"88116283be894294b9e5"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -3169,9 +3169,13 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(/*! ../../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
-
 var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _PageError = __webpack_require__(/*! ../../../../Modules/PageError */ "./src/javascript/app_2/Modules/PageError/index.js");
+
+var _PageError2 = _interopRequireDefault(_PageError);
+
+var _Constants = __webpack_require__(/*! ../../../../Constants */ "./src/javascript/app_2/Constants/index.js");
 
 var _localize2 = __webpack_require__(/*! ../localize.jsx */ "./src/javascript/app_2/App/Components/Elements/localize.jsx");
 
@@ -3180,8 +3184,7 @@ var _localize3 = _interopRequireDefault(_localize2);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ErrorComponent = function ErrorComponent(_ref) {
-    var type = _ref.type,
-        message = _ref.message;
+    var message = _ref.message;
 
     var msg = '';
     if ((typeof message === 'undefined' ? 'undefined' : _typeof(message)) === 'object') {
@@ -3192,16 +3195,16 @@ var ErrorComponent = function ErrorComponent(_ref) {
     } else {
         msg = message;
     }
-    return _react2.default.createElement(
-        'div',
-        { className: 'error__container' },
-        _react2.default.createElement(_Common.Icon, { icon: _Common.IconError, type: type }),
-        _react2.default.createElement(
-            'p',
-            { className: 'error__message' },
-            msg || (0, _localize.localize)('Sorry, an error occured while processing your request.')
-        )
-    );
+    var refresh_message = (0, _localize.localize)('Please refresh this page to continue.');
+    return _react2.default.createElement(_PageError2.default, {
+        header: (0, _localize.localize)('Oops, something went wrong.'),
+        messages: msg ? [msg, refresh_message] : [(0, _localize.localize)('Sorry, an error occured while processing your request.'), refresh_message],
+        redirect_url: _Constants.routes.trade,
+        redirect_label: (0, _localize.localize)('Refresh'),
+        buttonOnClick: function buttonOnClick() {
+            return location.reload();
+        }
+    });
 };
 
 ErrorComponent.propTypes = {
@@ -10317,12 +10320,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ButtonLink = function ButtonLink(_ref) {
     var children = _ref.children,
         className = _ref.className,
-        to = _ref.to;
+        to = _ref.to,
+        onClick = _ref.onClick;
     return _react2.default.createElement(
         _reactRouterDom.Link,
         {
             className: (0, _classnames2.default)('btn btn--link', className, 'effect'),
-            to: to
+            to: to,
+            onClick: onClick
         },
         children
     );
@@ -10331,6 +10336,7 @@ var ButtonLink = function ButtonLink(_ref) {
 ButtonLink.propTypes = {
     children: _propTypes2.default.object,
     className: _propTypes2.default.string,
+    onClick: _propTypes2.default.func,
     to: _propTypes2.default.string
 };
 
@@ -19819,6 +19825,132 @@ exports.default = (0, _connect.connect)(function (_ref2) {
         is_contract_mode: modules.smart_chart.is_contract_mode
     };
 })(InfoBox);
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/PageError/PageError.jsx":
+/*!**************************************************************!*\
+  !*** ./src/javascript/app_2/Modules/PageError/PageError.jsx ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js");
+
+var _Routes = __webpack_require__(/*! ../../App/Components/Routes */ "./src/javascript/app_2/App/Components/Routes/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PageError = function PageError(_ref) {
+    var buttonOnClick = _ref.buttonOnClick,
+        error_code = _ref.error_code,
+        messages = _ref.messages,
+        header = _ref.header,
+        redirect_label = _ref.redirect_label,
+        redirect_url = _ref.redirect_url;
+    return _react2.default.createElement(
+        'div',
+        { className: 'page-error__container' },
+        _react2.default.createElement(
+            'div',
+            { className: 'page-error__box' },
+            _react2.default.createElement(
+                'h3',
+                { className: 'page-error__header' },
+                header
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'page-error__message-wrapper' },
+                _react2.default.createElement(
+                    'span',
+                    { className: 'page-error__message' },
+                    messages.map(function (message, index) {
+                        return _react2.default.createElement(
+                            'p',
+                            { key: index },
+                            message
+                        );
+                    }),
+                    error_code && _react2.default.createElement(
+                        _react2.default.Fragment,
+                        null,
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'p',
+                            { className: 'page-error__code' },
+                            (0, _localize.localize)('Error Code: [_1]', error_code)
+                        )
+                    )
+                )
+            ),
+            _react2.default.createElement(
+                _Routes.ButtonLink,
+                {
+                    className: 'page-error__btn btn--primary btn--primary--orange',
+                    to: redirect_url,
+                    onClick: buttonOnClick
+                },
+                _react2.default.createElement(
+                    'span',
+                    { className: 'page-error__btn-text btn__text' },
+                    redirect_label
+                )
+            )
+        )
+    );
+};
+
+PageError.propTypes = {
+    buttonOnClick: _propTypes2.default.func,
+    error_code: _propTypes2.default.number,
+    header: _propTypes2.default.string,
+    messages: _propTypes2.default.array,
+    redirect_label: _propTypes2.default.string,
+    redirect_url: _propTypes2.default.string
+};
+
+exports.default = PageError;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Modules/PageError/index.js":
+/*!*********************************************************!*\
+  !*** ./src/javascript/app_2/Modules/PageError/index.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _PageError = __webpack_require__(/*! ./PageError.jsx */ "./src/javascript/app_2/Modules/PageError/PageError.jsx");
+
+var _PageError2 = _interopRequireDefault(_PageError);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _PageError2.default;
 
 /***/ }),
 
@@ -31213,7 +31345,8 @@ var CommonStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 
         key: 'setNetworkStatus',
         value: function setNetworkStatus(status, is_online) {
             if (this.network_status.class) {
-                this.network_status = Object.assign(this.network_status, { class: status.class, tooltip: status.tooltip });
+                this.network_status.class = status.class;
+                this.network_status.tooltip = status.tooltip;
             } else {
                 this.network_status = status;
             }
@@ -33277,18 +33410,15 @@ var getAppId = function getAppId() {
         app_id = binary_desktop_app_id;
     } else if (/staging\.binary\.com/i.test(window.location.hostname)) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = 1098;
+        app_id = is_new_app ? 16298 : 1098;
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id); // it's being used in endpoint chrome extension - please do not remove
         app_id = user_app_id;
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 1159;
-    } else if (is_new_app) {
-        window.localStorage.removeItem('config.default_app_id');
-        app_id = 15265;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = domain_app_ids[getCurrentBinaryDomain()] || 1;
+        app_id = is_new_app ? 16299 : domain_app_ids[getCurrentBinaryDomain()] || 1;
     }
     return app_id;
 };
