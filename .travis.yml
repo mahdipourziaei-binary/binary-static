@@ -10,6 +10,4 @@ before_install: npm install -g grunt-cli
 install: npm ci
 after_success:
     - echo "On branch ${TRAVIS_BRANCH}"
-    - git config credential.helper "store --file=.git/credentials"
-    - echo "https://${GHT}:@github.com" > .git/credentials
     - grunt dev --branch="${TRAVIS_BRANCH}"
