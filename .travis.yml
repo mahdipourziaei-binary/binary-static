@@ -8,13 +8,6 @@ notifications:
     email: false
 before_install: npm install -g grunt-cli
 install: npm ci
-deploy:
-    provider: pages
-    skip_cleanup: true
-    github_token: $d
-    keep_history: true
-    on:
-        branches:
-            except:
-                - master
-                - translations
+after_success:
+    - echo "On branch ${TRAVIS_BRANCH}"
+    - grunt dev --branch="${TRAVIS_BRANCH}"
