@@ -1,6 +1,11 @@
 module.exports = function (grunt) {
-    const is_travis_cd = process.env.TRAVIS === 'true' && process.env.TRAVIS_PULL_REQUEST === 'false';
-    const origin_with_auth = `https://${process.env.GHT}@github.com/${process.env.TRAVIS_REPO_SLUG}.git`;
+    const skip_cd = process.env.TRAVIS_COMMIT_MESSAGE.match(/\[skip cd\]/ig);
+    const is_travis_cd = process.env.TRAVIS === 'true'
+                         && process.env.TRAVIS_PULL_REQUEST === 'false'
+                         && process.env.GHT;
+    const origin_with_auth = is_travis_cd && !skip_cd ?
+        `https://${process.env.GHT}@github.com/${process.env.TRAVIS_REPO_SLUG}.git`
+        : undefined;
 
     return {
         main: {
@@ -8,7 +13,8 @@ module.exports = function (grunt) {
                 add    : (grunt.option('cleanup') ? false : true),
                 base   : 'dist',
                 branch : 'gh-pages',
-                repo   : is_travis_cd ? origin_with_auth : undefined,
+                repo   : origin_with_auth,
+                silent : is_travis_cd, // Has to be silent to avoid potential leak
                 message: global.is_release ? `Release to ${global.release_target}` : `Deploy to ${global.branch || 'gh-pages'}`,
                 ...(global.is_release && {
                     repo : global.release_info.target_repo,
