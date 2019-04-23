@@ -1,3 +1,4 @@
+import classNames      from 'classnames';
 import PropTypes       from 'prop-types';
 import React           from 'react';
 import { withRouter }  from 'react-router';
@@ -20,6 +21,7 @@ const Header = ({
     can_upgrade_to,
     currency,
     is_acc_switcher_on,
+    is_fully_blurred,
     is_logged_in,
     is_mobile,
     is_virtual,
