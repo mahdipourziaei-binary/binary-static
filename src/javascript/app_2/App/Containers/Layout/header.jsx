@@ -29,7 +29,10 @@ const Header = ({
     onClickUpgrade,
     toggleAccountsDialog,
 }) => (
-    <header className='header'>
+    <header className={classNames('header', {
+        'header--is-blurred': is_fully_blurred,
+    })}
+    >
         <div className='header__menu-items'>
             <div className='header__menu-left'>
                 {is_mobile && <ToggleMenuDrawer />}
@@ -104,6 +107,7 @@ export default withRouter(connect(
         loginid             : client.loginid,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
         is_dark_mode        : ui.is_dark_mode_on,
+        is_fully_blurred    : ui.is_fully_blurred,
         is_mobile           : ui.is_mobile,
         toggleAccountsDialog: ui.toggleAccountsDialog,
     })
