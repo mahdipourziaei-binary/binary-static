@@ -5838,6 +5838,20 @@ html {
     padding: 16px; }
     .vertical-tab__action-bar--icon {
       cursor: pointer; }
+      .theme--light .vertical-tab__action-bar--icon {
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */ }
+        .theme--light .vertical-tab__action-bar--icon .color1-fill {
+          fill: rgba(0, 0, 0, 0.8); }
+        .theme--light .vertical-tab__action-bar--icon .color1-stroke {
+          stroke: rgba(0, 0, 0, 0.8); }
+      .theme--dark .vertical-tab__action-bar--icon {
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */ }
+        .theme--dark .vertical-tab__action-bar--icon .color1-fill {
+          fill: #7f8397; }
+        .theme--dark .vertical-tab__action-bar--icon .color1-stroke {
+          stroke: #7f8397; }
   .vertical-tab__tab {
     display: -webkit-box;
     display: -ms-flexbox;
