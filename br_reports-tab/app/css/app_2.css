@@ -7444,12 +7444,35 @@ html {
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end; }
-  .profit-table .amount {
-    font-weight: bold; }
-    .profit-table .amount--profit {
-      color: #39b19d; }
-    .profit-table .amount--loss {
-      color: #e31c4b; }
+
+/** @define open-positions; weak */
+.open-positions {
+  height: 100%;
+  /*
+        TABLE STYLES
+    */ }
+  .open-positions__content {
+    width: 100%;
+    max-height: 100%; }
+  .open-positions__table {
+    height: calc(100% - 42px); }
+  .open-positions__row {
+    grid-template-columns: repeat(6, 1fr); }
+  .open-positions .purchase, .open-positions .payout, .open-positions .indicative {
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .open-positions .progress-slider {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around; }
+    .open-positions .progress-slider .progress-slider__track {
+      margin: 2px 0 2px 8px; }
 
 /** @define settings */
 .settings {
