@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions":"open_positions","personal_details":"personal_details","portfolio~statement":"portfolio~statement","portfolio":"portfolio","statement":"statement","profit_table":"profit_table","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"243c718b107d604341d6","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions":"1ab2e173520a5649e0d5","personal_details":"716845b634031dd9cf95","portfolio~statement":"02639c5e70b705968360","portfolio":"f1d35791cb381ba423a5","statement":"0da8f392ced6a49be27f","profit_table":"2148a7792eddc71d5caf","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"e5a02e5cee0181f4193d","smart_chart":"756fb58b2565226a920f"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions":"open_positions","personal_details":"personal_details","portfolio~profit_table~statement":"portfolio~profit_table~statement","portfolio":"portfolio","profit_table~statement":"profit_table~statement","profit_table":"profit_table","statement":"statement","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"67a350ddf16945b685f1","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions":"1ab2e173520a5649e0d5","personal_details":"716845b634031dd9cf95","portfolio~profit_table~statement":"3984b176f7191aa9080d","portfolio":"f1d35791cb381ba423a5","profit_table~statement":"3bd77ba304d4b8ba6c24","profit_table":"387810fd2ca95b99eadb","statement":"c7f26f4ea4d416062409","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"b0eeb133686cc2045f4c","smart_chart":"756fb58b2565226a920f"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -11182,7 +11182,7 @@ var ContractDetails = (0, _react.lazy)(function () {
     return __webpack_require__.e(/*! import() | contract */ "contract").then(__webpack_require__.t.bind(null, /*! ../../Modules/Contract */ "./src/javascript/app_2/Modules/Contract/index.js", 7));
 });
 var Portfolio = (0, _react.lazy)(function () {
-    return Promise.all(/*! import() | portfolio */[__webpack_require__.e("portfolio~statement"), __webpack_require__.e("portfolio")]).then(__webpack_require__.t.bind(null, /*! ../../Modules/Portfolio */ "./src/javascript/app_2/Modules/Portfolio/index.js", 7));
+    return Promise.all(/*! import() | portfolio */[__webpack_require__.e("portfolio~profit_table~statement"), __webpack_require__.e("portfolio")]).then(__webpack_require__.t.bind(null, /*! ../../Modules/Portfolio */ "./src/javascript/app_2/Modules/Portfolio/index.js", 7));
 });
 var Settings = (0, _react.lazy)(function () {
     return __webpack_require__.e(/*! import() | settings */ "settings").then(__webpack_require__.t.bind(null, /*! ../../Modules/settings/settings.jsx */ "./src/javascript/app_2/Modules/settings/settings.jsx", 7));
@@ -11196,10 +11196,10 @@ var OpenPositions = (0, _react.lazy)(function () {
     return __webpack_require__.e(/*! import() | open_positions */ "open_positions").then(__webpack_require__.t.bind(null, /*! ../../Modules/Reports/Containers/open-positions.jsx */ "./src/javascript/app_2/Modules/Reports/Containers/open-positions.jsx", 7));
 });
 var ProfitTable = (0, _react.lazy)(function () {
-    return __webpack_require__.e(/*! import() | profit_table */ "profit_table").then(__webpack_require__.t.bind(null, /*! ../../Modules/Reports/Containers/profit-table.jsx */ "./src/javascript/app_2/Modules/Reports/Containers/profit-table.jsx", 7));
+    return Promise.all(/*! import() | profit_table */[__webpack_require__.e("portfolio~profit_table~statement"), __webpack_require__.e("profit_table~statement"), __webpack_require__.e("profit_table")]).then(__webpack_require__.t.bind(null, /*! ../../Modules/Reports/Containers/profit-table.jsx */ "./src/javascript/app_2/Modules/Reports/Containers/profit-table.jsx", 7));
 });
 var Statement = (0, _react.lazy)(function () {
-    return Promise.all(/*! import() | statement */[__webpack_require__.e("portfolio~statement"), __webpack_require__.e("statement")]).then(__webpack_require__.t.bind(null, /*! ../../Modules/Reports/Containers/statement.jsx */ "./src/javascript/app_2/Modules/Reports/Containers/statement.jsx", 7));
+    return Promise.all(/*! import() | statement */[__webpack_require__.e("portfolio~profit_table~statement"), __webpack_require__.e("profit_table~statement"), __webpack_require__.e("statement")]).then(__webpack_require__.t.bind(null, /*! ../../Modules/Reports/Containers/statement.jsx */ "./src/javascript/app_2/Modules/Reports/Containers/statement.jsx", 7));
 });
 
 // Settings Routes
@@ -25597,6 +25597,27 @@ var WS = function () {
         return _socket_base2.default.send({ portfolio: 1 });
     };
 
+    var profitTable = function profitTable(params) {
+        var _params$date_to = params.date_to,
+            date_to = _params$date_to === undefined ? Math.floor(new Date().getTime() / 1000) : _params$date_to,
+            _params$date_from = params.date_from,
+            date_from = _params$date_from === undefined ? 0 : _params$date_from,
+            _params$limit = params.limit,
+            limit = _params$limit === undefined ? 50 : _params$limit,
+            _params$offset = params.offset,
+            offset = _params$offset === undefined ? 0 : _params$offset;
+
+
+        return _socket_base2.default.send({
+            profit_table: 1,
+            description: 1,
+            date_from: date_from,
+            date_to: date_to,
+            offset: offset,
+            limit: limit
+        });
+    };
+
     var proposalOpenContract = function proposalOpenContract(contract_id) {
         return _socket_base2.default.send({ proposal_open_contract: 1, contract_id: contract_id });
     };
@@ -25675,6 +25696,7 @@ var WS = function () {
         oauthApps: oauthApps,
         portfolio: portfolio,
         payoutCurrencies: payoutCurrencies,
+        profitTable: profitTable,
         proposalOpenContract: proposalOpenContract,
         sell: sell,
         sellExpired: sellExpired,
@@ -27058,6 +27080,346 @@ var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _de
     }
 }), _applyDecoratedDescriptor(_class.prototype, 'pushNewPosition', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'pushNewPosition'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removePositionById', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'removePositionById'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'totals', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'totals'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'active_positions', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'active_positions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'all_positions', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'all_positions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_empty'), _class.prototype)), _class));
 exports.default = PortfolioStore;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Stores/Modules/Profit/Helpers/format-response.js":
+/*!*******************************************************************************!*\
+  !*** ./src/javascript/app_2/Stores/Modules/Profit/Helpers/format-response.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.formatProfitTableTransactions = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _currency_base = __webpack_require__(/*! ../../../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js");
+
+var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
+
+var formatProfitTableTransactions = exports.formatProfitTableTransactions = function formatProfitTableTransactions(transaction, currency) {
+    var format_string = 'DD MMM YYYY HH:mm:ss';
+    var purchase_time = '' + (0, _Date.toMoment)(+transaction.purchase_time).format(format_string);
+    var sell_time = '' + (0, _Date.toMoment)(+transaction.sell_time).format(format_string);
+    var payout = parseFloat(transaction.payout);
+    var sell_price = parseFloat(transaction.sell_price);
+    var buy_price = parseFloat(transaction.buy_price);
+    var profit_loss = (0, _currency_base.formatMoney)(currency, Number(sell_price - buy_price), true);
+    var should_exclude_currency = true;
+
+    return _extends({}, transaction, {
+        payout: isNaN(payout) ? '-' : (0, _currency_base.formatMoney)(currency, payout, should_exclude_currency),
+        sell_price: isNaN(sell_price) ? '-' : (0, _currency_base.formatMoney)(currency, sell_price, should_exclude_currency),
+        buy_price: isNaN(buy_price) ? '-' : (0, _currency_base.formatMoney)(currency, buy_price, should_exclude_currency),
+        profit_loss: profit_loss,
+        sell_time: sell_time,
+        purchase_time: purchase_time
+    });
+};
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/Stores/Modules/Profit/profit-store.js":
+/*!********************************************************************!*\
+  !*** ./src/javascript/app_2/Stores/Modules/Profit/profit-store.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+
+var _mobx = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
+
+var _moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _Services = __webpack_require__(/*! ../../../Services */ "./src/javascript/app_2/Services/index.js");
+
+var _formatResponse = __webpack_require__(/*! ./Helpers/format-response */ "./src/javascript/app_2/Stores/Modules/Profit/Helpers/format-response.js");
+
+var _baseStore = __webpack_require__(/*! ../../base-store */ "./src/javascript/app_2/Stores/base-store.js");
+
+var _baseStore2 = _interopRequireDefault(_baseStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _initDefineProp(target, property, descriptor, context) {
+    if (!descriptor) return;
+    Object.defineProperty(target, property, {
+        enumerable: descriptor.enumerable,
+        configurable: descriptor.configurable,
+        writable: descriptor.writable,
+        value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+    });
+}
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+    var desc = {};
+    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+        desc[key] = descriptor[key];
+    });
+    desc.enumerable = !!desc.enumerable;
+    desc.configurable = !!desc.configurable;
+
+    if ('value' in desc || desc.initializer) {
+        desc.writable = true;
+    }
+
+    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+        return decorator(target, property, desc) || desc;
+    }, desc);
+
+    if (context && desc.initializer !== void 0) {
+        desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+        desc.initializer = undefined;
+    }
+
+    if (desc.initializer === void 0) {
+        Object['define' + 'Property'](target, property, desc);
+        desc = null;
+    }
+
+    return desc;
+}
+
+function _initializerWarningHelper(descriptor, context) {
+    throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+}
+
+var ProfitTableStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, (_class = function (_BaseStore) {
+    _inherits(ProfitTableStore, _BaseStore);
+
+    function ProfitTableStore() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, ProfitTableStore);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ProfitTableStore.__proto__ || Object.getPrototypeOf(ProfitTableStore)).call.apply(_ref, [this].concat(args))), _this), _initDefineProp(_this, 'data', _descriptor, _this), _initDefineProp(_this, 'date_from', _descriptor2, _this), _initDefineProp(_this, 'date_to', _descriptor3, _this), _initDefineProp(_this, 'error', _descriptor4, _this), _initDefineProp(_this, 'has_loaded_all', _descriptor5, _this), _initDefineProp(_this, 'is_loading', _descriptor6, _this), _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(ProfitTableStore, [{
+        key: 'fetchNextBatch',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                var response;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (!(this.has_loaded_all || this.is_loading)) {
+                                    _context.next = 2;
+                                    break;
+                                }
+
+                                return _context.abrupt('return');
+
+                            case 2:
+
+                                this.is_loading = true;
+
+                                _context.next = 5;
+                                return _Services.WS.profitTable(_extends({
+                                    offset: this.data.length
+                                }, this.date_from && { date_from: (0, _moment2.default)(this.date_from).unix() }, this.date_to && { date_to: (0, _moment2.default)(this.date_to).add(1, 'd').subtract(1, 's').unix() }));
+
+                            case 5:
+                                response = _context.sent;
+
+                                this.profitTableResponseHandler(response);
+
+                            case 7:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function fetchNextBatch() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return fetchNextBatch;
+        }()
+    }, {
+        key: 'profitTableResponseHandler',
+        value: function profitTableResponseHandler(response) {
+            var _this2 = this;
+
+            if ('error' in response) {
+                this.error = response.error.message;
+                return;
+            }
+
+            var formatted_transactions = response.profit_table.transactions.map(function (transaction) {
+                return (0, _formatResponse.formatProfitTableTransactions)(transaction, _this2.root_store.client.currency);
+            });
+
+            this.data = [].concat(_toConsumableArray(this.data), _toConsumableArray(formatted_transactions));
+            this.is_loading = false;
+        }
+    }, {
+        key: 'handleScroll',
+        value: function handleScroll(event) {
+            var _event$target = event.target,
+                scrollTop = _event$target.scrollTop,
+                scrollHeight = _event$target.scrollHeight,
+                clientHeight = _event$target.clientHeight;
+
+            var left_to_scroll = scrollHeight - (scrollTop + clientHeight);
+            if (left_to_scroll < 2000) {
+                this.fetchNextBatch();
+            }
+        }
+    }, {
+        key: 'onMount',
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                this.onSwitchAccount(this.accountSwitcherListener);
+                                _context2.next = 3;
+                                return this.fetchNextBatch();
+
+                            case 3:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function onMount() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return onMount;
+        }()
+    }, {
+        key: 'onUnmount',
+        value: function onUnmount() {
+            this.disposeSwitchAccount();
+            this.clearTable();
+            this.clearDateFilter();
+            _Services.WS.forgetAll('proposal');
+        }
+    }, {
+        key: 'accountSwitcherListener',
+        value: function accountSwitcherListener() {
+            var _this3 = this;
+
+            return new Promise(function (resolve) {
+                _this3.clearTable();
+                _this3.clearDateFilter();
+                return resolve(_this3.fetchNextBatch());
+            });
+        }
+    }, {
+        key: 'clearTable',
+        value: function clearTable() {
+            this.data = [];
+            this.has_loaded_all = false;
+            this.is_loading = false;
+        }
+    }, {
+        key: 'clearDateFilter',
+        value: function clearDateFilter() {
+            this.date_from = '';
+            this.date_to = '';
+        }
+    }, {
+        key: 'total_profit',
+        get: function get() {
+            return this.data.reduce(function (previous, current) {
+                var buy_price = Number(parseFloat(current.buy_price));
+                var sell_price = Number(parseFloat(current.sell_price));
+                var pl = sell_price - buy_price;
+                return previous + pl;
+            }, 0);
+        }
+    }, {
+        key: 'is_empty',
+        get: function get() {
+            return !this.is_loading && this.data.length === 0;
+        }
+    }, {
+        key: 'has_selected_date',
+        get: function get() {
+            return !!(this.date_from || this.date_to);
+        }
+    }]);
+
+    return ProfitTableStore;
+}(_baseStore2.default), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'data', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return [];
+    }
+}), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'date_from', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return '';
+    }
+}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'date_to', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return '';
+    }
+}), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'error', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return '';
+    }
+}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'has_loaded_all', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return false;
+    }
+}), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'is_loading', [_mobx.observable], {
+    enumerable: true,
+    initializer: function initializer() {
+        return false;
+    }
+}), _applyDecoratedDescriptor(_class.prototype, 'total_profit', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'total_profit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_empty'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'has_selected_date', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'has_selected_date'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'fetchNextBatch', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'fetchNextBatch'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'profitTableResponseHandler', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'profitTableResponseHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleScroll', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'handleScroll'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearTable', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'clearTable'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearDateFilter', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'clearDateFilter'), _class.prototype)), _class));
+exports.default = ProfitTableStore;
 
 /***/ }),
 
@@ -31055,6 +31417,10 @@ var _tradeStore = __webpack_require__(/*! ./Trading/trade-store */ "./src/javasc
 
 var _tradeStore2 = _interopRequireDefault(_tradeStore);
 
+var _profitStore = __webpack_require__(/*! ./Profit/profit-store */ "./src/javascript/app_2/Stores/Modules/Profit/profit-store.js");
+
+var _profitStore2 = _interopRequireDefault(_profitStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31064,6 +31430,7 @@ var ModulesStore = function ModulesStore(root_store) {
 
     this.contract = new _contractStore2.default({ root_store: root_store });
     this.portfolio = new _portfolioStore2.default({ root_store: root_store });
+    this.profit_table = new _profitStore2.default({ root_store: root_store });
     this.smart_chart = new _smartChartStore2.default({ root_store: root_store });
     this.statement = new _statementStore2.default({ root_store: root_store });
     this.trade = new _tradeStore2.default({ root_store: root_store });

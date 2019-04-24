@@ -3393,6 +3393,18 @@ html {
         .theme--dark .time-picker__selector-list-item--disabled {
           color: rgba(127, 131, 151, 0.3); }
 
+.theme--light .amount--profit {
+  color: #39b19d; }
+
+.theme--dark .amount--profit {
+  color: #39b19d; }
+
+.theme--light .amount--loss {
+  color: #e31c4b; }
+
+.theme--dark .amount--loss {
+  color: #e31c4b; }
+
 /** @define acc-info */
 .acc-info {
   display: -webkit-box;
@@ -4660,8 +4672,8 @@ html {
       padding-right: 0; }
   .table__row {
     display: grid;
-    grid-auto-rows: -webkit-min-content;
-    grid-auto-rows: min-content;
+    grid-auto-rows: -webkit-max-content;
+    grid-auto-rows: max-content;
     padding: 0 1.6em;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -4671,7 +4683,7 @@ html {
     .theme--dark .table__row, .theme--dark .table__row:active, .theme--dark .table__row:visited {
       color: #ffffff; }
   .table__head {
-    height: 4.2em; }
+    height: 52px; }
     .theme--light .table__head {
       border-bottom: 2px solid #f4f4f6; }
     .theme--dark .table__head {
@@ -7414,6 +7426,30 @@ html {
     margin-bottom: 1.4em; }
   .statement-empty__text {
     font-size: 1.4em; }
+
+/** @define profit-table; weak */
+.profit-table {
+  height: 100%;
+  /*
+        TABLE STYLES
+    */ }
+  .profit-table__content {
+    width: 100%;
+    max-height: 100%; }
+  .profit-table__table {
+    height: calc(100% - 42px); }
+  .profit-table__row {
+    grid-template-columns: repeat(7, 1fr); }
+  .profit-table .payout, .profit-table .amount, .profit-table .balance {
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .profit-table .amount {
+    font-weight: bold; }
+    .profit-table .amount--profit {
+      color: #39b19d; }
+    .profit-table .amount--loss {
+      color: #e31c4b; }
 
 /** @define settings */
 .settings {
