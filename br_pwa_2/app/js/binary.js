@@ -12164,6 +12164,8 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _appConfig = __webpack_require__(/*! ../../Constants/app-config */ "./src/javascript/app_2/App/Constants/app-config.js");
+
 var _connect = __webpack_require__(/*! ../../../Stores/connect */ "./src/javascript/app_2/Stores/connect.js");
 
 var _localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js");
@@ -12195,8 +12197,8 @@ var InstallPWA = function InstallPWA(_ref) {
         null,
         _react2.default.createElement(
             'p',
-            { className: 'notification-bar__message' },
-            (0, _localize.localize)('Install Binary.com app?')
+            null,
+            (0, _localize.localize)('Install [_1] app?', _appConfig.website_name)
         ),
         _react2.default.createElement(_button2.default, {
             className: 'btn--secondary btn--secondary--orange btn--link notification-bar__button',
