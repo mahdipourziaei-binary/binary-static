@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"67a350ddf16945b685f1","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"827135c74bf0664a9fae","open_positions~profit_table~statement":"024f174cb747e6f79bd2","open_positions":"00c8731e510c86726668","profit_table":"a9cabab3175f0f4afe24","statement":"8fc42ed557a090d28394","portfolio":"e457febc3dc4c912c66d","personal_details":"716845b634031dd9cf95","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"b0eeb133686cc2045f4c","smart_chart":"756fb58b2565226a920f"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"67a350ddf16945b685f1","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"96a88f0093c9080270cd","open_positions~profit_table~statement":"bada77206d9d2a55246c","open_positions":"db9a7e8cda359275b0ff","profit_table":"8f0acdc187e83bb4e828","statement":"052772342d30b8049484","portfolio":"634c628d64222b4f7e3f","personal_details":"716845b634031dd9cf95","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"b0eeb133686cc2045f4c","smart_chart":"756fb58b2565226a920f"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -4221,6 +4221,8 @@ var _money = __webpack_require__(/*! ../money.jsx */ "./src/javascript/app_2/App
 
 var _money2 = _interopRequireDefault(_money);
 
+var _underlyingIcon = __webpack_require__(/*! ../underlying-icon.jsx */ "./src/javascript/app_2/App/Components/Elements/underlying-icon.jsx");
+
 var _button = __webpack_require__(/*! ../../Form/button.jsx */ "./src/javascript/app_2/App/Components/Form/button.jsx");
 
 var _button2 = _interopRequireDefault(_button);
@@ -4315,9 +4317,7 @@ var PositionsDrawerCard = function (_React$PureComponent) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'positions-drawer-card__underlying-name' },
-                                _react2.default.createElement('div', {
-                                    className: (0, _classnames2.default)('icons-underlying', 'icons-underlying__ic-' + (contract_info.underlying || 'unknown'))
-                                }),
+                                _react2.default.createElement(_underlyingIcon.UnderlyingIcon, { market: contract_info.underlying }),
                                 _react2.default.createElement(
                                     'span',
                                     { className: 'positions-drawer-card__symbol' },
@@ -4505,6 +4505,8 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 var _reactTransitionGroup = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/index.js");
 
 var _ttReactCustomScrollbars = __webpack_require__(/*! tt-react-custom-scrollbars */ "./node_modules/tt-react-custom-scrollbars/lib/index.js");
@@ -4512,6 +4514,10 @@ var _ttReactCustomScrollbars = __webpack_require__(/*! tt-react-custom-scrollbar
 var _localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js");
 
 var _Common = __webpack_require__(/*! ../../../../Assets/Common */ "./src/javascript/app_2/Assets/Common/index.js");
+
+var _routes = __webpack_require__(/*! ../../../../Constants/routes */ "./src/javascript/app_2/Constants/routes.js");
+
+var _routes2 = _interopRequireDefault(_routes);
 
 var _emptyPortfolioMessage = __webpack_require__(/*! ../../../../Modules/Portfolio/Components/empty-portfolio-message.jsx */ "./src/javascript/app_2/Modules/Portfolio/Components/empty-portfolio-message.jsx");
 
@@ -4579,8 +4585,8 @@ var PositionsDrawer = function (_React$Component) {
             } else if (is_empty) {
                 body_content = _react2.default.createElement(_emptyPortfolioMessage2.default, null);
             } else {
-                // Show only 4 most recent open contracts
-                body_content = all_positions.slice(0, 4).map(function (portfolio_position) {
+                // Show only 5 most recent open contracts
+                body_content = all_positions.slice(0, 5).map(function (portfolio_position) {
                     return _react2.default.createElement(
                         _reactTransitionGroup.CSSTransition,
                         {
@@ -4641,6 +4647,19 @@ var PositionsDrawer = function (_React$Component) {
                             autoHide: true
                         },
                         body_content
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'positions-drawer__footer' },
+                    _react2.default.createElement(
+                        _reactRouterDom.NavLink,
+                        { className: 'btn btn--link btn--alternate', to: _routes2.default.reports },
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'btn__text' },
+                            (0, _localize.localize)('Go to Reports')
+                        )
                     )
                 )
             );
@@ -6388,6 +6407,42 @@ UILoader.propTypes = {
 };
 
 exports.default = UILoader;
+
+/***/ }),
+
+/***/ "./src/javascript/app_2/App/Components/Elements/underlying-icon.jsx":
+/*!**************************************************************************!*\
+  !*** ./src/javascript/app_2/App/Components/Elements/underlying-icon.jsx ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.UnderlyingIcon = undefined;
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UnderlyingIcon = function UnderlyingIcon(_ref) {
+    var market = _ref.market;
+    return _react2.default.createElement('div', {
+        className: (0, _classnames2.default)('icons-underlying', 'icons-underlying__ic-' + (market.toUpperCase() || 'unknown'))
+    });
+};
+
+exports.UnderlyingIcon = UnderlyingIcon;
 
 /***/ }),
 
@@ -27392,6 +27447,22 @@ var ProfitTableStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _
         get: function get() {
             return !!(this.date_from || this.date_to);
         }
+    }, {
+        key: 'totals',
+        get: function get() {
+            var profit_loss = 0;
+
+            this.data.forEach(function (transaction) {
+                if (transaction.profit_loss.indexOf('-') !== -1) {
+                    profit_loss -= parseFloat(transaction.profit_loss.split('-')[1]);
+                } else {
+                    profit_loss += parseFloat(transaction.profit_loss);
+                }
+            });
+            return {
+                profit_loss: profit_loss.toString()
+            };
+        }
     }]);
 
     return ProfitTableStore;
@@ -27425,7 +27496,7 @@ var ProfitTableStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _
     initializer: function initializer() {
         return false;
     }
-}), _applyDecoratedDescriptor(_class.prototype, 'total_profit', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'total_profit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_empty'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'has_selected_date', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'has_selected_date'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'fetchNextBatch', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'fetchNextBatch'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'profitTableResponseHandler', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'profitTableResponseHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleScroll', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'handleScroll'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearTable', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'clearTable'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearDateFilter', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'clearDateFilter'), _class.prototype)), _class));
+}), _applyDecoratedDescriptor(_class.prototype, 'total_profit', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'total_profit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_empty'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'has_selected_date', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'has_selected_date'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'fetchNextBatch', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'fetchNextBatch'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'profitTableResponseHandler', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'profitTableResponseHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleScroll', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'handleScroll'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'totals', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'totals'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearTable', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'clearTable'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'clearDateFilter', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'clearDateFilter'), _class.prototype)), _class));
 exports.default = ProfitTableStore;
 
 /***/ }),
