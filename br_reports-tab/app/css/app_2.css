@@ -7559,8 +7559,8 @@ html {
     .open-positions .progress-slider .progress-slider__track {
       margin: 2px 0 2px 8px; }
 
-/** @define empty-open-positions; weak*/
-.empty-open-positions {
+/** @define empty-trade-history; weak*/
+.empty-trade-history {
   width: 100%;
   height: 100%;
   font-size: 1.4em;
@@ -7569,18 +7569,18 @@ html {
   text-transform: capitalize;
   text-align: center;
   line-height: 1.5; }
-  .theme--light .empty-open-positions__text {
+  .theme--light .empty-trade-history__text {
     color: rgba(0, 0, 0, 0.8); }
-  .theme--dark .empty-open-positions__text {
+  .theme--dark .empty-trade-history__text {
     color: #7f8397; }
-  .empty-open-positions .btn {
+  .empty-trade-history .btn {
     width: 100%;
     height: 40px; }
-    .theme--light .empty-open-positions .btn {
+    .theme--light .empty-trade-history .btn {
       border-color: rgba(153, 156, 172, 0.32);
       color: rgba(0, 0, 0, 0.8);
       background-color: rgba(153, 156, 172, 0.32); }
-    .theme--dark .empty-open-positions .btn {
+    .theme--dark .empty-trade-history .btn {
       border-color: #2a3052;
       color: #7f8397;
       background-color: #2a3052; }
