@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"362fe7e8a3bc28c252e4","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"1d2319746e4b5959eec3","open_positions~profit_table~statement":"521d4a910b5d00835e87","open_positions":"1a72280721c7693148cb","profit_table":"7d187664072329df10da","statement":"e7c8db9dcbc2f9131381","portfolio":"4d4d70a910cd7318df54","personal_details":"716845b634031dd9cf95","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"249a07eaf640659b103a","smart_chart":"2e6f66f84b8b29bd2d74"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"66751c8f563ae5586709","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"53e5a8848853b959e813","open_positions~profit_table~statement":"6620b138ce79cc617de0","open_positions":"1a72280721c7693148cb","profit_table":"7d187664072329df10da","statement":"2f94c1ca024b5667cc72","portfolio":"4d4d70a910cd7318df54","personal_details":"716845b634031dd9cf95","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"249a07eaf640659b103a","smart_chart":"2e6f66f84b8b29bd2d74"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -27963,7 +27963,7 @@ var _currency_base = __webpack_require__(/*! ../../../../../_common/base/currenc
 var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
 
 var formatProfitTableTransactions = exports.formatProfitTableTransactions = function formatProfitTableTransactions(transaction, currency) {
-    var format_string = 'DD MMM YYYY HH:mm:ss';
+    var format_string = 'DD MMM YYYY - HH:mm:ss';
     var purchase_time = '' + (0, _Date.toMoment)(+transaction.purchase_time).format(format_string);
     var sell_time = '' + (0, _Date.toMoment)(+transaction.sell_time).format(format_string);
     var payout = parseFloat(transaction.payout);
@@ -29254,9 +29254,8 @@ var _string_util = __webpack_require__(/*! ../../../../../_common/string_util */
 var _Date = __webpack_require__(/*! ../../../../Utils/Date */ "./src/javascript/app_2/Utils/Date/index.js");
 
 var formatStatementTransaction = exports.formatStatementTransaction = function formatStatementTransaction(transaction, currency) {
-    var moment_obj = (0, _Date.toMoment)(transaction.transaction_time);
-    var date_str = moment_obj.format('YYYY-MM-DD');
-    var time_str = moment_obj.format('HH:mm:ss') + ' GMT';
+    var format_string = 'DD MMM YYYY - HH:mm:ss';
+    var transaction_time = (0, _Date.toMoment)(transaction.transaction_time).format(format_string);
     var payout = parseFloat(transaction.payout);
     var amount = parseFloat(transaction.amount);
     var balance = parseFloat(transaction.balance_after);
@@ -29264,7 +29263,7 @@ var formatStatementTransaction = exports.formatStatementTransaction = function f
 
     return {
         action: (0, _localize.localize)((0, _string_util.toTitleCase)(transaction.action_type) /* localize-ignore */), // handled in static_strings_app_2.js: 'Buy', 'Sell', 'Deposit', 'Withdrawal'
-        date: date_str + '\n' + time_str,
+        date: transaction_time,
         refid: transaction.transaction_id,
         payout: isNaN(payout) ? '-' : (0, _currency_base.formatMoney)(currency, payout, should_exclude_currency),
         amount: isNaN(amount) ? '-' : (0, _currency_base.formatMoney)(currency, amount, should_exclude_currency),
