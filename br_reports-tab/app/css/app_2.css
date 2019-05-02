@@ -1489,9 +1489,33 @@ html {
       padding: 0.5em 0.5em 0.5em 0;
       position: relative; }
       .theme--light .header__menu-link-text {
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */
         color: rgba(0, 0, 0, 0.8); }
+        .theme--light .header__menu-link-text .color1-fill {
+          fill: rgba(0, 0, 0, 0.8); }
+        .theme--light .header__menu-link-text .color1-stroke {
+          stroke: rgba(0, 0, 0, 0.8); }
+        .theme--light .header__menu-link-text .color2-fill {
+          fill: none; }
+        .theme--light .header__menu-link-text .color2-stroke {
+          stroke: none; }
       .theme--dark .header__menu-link-text {
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */
+        /* postcss-bem-linter: ignore */
         color: #7f8397; }
+        .theme--dark .header__menu-link-text .color1-fill {
+          fill: #7f8397; }
+        .theme--dark .header__menu-link-text .color1-stroke {
+          stroke: #7f8397; }
+        .theme--dark .header__menu-link-text .color2-fill {
+          fill: none; }
+        .theme--dark .header__menu-link-text .color2-stroke {
+          stroke: none; }
       .header__menu-link-text:before {
         position: absolute;
         top: 1.4em;
@@ -5248,7 +5272,7 @@ html {
   .login-prompt__message {
     font-size: 1.4em; }
 
-/** @define .market-symbol-icon */
+/** @define .market-symbol-icon; weak */
 .market-symbol-icon {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -5257,6 +5281,10 @@ html {
       justify-content: space-around;
   width: 100%;
   padding: 8px; }
+  .theme--light .market-symbol-icon .color1-fill {
+    fill: rgba(0, 0, 0, 0.8); }
+  .theme--dark .market-symbol-icon .color1-fill {
+    fill: #ffffff; }
   .market-symbol-icon-name, .market-symbol-icon-category {
     display: -webkit-box;
     display: -ms-flexbox;
