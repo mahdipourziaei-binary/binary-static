@@ -7962,7 +7962,10 @@ html {
     width: 100%;
     max-height: 100%; }
   .statement__table {
-    height: calc(100% - 42px); }
+    height: calc(100% - 42px);
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .statement__row {
     grid-template-columns: 1fr 1.2fr 1fr 1fr 1fr 1fr; }
     .statement__row--detail {
@@ -8085,7 +8088,10 @@ html {
     width: 100%;
     max-height: 100%; }
   .profit-table__table {
-    height: calc(100% - 42px); }
+    height: calc(100% - 42px);
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .profit-table__row {
     grid-template-columns: repeat(7, 1fr); }
   .profit-table .buy_price, .profit-table .sell_price, .profit-table .profit_loss {
@@ -8103,7 +8109,10 @@ html {
     width: 100%;
     max-height: 100%; }
   .open-positions__table {
-    height: calc(100% - 42px); }
+    height: calc(100% - 42px);
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .open-positions__row {
     grid-template-columns: repeat(6, 1fr);
     width: 100%; }
