@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"66751c8f563ae5586709","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"53e5a8848853b959e813","open_positions~profit_table~statement":"6620b138ce79cc617de0","open_positions":"1a72280721c7693148cb","profit_table":"7d187664072329df10da","statement":"2f94c1ca024b5667cc72","portfolio":"4d4d70a910cd7318df54","personal_details":"716845b634031dd9cf95","reports":"74af1e39c67f74fbaf80","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"249a07eaf640659b103a","smart_chart":"2e6f66f84b8b29bd2d74"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"3cec661d14dd655778e5","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"53e5a8848853b959e813","open_positions~profit_table~statement":"d8dc45a1b0eeb4181cd9","open_positions":"a6cb061676ffc88b7e74","profit_table":"7d187664072329df10da","statement":"2f94c1ca024b5667cc72","portfolio":"4d4d70a910cd7318df54","personal_details":"716845b634031dd9cf95","reports":"342318b45ae568dd4471","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"b350226433ac9a31fe9f","smart_chart":"2e6f66f84b8b29bd2d74"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -297,7 +297,7 @@ exports.default = function (_ref) {
       styles = _ref$styles === undefined ? {} : _ref$styles,
       props = _objectWithoutProperties(_ref, ["styles"]);
 
-  return _react2.default.createElement("svg", _extends({ xmlns: "http://www.w3.org/2000/svg", width: "46", height: "46", viewBox: "0 0 60.47 60.47" }, props), _react2.default.createElement("path", { fill: "#fff", d: "M51.61 8.85a30.24 30.24 0 1 0 0 42.77 30.26 30.26 0 0 0 0-42.77z" }), _react2.default.createElement("path", { fill: "#2a3052", d: "M21.8 38.17A5.51 5.51 0 0 0 24.33 42l-.58-1.08s1.11-2.92-1.95-2.75z" }), _react2.default.createElement("path", { fill: "#2a3052", d: "M50.08 10.38a28.08 28.08 0 1 0 0 39.72 28.1 28.1 0 0 0 0-39.72zm-2.9 36.81l-.92.87c-6.75 5.5-11.94 2.76-12 2.76-3.52-.7-5.27-.71-6.26-1.37-.25-.17-1-.59-1.23-.49a2.25 2.25 0 0 1-2.72-.16l-.25-.23a1.93 1.93 0 0 1-.37-2.67c.26-.26-.2-1-.2-1s-1.32-2-2.22-3.15a8.79 8.79 0 0 1-1.14-3.91 10.46 10.46 0 0 1-1.46-2.14 5.55 5.55 0 0 0-.78-.94 5 5 0 0 1-.47-.51.21.21 0 0 1 0-.16 5.65 5.65 0 0 1 1.55-2c.32-.21 1.68-1 1.68-1a2.71 2.71 0 0 1 2.08-1.21 9.93 9.93 0 0 1 3.93.6l.84.27c1.42.45 2.67 1 3.66 1.42a16.55 16.55 0 0 0 2 .79c1.75.46 4.85-1 5.5-1.56 1.07-1 1.53-1.63 1.54-2.16a1.2 1.2 0 0 0-.43-.88c-.16-.14-.36-.42-.62-.67a1.12 1.12 0 0 0-.14-.12c-3-3.15-2.46-5.13-2.45-5.16.13-1.42-.69-2.33-1.56-3.27l-.14-.18a1 1 0 0 1-.1-.11 37.8 37.8 0 0 0 4.59 1 8.79 8.79 0 0 0 2.08.11c1.54 0 2.77-.18 2.85-.54a21.27 21.27 0 0 1-4.11-1.21 65.92 65.92 0 0 0-2.72-1c-1.24-.42-2.58-1-2.58-1 5.35 1.4 7.1 2 9.54 2A7.68 7.68 0 0 0 46 18c.35-.06 1.43-.31 1.55-.68a8.74 8.74 0 0 1-3-.48c-6.24-2.06-6.77-3.09-10.23-4.44a31.17 31.17 0 0 0-5.25-1.67 10.13 10.13 0 0 0-4.54 0c-4.73-1.11-5.81-1-7.2-.69a24 24 0 0 1 29.86 3.23 24.46 24.46 0 0 1 2.92 3.54l.11.17a24 24 0 0 1-3 30.19zM31.46 20.13a5.51 5.51 0 0 1 3.1 3.34c-3 .68-2.36-2.37-2.36-2.37z" }));
+  return _react2.default.createElement("svg", _extends({ xmlns: "http://www.w3.org/2000/svg", width: "32", height: "32", viewBox: "0 0 32 32" }, props), _react2.default.createElement("g", { fill: "none" }, _react2.default.createElement("rect", { width: "32", height: "32", fill: "#00BFA5", rx: "3" }), _react2.default.createElement("path", { fill: "#FFF", d: "M23.28 8.81l-3 3.91-1.77-2.32 1.23-1.59h3.54zm2.29-1.5h-6.38a.38.38 0 0 0-.28.14l-2.27 2.95 3.65 4.79 5.58-7.29a.36.36 0 0 0-.28-.59h-.02zm-5.1 12.11l2.87 3.76h-3.5l-1.12-1.45 1.76-2.3h-.01zm.01-2.46l-3.65 4.77L19 24.54c.07.09.17.14.28.14h6.35a.36.36 0 0 0 .3-.58l-5.47-7.14h.02zM13.1 7.61a.36.36 0 0 0-.28-.14H6.35a.36.36 0 0 0-.29.59l6.17 8-6.17 8a.36.36 0 0 0 .3.58h6.44a.36.36 0 0 0 .29-.14l6.47-8.41-6.47-8.47z" })));
 };
 
 /***/ }),
@@ -4808,7 +4808,7 @@ var PositionsDrawerCard = function (_React$PureComponent) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: (0, _classnames2.default)('positions-drawer-card__indicative--movement', {
-                                            'positions-drawer-card__indicative--movement-complete': status === 'complete'
+                                            'positions-drawer-card__indicative--movement-complete': !!result
                                         })
                                     },
                                     _react2.default.createElement(_iconPriceMove.IconPriceMove, {
@@ -4823,7 +4823,7 @@ var PositionsDrawerCard = function (_React$PureComponent) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: (0, _classnames2.default)('positions-drawer-card__indicative--movement', {
-                                            'positions-drawer-card__indicative--movement-complete': status === 'complete'
+                                            'positions-drawer-card__indicative--movement-complete': !!result
                                         })
                                     },
                                     _react2.default.createElement(_iconPriceMove.IconPriceMove, {
@@ -10883,7 +10883,8 @@ var MenuLinks = function MenuLinks(_ref) {
                         'span',
                         { title: item.text, className: 'header__menu-link-text' },
                         item.icon,
-                        item.text
+                        item.text,
+                        item.logo
                     )
                 );
             })
@@ -11446,6 +11447,10 @@ var _socket_base = __webpack_require__(/*! ../../../../_common/base/socket_base 
 
 var _socket_base2 = _interopRequireDefault(_socket_base);
 
+var _language = __webpack_require__(/*! ../../../../_common/language */ "./src/javascript/_common/language.js");
+
+var _language2 = _interopRequireDefault(_language);
+
 var _routes = __webpack_require__(/*! ../../../Constants/routes */ "./src/javascript/app_2/Constants/routes.js");
 
 var _routes2 = _interopRequireDefault(_routes);
@@ -11479,6 +11484,7 @@ var RouteWithSubRoutes = function RouteWithSubRoutes(route) {
             result = route.is_authenticated && !route.is_logged_in ? _react2.default.createElement(_loginPrompt2.default, { onLogin: _login.redirectToLogin, page_title: route.title }) : _react2.default.createElement(route.component, _extends({}, props, { routes: route.routes }));
         }
 
+        _language2.default.setCookie();
         var title = route.title ? route.title + ' | ' : '';
         document.title = '' + title + _appConfig.default_title;
         _socket_base2.default.wait('website_status').then(function () {
@@ -11545,8 +11551,12 @@ var _Constants = __webpack_require__(/*! ../../Constants */ "./src/javascript/ap
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var header_links = [{
-    icon: _react2.default.createElement(_Common.Icon, { icon: _NavBar.IconTrade, className: 'header__icon' }),
-    text: (0, _localize.localize)('Trade'),
+    logo: _react2.default.createElement(
+        'div',
+        { className: 'header__logo' },
+        (0, _localize.localize)('BETA')
+    ),
+    text: (0, _localize.localize)('BinaryNex'),
     link_to: _Constants.routes.trade
 }, {
     icon: _react2.default.createElement(_Common.Icon, { icon: _NavBar.IconReports, className: 'header__icon' }),
@@ -13573,7 +13583,10 @@ var ThemeSelectSettings = function ThemeSelectSettings(_ref) {
                     }),
                     _react2.default.createElement(
                         'p',
-                        { className: 'theme-select-settings__option__title' },
+                        { className: (0, _classnames2.default)('theme-select-settings__option__title', {
+                                'theme-select-settings__option__title--selected': is_dark_mode
+                            })
+                        },
                         _react2.default.createElement(_localize2.default, { str: 'Brand Dark' })
                     )
                 ),
@@ -13588,7 +13601,10 @@ var ThemeSelectSettings = function ThemeSelectSettings(_ref) {
                     }),
                     _react2.default.createElement(
                         'p',
-                        { className: 'theme-select-settings__option__title' },
+                        { className: (0, _classnames2.default)('theme-select-settings__option__title', {
+                                'theme-select-settings__option__title--selected': !is_dark_mode
+                            })
+                        },
                         _react2.default.createElement(_localize2.default, { str: 'Light' })
                     )
                 )
@@ -27149,7 +27165,7 @@ var ContractStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ContractStore.__proto__ || Object.getPrototypeOf(ContractStore)).call.apply(_ref, [this].concat(args))), _this), _initDefineProp(_this, 'contract_id', _descriptor, _this), _initDefineProp(_this, 'contract_info', _descriptor2, _this), _initDefineProp(_this, 'digits_info', _descriptor3, _this), _initDefineProp(_this, 'sell_info', _descriptor4, _this), _initDefineProp(_this, 'has_error', _descriptor5, _this), _initDefineProp(_this, 'error_message', _descriptor6, _this), _initDefineProp(_this, 'is_sell_requested', _descriptor7, _this), _this.is_granularity_set = false, _this.is_left_epoch_set = false, _temp), _possibleConstructorReturn(_this, _ret);
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ContractStore.__proto__ || Object.getPrototypeOf(ContractStore)).call.apply(_ref, [this].concat(args))), _this), _initDefineProp(_this, 'contract_id', _descriptor, _this), _initDefineProp(_this, 'contract_info', _descriptor2, _this), _initDefineProp(_this, 'digits_info', _descriptor3, _this), _initDefineProp(_this, 'sell_info', _descriptor4, _this), _initDefineProp(_this, 'has_error', _descriptor5, _this), _initDefineProp(_this, 'error_message', _descriptor6, _this), _initDefineProp(_this, 'is_sell_requested', _descriptor7, _this), _this.chart_type = 'mountain', _this.is_granularity_set = false, _this.is_left_epoch_set = false, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     // ---- Normal properties ---
@@ -27178,6 +27194,10 @@ var ContractStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec
                 SmartChartStore.setChartView(contract_info.purchase_time);
             } else if (should_update_chart_type) {
                 this.handleChartType(SmartChartStore, contract_info.date_start, null);
+            } else if (this.is_granularity_set) {
+                if ((0, _logic.getChartType)(contract_info.date_start, null) !== this.chart_type) {
+                    this.is_granularity_set = false;
+                }
             }
 
             (0, _chartBarriers.createChartBarrier)(SmartChartStore, contract_info);
@@ -27216,6 +27236,7 @@ var ContractStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec
         key: 'onCloseContract',
         value: function onCloseContract() {
             this.forgetProposalOpenContract();
+            this.chart_type = 'mountain';
             this.contract_id = null;
             this.contract_info = {};
             this.digits_info = {};
@@ -27310,9 +27331,11 @@ var ContractStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec
             if (chart_type === 'candle' && granularity !== 0) {
                 SmartChartStore.updateGranularity(granularity);
                 SmartChartStore.updateChartType(chart_type);
+                this.chart_type = chart_type;
             } else {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
+                this.chart_type = 'mountain';
             }
             this.is_granularity_set = true;
         }
@@ -27559,7 +27582,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
 
 var _mobx = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
 
@@ -27626,7 +27649,7 @@ function _initializerWarningHelper(descriptor, context) {
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, _dec14 = _mobx.action.bound, (_class = function (_BaseStore) {
+var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, (_class = function (_BaseStore) {
     _inherits(PortfolioStore, _BaseStore);
 
     function PortfolioStore() {
@@ -27640,7 +27663,11 @@ var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _de
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PortfolioStore.__proto__ || Object.getPrototypeOf(PortfolioStore)).call.apply(_ref, [this].concat(args))), _this), _initDefineProp(_this, 'positions', _descriptor, _this), _initDefineProp(_this, 'is_loading', _descriptor2, _this), _initDefineProp(_this, 'error', _descriptor3, _this), _initDefineProp(_this, 'initializePortfolio', _descriptor4, _this), _initDefineProp(_this, 'populateResultDetails', _descriptor5, _this), _temp), _possibleConstructorReturn(_this, _ret);
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PortfolioStore.__proto__ || Object.getPrototypeOf(PortfolioStore)).call.apply(_ref, [this].concat(args))), _this), _initDefineProp(_this, 'positions', _descriptor, _this), _initDefineProp(_this, 'is_loading', _descriptor2, _this), _initDefineProp(_this, 'error', _descriptor3, _this), _this.getPositionById = function (id) {
+            return _this.positions.find(function (position) {
+                return +position.id === +id;
+            });
+        }, _initDefineProp(_this, 'initializePortfolio', _descriptor4, _this), _initDefineProp(_this, 'populateResultDetails', _descriptor5, _this), _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(PortfolioStore, [{
@@ -27696,13 +27723,6 @@ var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _de
                 this.positions[i].is_loading = true;
                 _Services.WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails, false);
             }
-        }
-    }, {
-        key: 'getPositionById',
-        value: function getPositionById(id) {
-            return this.positions.find(function (position) {
-                return +position.id === +id;
-            });
         }
     }, {
         key: 'proposalOpenContractHandler',
@@ -27909,7 +27929,7 @@ var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _de
             _Services.WS.subscribeTransaction(_this4.transactionHandler, false);
         };
     }
-}), _applyDecoratedDescriptor(_class.prototype, 'clearTable', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'clearTable'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'portfolioHandler', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'portfolioHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'transactionHandler', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'transactionHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getPositionById', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'getPositionById'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'proposalOpenContractHandler', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'proposalOpenContractHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onClickSell', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'onClickSell'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleSell', [_dec8], Object.getOwnPropertyDescriptor(_class.prototype, 'handleSell'), _class.prototype), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'populateResultDetails', [_dec9], {
+}), _applyDecoratedDescriptor(_class.prototype, 'clearTable', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'clearTable'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'portfolioHandler', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'portfolioHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'transactionHandler', [_dec4], Object.getOwnPropertyDescriptor(_class.prototype, 'transactionHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'proposalOpenContractHandler', [_dec5], Object.getOwnPropertyDescriptor(_class.prototype, 'proposalOpenContractHandler'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onClickSell', [_dec6], Object.getOwnPropertyDescriptor(_class.prototype, 'onClickSell'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleSell', [_dec7], Object.getOwnPropertyDescriptor(_class.prototype, 'handleSell'), _class.prototype), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'populateResultDetails', [_dec8], {
     enumerable: true,
     initializer: function initializer() {
         var _this5 = this;
@@ -27936,7 +27956,7 @@ var PortfolioStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _de
             _this5.positions[i].is_loading = false;
         };
     }
-}), _applyDecoratedDescriptor(_class.prototype, 'pushNewPosition', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'pushNewPosition'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removePositionById', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'removePositionById'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec14], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'totals', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'totals'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'active_positions', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'active_positions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'all_positions', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'all_positions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_active_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_active_empty'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_empty'), _class.prototype)), _class));
+}), _applyDecoratedDescriptor(_class.prototype, 'pushNewPosition', [_dec9], Object.getOwnPropertyDescriptor(_class.prototype, 'pushNewPosition'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'removePositionById', [_dec10], Object.getOwnPropertyDescriptor(_class.prototype, 'removePositionById'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'accountSwitcherListener', [_dec11], Object.getOwnPropertyDescriptor(_class.prototype, 'accountSwitcherListener'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onMount', [_dec12], Object.getOwnPropertyDescriptor(_class.prototype, 'onMount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onUnmount', [_dec13], Object.getOwnPropertyDescriptor(_class.prototype, 'onUnmount'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'totals', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'totals'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'active_positions', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'active_positions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'all_positions', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'all_positions'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_active_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_active_empty'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'is_empty', [_mobx.computed], Object.getOwnPropertyDescriptor(_class.prototype, 'is_empty'), _class.prototype)), _class));
 exports.default = PortfolioStore;
 
 /***/ }),
@@ -28863,66 +28883,26 @@ function _initializerWarningHelper(descriptor, context) {
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-var store_name = 'smart_chart_store';
-
 var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _dec3 = _mobx.action.bound, _dec4 = _mobx.action.bound, _dec5 = _mobx.action.bound, _dec6 = _mobx.action.bound, _dec7 = _mobx.action.bound, _dec8 = _mobx.action.bound, _dec9 = _mobx.action.bound, _dec10 = _mobx.action.bound, _dec11 = _mobx.action.bound, _dec12 = _mobx.action.bound, _dec13 = _mobx.action.bound, _dec14 = _mobx.action.bound, _dec15 = _mobx.action.bound, _dec16 = _mobx.action.bound, _dec17 = _mobx.action.bound, _dec18 = _mobx.action.bound, _dec19 = _mobx.action.bound, _dec20 = _mobx.action.bound, _dec21 = _mobx.action.bound, _dec22 = _mobx.action.bound, (_class = function (_BaseStore) {
     _inherits(SmartChartStore, _BaseStore);
 
-    function SmartChartStore(_ref) {
-        var root_store = _ref.root_store;
+    function SmartChartStore() {
+        var _ref;
+
+        var _temp, _this, _ret;
 
         _classCallCheck(this, SmartChartStore);
 
-        var local_storage_properties = ['trade_chart_layout'];
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
 
-        var _this = _possibleConstructorReturn(this, (SmartChartStore.__proto__ || Object.getPrototypeOf(SmartChartStore)).call(this, { root_store: root_store, local_storage_properties: local_storage_properties, store_name: store_name }));
-
-        _initDefineProp(_this, 'chart_type', _descriptor, _this);
-
-        _initDefineProp(_this, 'granularity', _descriptor2, _this);
-
-        _initDefineProp(_this, 'barriers', _descriptor3, _this);
-
-        _initDefineProp(_this, 'markers', _descriptor4, _this);
-
-        _initDefineProp(_this, 'is_contract_mode', _descriptor5, _this);
-
-        _initDefineProp(_this, 'is_title_enabled', _descriptor6, _this);
-
-        _initDefineProp(_this, 'range', _descriptor7, _this);
-
-        _initDefineProp(_this, 'scroll_to_left_epoch', _descriptor8, _this);
-
-        _initDefineProp(_this, 'scroll_to_left_epoch_offset', _descriptor9, _this);
-
-        _initDefineProp(_this, 'chart_id', _descriptor10, _this);
-
-        _initDefineProp(_this, 'should_import_layout', _descriptor11, _this);
-
-        _initDefineProp(_this, 'should_export_layout', _descriptor12, _this);
-
-        _initDefineProp(_this, 'should_clear_chart', _descriptor13, _this);
-
-        _initDefineProp(_this, 'trade_chart_layout', _descriptor14, _this);
-
-        _this.trade_chart_symbol = null;
-
-        _initDefineProp(_this, 'onMount', _descriptor15, _this);
-
-        _initDefineProp(_this, 'onUnmount', _descriptor16, _this);
-
-        _initDefineProp(_this, 'createBarriers', _descriptor17, _this);
-
-        _this.wsSubscribe = function (request_object, callback) {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SmartChartStore.__proto__ || Object.getPrototypeOf(SmartChartStore)).call.apply(_ref, [this].concat(args))), _this), _initDefineProp(_this, 'chart_type', _descriptor, _this), _initDefineProp(_this, 'granularity', _descriptor2, _this), _initDefineProp(_this, 'barriers', _descriptor3, _this), _initDefineProp(_this, 'markers', _descriptor4, _this), _initDefineProp(_this, 'is_contract_mode', _descriptor5, _this), _initDefineProp(_this, 'is_title_enabled', _descriptor6, _this), _initDefineProp(_this, 'range', _descriptor7, _this), _initDefineProp(_this, 'scroll_to_left_epoch', _descriptor8, _this), _initDefineProp(_this, 'scroll_to_left_epoch_offset', _descriptor9, _this), _initDefineProp(_this, 'chart_id', _descriptor10, _this), _initDefineProp(_this, 'should_import_layout', _descriptor11, _this), _initDefineProp(_this, 'should_export_layout', _descriptor12, _this), _initDefineProp(_this, 'should_clear_chart', _descriptor13, _this), _initDefineProp(_this, 'trade_chart_layout', _descriptor14, _this), _this.trade_chart_symbol = null, _initDefineProp(_this, 'onMount', _descriptor15, _this), _initDefineProp(_this, 'onUnmount', _descriptor16, _this), _initDefineProp(_this, 'createBarriers', _descriptor17, _this), _this.wsSubscribe = function (request_object, callback) {
             if (request_object.subscribe !== 1) return;
             _Services.WS.subscribeTicksHistory(_extends({}, request_object), callback); // use a copy of the request_object to prevent updating the source
-        };
-
-        _this.wsForget = function (match_values, callback) {
+        }, _this.wsForget = function (match_values, callback) {
             return _Services.WS.forget('ticks_history', callback, match_values);
-        };
-
-        _this.wsSendRequest = function (request_object) {
+        }, _this.wsSendRequest = function (request_object) {
             if (request_object.time) {
                 return _server_time2.default.timePromise.then(function () {
                     return {
@@ -28932,9 +28912,7 @@ var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _d
                 });
             }
             return _Services.WS.sendRequest(request_object);
-        };
-
-        return _this;
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(SmartChartStore, [{
@@ -28982,7 +28960,7 @@ var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _d
         key: 'setChartView',
 
 
-        // --------- Tick Contracts ---------
+        // --------- Set Contract Scroll to Left ---------
         value: function setChartView(scroll_to_left_epoch) {
             this.updateEpochScrollToOffset(1);
             this.updateEpochScrollToValue(scroll_to_left_epoch);
@@ -29034,8 +29012,8 @@ var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _d
         value: function saveAndClearTradeChartLayout() {
             this.should_export_layout = true;
             this.should_import_layout = false;
-
             this.trade_chart_symbol = this.root_store.modules.trade.symbol;
+            this.chart_id = 'contract';
             this.updateGranularity(0);
             this.updateChartType('mountain');
         }
@@ -29047,16 +29025,17 @@ var SmartChartStore = (_dec = _mobx.action.bound, _dec2 = _mobx.action.bound, _d
             this.should_export_layout = false;
             this.should_import_layout = true;
             this.should_clear_chart = false;
+            this.chart_id = 'trade';
 
             this.trade_chart_layout.isDone = (0, _mobx.action)(function () {
                 _this2.trade_chart_layout = null;
                 _this2.should_import_layout = false;
-            });
 
-            // Reset back to symbol before loading contract if trade_symbol and contract_symbol don't match
-            if (this.trade_chart_symbol !== this.root_store.modules.trade.symbol) {
-                this.root_store.modules.trade.updateSymbol(this.trade_chart_symbol);
-            }
+                // Reset back to symbol before loading contract if trade_symbol and contract_symbol don't match
+                if (_this2.trade_chart_symbol !== _this2.root_store.modules.trade.symbol) {
+                    _this2.root_store.modules.trade.updateSymbol(_this2.trade_chart_symbol);
+                }
+            });
         }
     }, {
         key: 'exportLayout',
