@@ -870,8 +870,10 @@ html {
     .barspinner__rect--5 {
       -webkit-animation-delay: -0.8s;
       animation-delay: -0.8s; }
-  .barspinner--dark .barspinner__rect {
+  .theme--light .barspinner--dark .barspinner__rect {
     background-color: #2a3052; }
+  .theme--dark .barspinner--dark .barspinner__rect {
+    background-color: #ffffff; }
 
 @-webkit-keyframes fill-up {
   0% {
