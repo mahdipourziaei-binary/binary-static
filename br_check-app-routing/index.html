@@ -55,7 +55,7 @@
                 var has_utm_source        = /utm_source/.test(search);
                 var utm_source            = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
 
-                window.location.href = (lang || 'en').toLowerCase() + '/' + (is_logged_in ? 'trading' : 'home') + '.html' + search + utm_source;
+                window.location.href = (/\/app\//.test(window.location.hash) ? '' : 'app/') + (lang || 'en').toLowerCase() + '/' + (is_logged_in ? 'trading' : 'home') + '.html' + search + utm_source;
             }
 
             if (/^https:\/\/staging\.binary\.com\/translations\//i.test(window.location.href)) {
