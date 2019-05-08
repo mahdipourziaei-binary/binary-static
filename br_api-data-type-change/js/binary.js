@@ -19916,7 +19916,7 @@ var Highchart = function () {
 
         HighchartUI.updateLabels(chart, getHighchartLabelParams());
 
-        var display_decimals = (history ? history.prices[0] : candles[0].open).split('.')[1].length || 3;
+        var display_decimals = (history ? history.prices[0] : candles[0].open).toString().split('.')[1].length || 3;
 
         chart_options = {
             data: data,
