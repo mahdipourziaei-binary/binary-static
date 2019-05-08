@@ -946,7 +946,7 @@ var getAppId = __webpack_require__(/*! ../../config */ "./src/javascript/config.
 
 var GTM = function () {
     var isGtmApplicable = function isGtmApplicable() {
-        return (/^(1|1098|14473|15284|16303|15265)$/.test(getAppId())
+        return (/^(1|1098|14473|15284|16303|15265|16929)$/.test(getAppId())
         );
     };
 
@@ -11079,8 +11079,7 @@ var LoggedInHandler = function () {
                 redirect_url = sessionStorage.getItem('redirect_url');
                 sessionStorage.removeItem('redirect_url');
 
-                var is_app_2 = (typeof redirect_url === 'string' || redirect_url instanceof String) && redirect_url.includes('/app/');
-                storeClientAccounts(account_list, is_app_2);
+                storeClientAccounts(account_list);
             } else {
                 Client.doLogout({ logout: 1 });
             }
@@ -11114,7 +11113,7 @@ var LoggedInHandler = function () {
         landing_company_name: 'landing_company_shortcode'
     };
 
-    var storeClientAccounts = function storeClientAccounts(account_list, is_app_2) {
+    var storeClientAccounts = function storeClientAccounts(account_list) {
         // Parse url for loginids, tokens, and currencies returned by OAuth
         var params = paramsHash(window.location.href);
 
@@ -11124,13 +11123,8 @@ var LoggedInHandler = function () {
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
-                    if (!Client.get('loginid') && !account.is_disabled) {
-                        if (is_app_2 && account.is_virtual) {
-                            // TODO: [only_virtual] remove this to stop logging clients into virtual for app_2
-                            Client.set(param, account[param]);
-                        } else if (!is_app_2 && !account.is_virtual) {
-                            Client.set(param, account[param]);
-                        }
+                    if (!Client.get('loginid') && !account.is_disabled && !account.is_virtual) {
+                        Client.set(param, account[param]);
                     }
                 } else {
                     var param_to_set = map_names[param] || param;
@@ -35908,7 +35902,8 @@ module.exports = ViewPopupUI;
  */
 var domain_app_ids = { // these domains also being used in '_common/url.js' as supported "production domains"
     'binary.com': 1,
-    'binary.me': 15284
+    'binary.me': 15284,
+    'deriv.com': 16929
 };
 
 var getCurrentBinaryDomain = function getCurrentBinaryDomain() {
