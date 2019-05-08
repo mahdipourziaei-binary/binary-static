@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"6f63d1e0a579b376511d","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"9d812bae8c298e0144b7","open_positions~profit_table~statement":"830c9c7247df3b191b82","open_positions":"a3290fa89b014ed2b9b9","profit_table":"0fe838d420eeeb60e1b3","statement":"5d793969948774a64647","portfolio":"4d4d70a910cd7318df54","personal_details":"716845b634031dd9cf95","reports":"3f9bf9d4f195faa18fb3","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"dd7ef6f3fe9a0d70cfc2","smart_chart":"2e6f66f84b8b29bd2d74"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"404":"404","account_password":"account_password","api_token":"api_token","authorized_application":"authorized_application","cashier_password":"cashier_password","contract":"contract","financial_assessment":"financial_assessment","limits":"limits","login_history":"login_history","open_positions~portfolio~profit_table~statement":"open_positions~portfolio~profit_table~statement","open_positions~profit_table~statement":"open_positions~profit_table~statement","open_positions":"open_positions","profit_table":"profit_table","statement":"statement","portfolio":"portfolio","personal_details":"personal_details","reports":"reports","self_exclusion":"self_exclusion","settings":"settings","vendors~smart_chart":"vendors~smart_chart","smart_chart":"smart_chart"}[chunkId]||chunkId) + "-" + {"404":"5189d05e3eada5e2fb30","account_password":"5b98c5e0011cf272df7f","api_token":"1bcb0c881a41de9bfd6e","authorized_application":"41eb62c13df5f986ea68","cashier_password":"90e23ba1132672b3e187","contract":"6f63d1e0a579b376511d","financial_assessment":"182a107203c81d1cc33a","limits":"6122a66075b7120f5152","login_history":"92742ccaa1efb1ab65b8","open_positions~portfolio~profit_table~statement":"9d812bae8c298e0144b7","open_positions~profit_table~statement":"830c9c7247df3b191b82","open_positions":"6dab2585999507761dfd","profit_table":"9f2fc0a1fbe2601559d6","statement":"5d793969948774a64647","portfolio":"4d4d70a910cd7318df54","personal_details":"716845b634031dd9cf95","reports":"3f9bf9d4f195faa18fb3","self_exclusion":"226ac0134b0354423868","settings":"629b43dd5f13f4355536","vendors~smart_chart":"dd7ef6f3fe9a0d70cfc2","smart_chart":"2e6f66f84b8b29bd2d74"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -6783,6 +6783,9 @@ var VerticalTabHeaders = function (_React$PureComponent) {
                     )
                 ),
                 this.props.items.map(function (item) {
+                    // Capitalize only the first letter of the label and make the rest lowercase
+                    var label = item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
+
                     return _this2.props.is_routed ? _react2.default.createElement(
                         _reactRouterDom.NavLink,
                         {
@@ -6805,7 +6808,7 @@ var VerticalTabHeaders = function (_React$PureComponent) {
                         _react2.default.createElement(
                             'span',
                             { className: 'vertical-tab__header__link' },
-                            item.label
+                            label
                         )
                     ) : _react2.default.createElement(
                         'div',
@@ -6830,7 +6833,7 @@ var VerticalTabHeaders = function (_React$PureComponent) {
                                 key: item.label,
                                 className: 'vertical-tab__header__link'
                             },
-                            item.label
+                            label
                         )
                     );
                 })

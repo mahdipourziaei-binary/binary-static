@@ -6545,7 +6545,7 @@ html {
     font-size: 1.4em;
     color: rgba(0, 0, 0, 0.8);
     font-weight: 700;
-    text-transform: capitalize;
+    text-transform: none;
     text-align: center;
     line-height: 1.5;
     line-height: 2em;
@@ -6568,7 +6568,7 @@ html {
     font-size: 1.4em;
     color: rgba(0, 0, 0, 0.8);
     font-weight: 700;
-    text-transform: capitalize;
+    text-transform: none;
     text-align: center;
     line-height: 1.5;
     line-height: 2em;
@@ -6596,7 +6596,7 @@ html {
       font-size: 1.4em;
       color: #ffffff;
       font-weight: 700;
-      text-transform: capitalize;
+      text-transform: none;
       text-align: left;
       line-height: 1.5; }
       .theme--light .vertical-tab__header--active {
@@ -7961,7 +7961,7 @@ html {
       font-size: 1.6em;
       color: rgba(0, 0, 0, 0.8);
       font-weight: 700;
-      text-transform: capitalize;
+      text-transform: none;
       text-align: left;
       line-height: 1.75;
       line-height: 1.55; }
