@@ -22354,10 +22354,12 @@ module.exports = DigitTicker;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var DigitTicker = __webpack_require__(/*! ./digit_ticker */ "./src/javascript/app/pages/trade/digit_ticker.js");
 var ViewPopupUI = __webpack_require__(/*! ../user/view_popup/view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
+var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
 var showLocalTimeOnHover = __webpack_require__(/*! ../../base/clock */ "./src/javascript/app/base/clock.js").showLocalTimeOnHover;
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var LoadingSpinner = __webpack_require__(/*! ../../components/loading-spinner */ "./src/javascript/app/components/loading-spinner.js");
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
+var getDecimalPlaces = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").getDecimalPlaces;
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var getPropertyValue = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
 
@@ -22423,7 +22425,7 @@ var DigitDisplay = function () {
             time: time
         });
 
-        var csv_spot = addComma(spot);
+        var csv_spot = addComma(spot, getDecimalPlaces(Client.get('currency')));
 
         $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? csv_spot.slice(0, csv_spot.length - 1) + '<strong>' + csv_spot.substr(-1) + '</strong>' : csv_spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
 
@@ -25566,6 +25568,20 @@ var Purchase = function () {
                                 additional_message = localize('Try our other markets.');
                             }
                             message = error.message + '. ' + additional_message;
+                        } else if (/ClientUnwelcome/.test(error.code) && /gb/.test(Client.get('residence'))) {
+                            var _message_text2 = '';
+                            var _additional_message = '';
+
+                            if (!Client.hasAccountType('real') && Client.get('is_virtual')) {
+                                _message_text2 = localize('Please complete the [_1]Real Account form[_2] to verify your age as required by the [_3]UK Gambling[_4] Commission (UKGC).', ['<a href=\'' + urlFor('new_account/realws') + '\'>', '</a>', '<strong>', '</strong>']);
+                                message = _message_text2;
+                            } else if (Client.hasAccountType('real') && /^virtual|iom$/i.test(Client.get('landing_company_shortcode'))) {
+                                _message_text2 = localize('Your age verification failed. Please contact customer service for assistance. [_1][_1] [_2]Telephone:[_3] [_1] United Kingdom [_1] +44 (0) 1666 800042 [_1] 0800 011 9847 (Toll Free)', ['<br/>', '<strong>', '</strong>']);
+                                _additional_message = localize('[_1]Telephone numbers in other locations[_2]', ['<a href=\'' + urlFor('contact') + '\'>', '</a>']);
+                                message = _message_text2 + ' <br/><br/> ' + _additional_message;
+                            } else {
+                                message = error.message;
+                            }
                         }
                         CommonFunctions.elementInnerHtml(confirmation_error, message);
                     });
@@ -33775,10 +33791,17 @@ var RealAccOpening = function () {
         if (Client.get('residence')) {
             if (AccountOpening.redirectAccount()) return;
 
-            BinarySocket.wait('landing_company').then(function () {
+            BinarySocket.wait('landing_company', 'get_account_status').then(function () {
                 // TODO [->svg]
+                var is_unwelcome_uk = State.getResponse('get_account_status.status').some(function (status) {
+                    return status === 'unwelcome';
+                }) && /gb/.test(Client.get('residence'));
+
                 if (State.getResponse('authorize.upgradeable_landing_companies').indexOf('svg') !== -1 || State.getResponse('authorize.upgradeable_landing_companies').indexOf('costarica') !== -1) {
                     getElementById('risk_disclaimer').setVisibility(1);
+                }
+                if (is_unwelcome_uk) {
+                    getElementById('ukgc_age_verification').setVisibility(1);
                 }
 
                 AccountOpening.populateForm(form_id, getValidations, false);
@@ -33950,12 +33973,17 @@ var VirtualAccOpening = function () {
                 if (!response_auth.error) {
                     LocalStore.remove('date_first_contact');
                     LocalStore.remove('signup_device');
-                    Client.processNewAccount({
-                        email: new_account.email,
-                        loginid: new_account.client_id,
-                        token: new_account.oauth_token,
-                        is_virtual: true,
-                        redirect_url: urlFor('new_account/welcome')
+                    BinarySocket.send({ get_account_status: 1 }).then(function (account_status) {
+                        var is_unwelcome_uk = account_status.get_account_status.status.some(function (status) {
+                            return status === 'unwelcome';
+                        }) && /gb/.test(residence);
+                        Client.processNewAccount({
+                            email: new_account.email,
+                            loginid: new_account.client_id,
+                            token: new_account.oauth_token,
+                            is_virtual: true,
+                            redirect_url: is_unwelcome_uk ? urlFor('new_account/realws') : urlFor('new_account/welcome')
+                        });
                     });
                 }
             });
@@ -35085,6 +35113,7 @@ var ViewPopup = function () {
         containerSetText('trade_details_ref_id', contract.transaction_ids.buy + ' (' + localize('Buy') + ') ' + (contract.transaction_ids.sell ? '<br>' + contract.transaction_ids.sell + ' (' + localize('Sell') + ')' : ''));
         containerSetText('trade_details_indicative_price', indicative_price ? formatMoney(contract.currency, indicative_price) : '-');
 
+        contract.sell_price = contract.sell_price.toString();
         if (is_ended && !contract.sell_price) {
             containerSetText('trade_details_profit_loss', localize('Waiting for contract settlement.'), { class: 'pending' });
         } else if (contract.sell_price || contract.bid_price) {
@@ -35942,7 +35971,9 @@ var getAppId = function getAppId() {
         app_id = 1159;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = is_new_app ? 15265 : domain_app_ids[getCurrentBinaryDomain()] || 1;
+        var current_domain = getCurrentBinaryDomain();
+        // TODO: remove is_new_app && deriv.com check when repos are split
+        app_id = is_new_app && current_domain !== 'deriv.com' ? 15265 : domain_app_ids[current_domain] || 1;
     }
     return app_id;
 };

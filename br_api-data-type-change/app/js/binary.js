@@ -24136,6 +24136,20 @@ var DurationWrapper = function (_React$Component) {
             return duration_list.some(function (du) {
                 return du.value === duration_unit;
             });
+        }, _this.advancedHasWrongExpiry = function () {
+            return _this.props.is_advanced_duration && _this.props.expiry_type !== _this.props.advanced_expiry_type && _this.props.duration_units_list.length > 1;
+        }, _this.handleEndTime = function () {
+            var symbol_has_endtime = _this.props.duration_units_list.length > 1;
+
+            if (symbol_has_endtime) {
+                // simple duration does not have endtime
+                if (!_this.props.is_advanced_duration) _this.props.onChangeUiStore({ name: 'is_advanced_duration', value: true });
+
+                _this.props.onChangeUiStore({ name: 'advanced_expiry_type', value: 'endtime' });
+            } else {
+                // If query string contains endtime but contract type does not e.g. digits (only ticks contracts)
+                _this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
+            }
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -24164,7 +24178,16 @@ var DurationWrapper = function (_React$Component) {
             if (this.props.duration !== current_duration) {
                 this.props.onChangeUiStore({ name: 'duration_' + current_unit, value: this.props.duration });
             }
+
+            if (this.props.expiry_type === 'endtime') this.handleEndTime();
+
+            if (this.advancedHasWrongExpiry()) {
+                this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
+            }
         }
+
+        // intercept changes to contract duration and check that trade_store and ui_store are aligned.
+
     }, {
         key: 'componentWillReact',
         value: function componentWillReact() {
@@ -24173,9 +24196,7 @@ var DurationWrapper = function (_React$Component) {
             var current_duration = this.props.getDurationFromUnit(this.props.duration_unit);
             var has_missing_duration_unit = !this.hasDurationUnit(current_duration_unit);
             var simple_is_not_type_duration = !this.props.is_advanced_duration && this.props.expiry_type !== 'duration';
-            var advanced_has_wrong_expiry = this.props.is_advanced_duration && this.props.expiry_type !== this.props.advanced_expiry_type && this.props.duration_units_list.length > 1;
 
-            // intercept changes to current contracts duration_units_list - if they are missing change duration_unit and value in trade_store and ui_store
             if (has_missing_duration_unit || simple_is_missing_duration_unit) {
                 this.setDurationUnit();
                 return;
@@ -24186,7 +24207,7 @@ var DurationWrapper = function (_React$Component) {
                 this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
             }
 
-            if (advanced_has_wrong_expiry) {
+            if (this.advancedHasWrongExpiry()) {
                 this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
             }
 
@@ -35710,7 +35731,9 @@ var getAppId = function getAppId() {
         app_id = 1159;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = is_new_app ? 15265 : domain_app_ids[getCurrentBinaryDomain()] || 1;
+        var current_domain = getCurrentBinaryDomain();
+        // TODO: remove is_new_app && deriv.com check when repos are split
+        app_id = is_new_app && current_domain !== 'deriv.com' ? 15265 : domain_app_ids[current_domain] || 1;
     }
     return app_id;
 };
