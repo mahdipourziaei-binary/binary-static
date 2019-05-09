@@ -19916,7 +19916,7 @@ var Highchart = function () {
 
         HighchartUI.updateLabels(chart, getHighchartLabelParams());
 
-        var display_decimals = (history ? history.prices[0] : candles[0].open).toString().split('.')[1].length || 3;
+        var display_decimals = (history ? history.prices[0] : candles[0].open).split('.')[1].length || 3;
 
         chart_options = {
             data: data,
@@ -22271,7 +22271,7 @@ var DigitTicker = function () {
         setElements(epoch);
         el_container.classList.remove('invisible');
         adjustBoxSizes();
-        current_spot = quote.toString().substr(-1);
+        current_spot = quote.substr(-1);
 
         el_mask.innerText = current_tick_count + ' / ' + total_tick_count;
 
@@ -22354,12 +22354,10 @@ module.exports = DigitTicker;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var DigitTicker = __webpack_require__(/*! ./digit_ticker */ "./src/javascript/app/pages/trade/digit_ticker.js");
 var ViewPopupUI = __webpack_require__(/*! ../user/view_popup/view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
-var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
 var showLocalTimeOnHover = __webpack_require__(/*! ../../base/clock */ "./src/javascript/app/base/clock.js").showLocalTimeOnHover;
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var LoadingSpinner = __webpack_require__(/*! ../../components/loading-spinner */ "./src/javascript/app/components/loading-spinner.js");
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
-var getDecimalPlaces = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").getDecimalPlaces;
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var getPropertyValue = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
 
@@ -22425,7 +22423,7 @@ var DigitDisplay = function () {
             time: time
         });
 
-        var csv_spot = addComma(spot, getDecimalPlaces(Client.get('currency')));
+        var csv_spot = addComma(spot);
 
         $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? csv_spot.slice(0, csv_spot.length - 1) + '<strong>' + csv_spot.substr(-1) + '</strong>' : csv_spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
 
@@ -22474,11 +22472,11 @@ var DigitDisplay = function () {
         }
         if (proposal_open_contract.status === 'won') {
             DigitTicker.markAsWon();
-            DigitTicker.markDigitAsWon(proposal_open_contract.exit_tick.toString().slice(-1));
+            DigitTicker.markDigitAsWon(proposal_open_contract.exit_tick.slice(-1));
         }
         if (proposal_open_contract.status === 'lost') {
             DigitTicker.markAsLost();
-            DigitTicker.markDigitAsLost(proposal_open_contract.exit_tick.toString().slice(-1));
+            DigitTicker.markDigitAsLost(proposal_open_contract.exit_tick.slice(-1));
         }
     };
 
@@ -25884,7 +25882,7 @@ var Purchase = function () {
         if (el_epoch && el_epoch.classList) {
             el_epoch.classList.add('is-visible');
             el_epoch.setAttribute('style', 'position: absolute; right: ' + ((el_epoch.parentElement.offsetWidth - el_epoch.nextSibling.offsetWidth) / 2 + adjustment) + 'px');
-            var last_digit_quote = last_tick_quote ? last_tick_quote.toString().slice(-1) : '';
+            var last_digit_quote = last_tick_quote ? last_tick_quote.slice(-1) : '';
             if (contract_status === 'won') {
                 DigitTicker.markAsWon();
                 DigitTicker.markDigitAsWon(last_digit_quote);
@@ -35113,7 +35111,6 @@ var ViewPopup = function () {
         containerSetText('trade_details_ref_id', contract.transaction_ids.buy + ' (' + localize('Buy') + ') ' + (contract.transaction_ids.sell ? '<br>' + contract.transaction_ids.sell + ' (' + localize('Sell') + ')' : ''));
         containerSetText('trade_details_indicative_price', indicative_price ? formatMoney(contract.currency, indicative_price) : '-');
 
-        contract.sell_price = contract.sell_price.toString();
         if (is_ended && !contract.sell_price) {
             containerSetText('trade_details_profit_loss', localize('Waiting for contract settlement.'), { class: 'pending' });
         } else if (contract.sell_price || contract.bid_price) {
