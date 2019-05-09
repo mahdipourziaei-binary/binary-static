@@ -164,6 +164,8 @@
       position: absolute;
       margin-right: 100%;
       right: 10px; }
+    #mt-tnc ol li ul {
+      list-style: none; }
   #mt-tnc ol ol {
     counter-reset: item2; }
     #mt-tnc ol ol li:before {
@@ -1451,6 +1453,15 @@ body #not_authenticated_financial ul.checked > li {
 #client-limits img {
   margin-left: 5px;
   margin-bottom: 3px; }
+
+.authenticate-content #onfido .onfido-sdk-ui-NavigationBar-back {
+  background: transparent; }
+
+.authenticate-content #onfido .onfido-sdk-ui-Button-button-primary:hover {
+  background: #353ff4; }
+
+.authenticate-content #onfido .onfido-sdk-ui-Button-button-outline:hover {
+  background-color: transparent; }
 
 .authenticate-content .fields > .gr-row > div > .button {
   display: block;
