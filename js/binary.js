@@ -19916,7 +19916,7 @@ var Highchart = function () {
 
         HighchartUI.updateLabels(chart, getHighchartLabelParams());
 
-        var display_decimals = (history ? history.prices[0] : candles[0].open).split('.')[1].length || 3;
+        var display_decimals = (history ? history.prices[0] : candles[0].open).toString().split('.')[1].length || 3;
 
         chart_options = {
             data: data,
@@ -21219,6 +21219,27 @@ var countDecimalPlaces = function countDecimalPlaces(num) {
     return 0;
 };
 
+var getHighestDecimalPlaceOfList = function getHighestDecimalPlaceOfList(list) {
+    var decimal_places = 2; // Initialised with minimum number of decimal places we employ
+
+    if (list instanceof Object) {
+        Object.keys(list).forEach(function (key) {
+            var property = list[key];
+            if (!isNaN(property)) {
+                decimal_places = property > decimal_places ? countDecimalPlaces(property) : decimal_places;
+            }
+        });
+    } else if (list instanceof Array) {
+        list.forEach(function (el) {
+            if (!isNaN(el)) {
+                decimal_places = el > decimal_places ? countDecimalPlaces(el) : decimal_places;
+            }
+        });
+    }
+
+    return decimal_places;
+};
+
 var trading_times = {};
 
 var processTradingTimesAnswer = function processTradingTimesAnswer(response) {
@@ -21338,6 +21359,7 @@ var getSelectedOption = function getSelectedOption($selector) {
 module.exports = {
     displayPriceMovement: displayPriceMovement,
     countDecimalPlaces: countDecimalPlaces,
+    getHighestDecimalPlaceOfList: getHighestDecimalPlaceOfList,
     processTradingTimesAnswer: processTradingTimesAnswer,
     checkValidTime: checkValidTime,
     getSelectedOption: getSelectedOption,
@@ -22271,7 +22293,7 @@ var DigitTicker = function () {
         setElements(epoch);
         el_container.classList.remove('invisible');
         adjustBoxSizes();
-        current_spot = quote.substr(-1);
+        current_spot = quote.toString().substr(-1);
 
         el_mask.innerText = current_tick_count + ' / ' + total_tick_count;
 
@@ -22472,11 +22494,11 @@ var DigitDisplay = function () {
         }
         if (proposal_open_contract.status === 'won') {
             DigitTicker.markAsWon();
-            DigitTicker.markDigitAsWon(proposal_open_contract.exit_tick.slice(-1));
+            DigitTicker.markDigitAsWon(proposal_open_contract.exit_tick.toString().slice(-1));
         }
         if (proposal_open_contract.status === 'lost') {
             DigitTicker.markAsLost();
-            DigitTicker.markDigitAsLost(proposal_open_contract.exit_tick.slice(-1));
+            DigitTicker.markDigitAsLost(proposal_open_contract.exit_tick.toString().slice(-1));
         }
     };
 
@@ -25882,7 +25904,7 @@ var Purchase = function () {
         if (el_epoch && el_epoch.classList) {
             el_epoch.classList.add('is-visible');
             el_epoch.setAttribute('style', 'position: absolute; right: ' + ((el_epoch.parentElement.offsetWidth - el_epoch.nextSibling.offsetWidth) / 2 + adjustment) + 'px');
-            var last_digit_quote = last_tick_quote ? last_tick_quote.slice(-1) : '';
+            var last_digit_quote = last_tick_quote ? last_tick_quote.toString().slice(-1) : '';
             if (contract_status === 'won') {
                 DigitTicker.markAsWon();
                 DigitTicker.markDigitAsWon(last_digit_quote);
@@ -34887,6 +34909,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 var ViewPopupUI = __webpack_require__(/*! ./view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
 var Highchart = __webpack_require__(/*! ../../trade/charts/highchart */ "./src/javascript/app/pages/trade/charts/highchart.js");
 var Callputspread = __webpack_require__(/*! ../../trade/callputspread */ "./src/javascript/app/pages/trade/callputspread.js");
+var getHighestDecimalPlaceOfList = __webpack_require__(/*! ../../trade/common_independent */ "./src/javascript/app/pages/trade/common_independent.js").getHighestDecimalPlaceOfList;
 var DigitDisplay = __webpack_require__(/*! ../../trade/digit_trade */ "./src/javascript/app/pages/trade/digit_trade.js");
 var Lookback = __webpack_require__(/*! ../../trade/lookback */ "./src/javascript/app/pages/trade/lookback.js");
 var Reset = __webpack_require__(/*! ../../trade/reset */ "./src/javascript/app/pages/trade/reset.js");
@@ -35657,7 +35680,7 @@ var ViewPopup = function () {
         }
         if (+response.proposal_open_contract.contract_id === contract_id) {
             ViewPopupUI.storeSubscriptionID(response.proposal_open_contract.id);
-            responseContract(response);
+            responseContract(changeNumbersToString(response));
         } else if (response.proposal_open_contract.id) {
             BinarySocket.send({ forget: response.proposal_open_contract.id });
         }
@@ -35673,6 +35696,18 @@ var ViewPopup = function () {
             e.preventDefault();
             init(this);
         });
+    };
+
+    var changeNumbersToString = function changeNumbersToString(response) {
+        var modded_response = Object.assign({}, response);
+        var sell_price = modded_response.proposal_open_contract.sell_price;
+
+
+        if (sell_price) {
+            modded_response.proposal_open_contract.sell_price = addComma(sell_price.toString(), getHighestDecimalPlaceOfList(modded_response.proposal_open_contract));
+        }
+
+        return modded_response;
     };
 
     return {
