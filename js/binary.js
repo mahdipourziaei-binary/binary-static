@@ -21219,27 +21219,6 @@ var countDecimalPlaces = function countDecimalPlaces(num) {
     return 0;
 };
 
-var getHighestDecimalPlaceOfList = function getHighestDecimalPlaceOfList(list) {
-    var decimal_places = 2; // Initialised with minimum number of decimal places we employ
-
-    if (list instanceof Object) {
-        Object.keys(list).forEach(function (key) {
-            var property = list[key];
-            if (!isNaN(property)) {
-                decimal_places = property > decimal_places ? countDecimalPlaces(property) : decimal_places;
-            }
-        });
-    } else if (list instanceof Array) {
-        list.forEach(function (el) {
-            if (!isNaN(el)) {
-                decimal_places = el > decimal_places ? countDecimalPlaces(el) : decimal_places;
-            }
-        });
-    }
-
-    return decimal_places;
-};
-
 var trading_times = {};
 
 var processTradingTimesAnswer = function processTradingTimesAnswer(response) {
@@ -21359,7 +21338,6 @@ var getSelectedOption = function getSelectedOption($selector) {
 module.exports = {
     displayPriceMovement: displayPriceMovement,
     countDecimalPlaces: countDecimalPlaces,
-    getHighestDecimalPlaceOfList: getHighestDecimalPlaceOfList,
     processTradingTimesAnswer: processTradingTimesAnswer,
     checkValidTime: checkValidTime,
     getSelectedOption: getSelectedOption,
@@ -22374,10 +22352,13 @@ module.exports = DigitTicker;
 
 
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var DigitTicker = __webpack_require__(/*! ./digit_ticker */ "./src/javascript/app/pages/trade/digit_ticker.js");
+var details = __webpack_require__(/*! ./symbols */ "./src/javascript/app/pages/trade/symbols.js").details;
 var ViewPopupUI = __webpack_require__(/*! ../user/view_popup/view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
 var showLocalTimeOnHover = __webpack_require__(/*! ../../base/clock */ "./src/javascript/app/base/clock.js").showLocalTimeOnHover;
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
+var getSymbols = __webpack_require__(/*! ../../common/active_symbols */ "./src/javascript/app/common/active_symbols.js").getSymbols;
 var LoadingSpinner = __webpack_require__(/*! ../../components/loading-spinner */ "./src/javascript/app/components/loading-spinner.js");
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
@@ -22445,9 +22426,7 @@ var DigitDisplay = function () {
             time: time
         });
 
-        var csv_spot = addComma(spot);
-
-        $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? csv_spot.slice(0, csv_spot.length - 1) + '<strong>' + csv_spot.substr(-1) + '</strong>' : csv_spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
+        $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? spot.slice(0, spot.length - 1) + '<strong>' + spot.substr(-1) + '</strong>' : spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
 
         DigitTicker.update(tick_count, {
             quote: contract.status !== 'open' ? contract.exit_tick : spot,
@@ -22464,20 +22443,30 @@ var DigitDisplay = function () {
             ViewPopupUI.storeSubscriptionID(response.tick.id);
         }
         LoadingSpinner.hide('table_digits');
-        if (response.history) {
-            response.history.times.some(function (time, idx) {
-                if (+time >= +contract.entry_tick_time) {
-                    updateTable(response.history.prices[idx], time);
+
+        BinarySocket.send({ active_symbols: 'brief' }).then(function (active_symbols) {
+            details(active_symbols);
+            var market = getSymbols(active_symbols);
+
+            if (response.history) {
+                var pip_size = countDecimalPlaces(market[response.echo_req.ticks_history].pip);
+                response.history.times.some(function (time, idx) {
+                    if (+time >= +contract.entry_tick_time) {
+                        updateTable(addComma(response.history.prices[idx], pip_size), time);
+                        tick_count += 1;
+                    }
+                    return tick_count > contract.tick_count;
+                });
+            } else if (response.tick) {
+                var _pip_size = countDecimalPlaces(market[response.tick.symbol].pip);
+                if (tick_count <= contract.tick_count && +response.tick.epoch >= +contract.entry_tick_time) {
+                    // Pass in response object to changeNumberToString and get string quote
+                    updateTable(addComma(response.tick.quote, _pip_size), response.tick.epoch);
                     tick_count += 1;
                 }
-                return tick_count > contract.tick_count;
-            });
-        } else if (response.tick) {
-            if (tick_count <= contract.tick_count && +response.tick.epoch >= +contract.entry_tick_time) {
-                updateTable(response.tick.quote, response.tick.epoch);
-                tick_count += 1;
             }
-        }
+        });
+
         showLocalTimeOnHover('.digit-spot-time');
     };
 
@@ -25832,7 +25821,7 @@ var Purchase = function () {
         for (var s = 0; s < epoches.length; s++) {
             var tick_d = {
                 epoch: epoches[s],
-                quote: spots2[epoches[s]]
+                quote: addComma(spots2[epoches[s]], Tick.pipSize())
             };
 
             if (CommonFunctions.isVisible(spots) && tick_d.epoch && tick_d.epoch > purchase_data.buy.start_time) {
@@ -25860,8 +25849,7 @@ var Purchase = function () {
                 if (!tick_config.is_digit) {
                     fragment.appendChild(el2);
                 }
-                var tick_with_comma = addComma(tick_d.quote, countDecimalPlaces(tick_d.quote));
-                var tick = '<div class=\'quote\'>' + tick_with_comma.replace(/\d$/, makeBold) + '</div>';
+                var tick = '<div class=\'quote\'>' + tick_d.quote.replace(/\d$/, makeBold) + '</div>';
                 var el3 = createElement('div', { class: 'col' });
                 CommonFunctions.elementInnerHtml(el3, tick);
 
@@ -26238,6 +26226,7 @@ module.exports = Symbols;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var displayPriceMovement = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").displayPriceMovement;
+var underlyings = __webpack_require__(/*! ./symbols */ "./src/javascript/app/pages/trade/symbols.js").underlyings;
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var elementTextContent = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").elementTextContent;
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
@@ -26265,6 +26254,7 @@ var Tick = function () {
     var _epoch = '';
     var error_message = '';
     var _spots = {};
+    var pip_size = 2;
 
     var details = function details(data) {
         error_message = '';
@@ -26273,6 +26263,12 @@ var Tick = function () {
             if (data.error) {
                 error_message = data.error.message;
             } else {
+                var all_underlyings = underlyings();
+                Object.keys(all_underlyings).forEach(function (key) {
+                    if (Object.prototype.hasOwnProperty.call(all_underlyings[key], data.tick.symbol)) {
+                        pip_size = countDecimalPlaces(all_underlyings[key][data.tick.symbol].pip);
+                    }
+                });
                 var tick = data.tick;
                 _quote = tick.quote;
                 _id = tick.id;
@@ -26297,8 +26293,7 @@ var Tick = function () {
             message = error_message;
             message_number = error_message;
         } else {
-            var decimal_places = parseInt(countDecimalPlaces(Tick.quote()));
-            message = addComma(_quote, decimal_places);
+            message = addComma(_quote, pip_size);
             message_number = _quote;
         }
 
@@ -26412,6 +26407,9 @@ var Tick = function () {
         },
         setQuote: function setQuote(q) {
             _quote = q;
+        },
+        pipSize: function pipSize() {
+            return pip_size;
         }
     };
 }();
@@ -34903,19 +34901,25 @@ module.exports = VideoFacility;
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var ViewPopupUI = __webpack_require__(/*! ./view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
 var Highchart = __webpack_require__(/*! ../../trade/charts/highchart */ "./src/javascript/app/pages/trade/charts/highchart.js");
 var Callputspread = __webpack_require__(/*! ../../trade/callputspread */ "./src/javascript/app/pages/trade/callputspread.js");
-var getHighestDecimalPlaceOfList = __webpack_require__(/*! ../../trade/common_independent */ "./src/javascript/app/pages/trade/common_independent.js").getHighestDecimalPlaceOfList;
+var countDecimalPlaces = __webpack_require__(/*! ../../trade/common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var DigitDisplay = __webpack_require__(/*! ../../trade/digit_trade */ "./src/javascript/app/pages/trade/digit_trade.js");
 var Lookback = __webpack_require__(/*! ../../trade/lookback */ "./src/javascript/app/pages/trade/lookback.js");
 var Reset = __webpack_require__(/*! ../../trade/reset */ "./src/javascript/app/pages/trade/reset.js");
+var details = __webpack_require__(/*! ../../trade/symbols */ "./src/javascript/app/pages/trade/symbols.js").details;
 var TickDisplay = __webpack_require__(/*! ../../trade/tick_trade */ "./src/javascript/app/pages/trade/tick_trade.js");
 var Clock = __webpack_require__(/*! ../../../base/clock */ "./src/javascript/app/base/clock.js");
 var BinarySocket = __webpack_require__(/*! ../../../base/socket */ "./src/javascript/app/base/socket.js");
+var getSymbols = __webpack_require__(/*! ../../../common/active_symbols */ "./src/javascript/app/common/active_symbols.js").getSymbols;
 var getElementById = __webpack_require__(/*! ../../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var State = __webpack_require__(/*! ../../../../_common/storage */ "./src/javascript/_common/storage.js").State;
@@ -35671,25 +35675,65 @@ var ViewPopup = function () {
         getContract('no-subscribe');
     };
 
-    var responseProposal = function responseProposal(response) {
-        if (response.error) {
-            if (response.error.code !== 'AlreadySubscribed' && +response.echo_req.contract_id === contract_id) {
-                showErrorPopup(response, response.error.message);
-            }
-            return;
-        }
-        if (+response.proposal_open_contract.contract_id === contract_id) {
-            ViewPopupUI.storeSubscriptionID(response.proposal_open_contract.id);
-            responseContract(changeNumbersToString(response));
-        } else if (response.proposal_open_contract.id) {
-            BinarySocket.send({ forget: response.proposal_open_contract.id });
-        }
-        var dates = ['#trade_details_start_date', '#trade_details_end_date', '#trade_details_current_date', '#trade_details_live_date'];
-        for (var i = 0; i < dates.length; i++) {
-            Clock.showLocalTimeOnHover(dates[i]);
-            $(dates[i]).attr('data-balloon-pos', 'left');
-        }
-    };
+    var responseProposal = function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
+            var dates, i;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            if (!response.error) {
+                                _context.next = 3;
+                                break;
+                            }
+
+                            if (response.error.code !== 'AlreadySubscribed' && +response.echo_req.contract_id === contract_id) {
+                                showErrorPopup(response, response.error.message);
+                            }
+                            return _context.abrupt('return');
+
+                        case 3:
+                            if (!(+response.proposal_open_contract.contract_id === contract_id)) {
+                                _context.next = 12;
+                                break;
+                            }
+
+                            ViewPopupUI.storeSubscriptionID(response.proposal_open_contract.id);
+                            _context.t0 = responseContract;
+                            _context.next = 8;
+                            return changeNumbersToString(response);
+
+                        case 8:
+                            _context.t1 = _context.sent;
+                            (0, _context.t0)(_context.t1);
+                            _context.next = 13;
+                            break;
+
+                        case 12:
+                            if (response.proposal_open_contract.id) {
+                                BinarySocket.send({ forget: response.proposal_open_contract.id });
+                            }
+
+                        case 13:
+                            dates = ['#trade_details_start_date', '#trade_details_end_date', '#trade_details_current_date', '#trade_details_live_date'];
+
+                            for (i = 0; i < dates.length; i++) {
+                                Clock.showLocalTimeOnHover(dates[i]);
+                                $(dates[i]).attr('data-balloon-pos', 'left');
+                            }
+
+                        case 15:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, undefined);
+        }));
+
+        return function responseProposal(_x3) {
+            return _ref.apply(this, arguments);
+        };
+    }();
 
     var viewButtonOnClick = function viewButtonOnClick(container_selector) {
         $(container_selector).on('click', '.open_contract_details', function (e) {
@@ -35699,15 +35743,30 @@ var ViewPopup = function () {
     };
 
     var changeNumbersToString = function changeNumbersToString(response) {
-        var modded_response = Object.assign({}, response);
-        var sell_price = modded_response.proposal_open_contract.sell_price;
+        var _response$proposal_op = response.proposal_open_contract,
+            current_spot = _response$proposal_op.current_spot,
+            exit_tick = _response$proposal_op.exit_tick,
+            sell_price = _response$proposal_op.sell_price;
 
 
-        if (sell_price) {
-            modded_response.proposal_open_contract.sell_price = addComma(sell_price.toString(), getHighestDecimalPlaceOfList(modded_response.proposal_open_contract));
-        }
+        return new Promise(function (resolve) {
+            BinarySocket.send({ active_symbols: 'brief' }).then(function (active_symbols) {
+                details(active_symbols);
+                var market = getSymbols(active_symbols)[response.proposal_open_contract.underlying];
+                var pip_size = countDecimalPlaces(market.pip);
+                var toString = function toString(property) {
+                    return property || property === 0 ? addComma(property, pip_size) : undefined;
+                };
 
-        return modded_response;
+                resolve($.extend({}, _extends({}, response, {
+                    proposal_open_contract: _extends({}, response.proposal_open_contract, {
+                        sell_price: toString(sell_price),
+                        current_spot: toString(current_spot),
+                        exit_tick: toString(exit_tick)
+                    })
+                })));
+            });
+        });
     };
 
     return {
