@@ -14062,6 +14062,51 @@ module.exports = Guide;
 
 /***/ }),
 
+/***/ "./src/javascript/app/common/request_middleware.js":
+/*!*********************************************************!*\
+  !*** ./src/javascript/app/common/request_middleware.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var getUnderlyingPipSize = __webpack_require__(/*! ../pages/trade/symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
+var addComma = __webpack_require__(/*! ../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
+
+var changePocNumbersToString = function changePocNumbersToString(response) {
+    var _response$proposal_op = response.proposal_open_contract,
+        current_spot = _response$proposal_op.current_spot,
+        exit_tick = _response$proposal_op.exit_tick,
+        sell_price = _response$proposal_op.sell_price;
+
+
+    return new Promise(function (resolve) {
+        getUnderlyingPipSize(response.proposal_open_contract.underlying).then(function (pip_size) {
+            var toString = function toString(property) {
+                return property || property === 0 ? addComma(property, pip_size) : undefined;
+            };
+
+            resolve($.extend({}, _extends({}, response, {
+                proposal_open_contract: _extends({}, response.proposal_open_contract, {
+                    sell_price: toString(sell_price),
+                    current_spot: toString(current_spot),
+                    exit_tick: toString(exit_tick)
+                })
+            })));
+        });
+    });
+};
+
+module.exports = {
+    changePocNumbersToString: changePocNumbersToString
+};
+
+/***/ }),
+
 /***/ "./src/javascript/app/common/session_duration_limit.js":
 /*!*************************************************************!*\
   !*** ./src/javascript/app/common/session_duration_limit.js ***!
@@ -21219,23 +21264,6 @@ var countDecimalPlaces = function countDecimalPlaces(num) {
     return 0;
 };
 
-var getHighestDecimalPlaceOfList = function getHighestDecimalPlaceOfList(list) {
-    var decimal_places = 2; // Initialised with minimum number of decimal places we employ
-
-    if (list instanceof Object) {
-        Object.keys(list).forEach(function (key) {
-            var property = list[key];
-            decimal_places = countDecimalPlaces(property) > decimal_places ? countDecimalPlaces(property) : decimal_places;
-        });
-    } else if (list instanceof Array) {
-        list.forEach(function (el) {
-            decimal_places = countDecimalPlaces(el) > decimal_places ? countDecimalPlaces(el) : decimal_places;
-        });
-    }
-
-    return decimal_places;
-};
-
 var trading_times = {};
 
 var processTradingTimesAnswer = function processTradingTimesAnswer(response) {
@@ -21355,7 +21383,6 @@ var getSelectedOption = function getSelectedOption($selector) {
 module.exports = {
     displayPriceMovement: displayPriceMovement,
     countDecimalPlaces: countDecimalPlaces,
-    getHighestDecimalPlaceOfList: getHighestDecimalPlaceOfList,
     processTradingTimesAnswer: processTradingTimesAnswer,
     checkValidTime: checkValidTime,
     getSelectedOption: getSelectedOption,
@@ -22369,8 +22396,11 @@ module.exports = DigitTicker;
 "use strict";
 
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var DigitTicker = __webpack_require__(/*! ./digit_ticker */ "./src/javascript/app/pages/trade/digit_ticker.js");
+var getUnderlyingPipSize = __webpack_require__(/*! ./symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
 var ViewPopupUI = __webpack_require__(/*! ../user/view_popup/view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
 var showLocalTimeOnHover = __webpack_require__(/*! ../../base/clock */ "./src/javascript/app/base/clock.js").showLocalTimeOnHover;
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
@@ -22441,9 +22471,7 @@ var DigitDisplay = function () {
             time: time
         });
 
-        var csv_spot = addComma(spot);
-
-        $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? csv_spot.slice(0, csv_spot.length - 1) + '<strong>' + csv_spot.substr(-1) + '</strong>' : csv_spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
+        $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? spot.slice(0, spot.length - 1) + '<strong>' + spot.substr(-1) + '</strong>' : spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
 
         DigitTicker.update(tick_count, {
             quote: contract.status !== 'open' ? contract.exit_tick : spot,
@@ -22451,31 +22479,83 @@ var DigitDisplay = function () {
         });
     };
 
-    var update = function update(response) {
-        if (!$container.is(':visible') || !response || !response.tick && !response.history) {
-            return;
-        }
+    var update = function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
+            var pip_size, _pip_size;
 
-        if (getPropertyValue(response, ['tick', 'id']) && document.getElementById('sell_content_wrapper')) {
-            ViewPopupUI.storeSubscriptionID(response.tick.id);
-        }
-        LoadingSpinner.hide('table_digits');
-        if (response.history) {
-            response.history.times.some(function (time, idx) {
-                if (+time >= +contract.entry_tick_time) {
-                    updateTable(response.history.prices[idx], time);
-                    tick_count += 1;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            if (!(!$container.is(':visible') || !response || !response.tick && !response.history)) {
+                                _context.next = 2;
+                                break;
+                            }
+
+                            return _context.abrupt('return');
+
+                        case 2:
+
+                            if (getPropertyValue(response, ['tick', 'id']) && document.getElementById('sell_content_wrapper')) {
+                                ViewPopupUI.storeSubscriptionID(response.tick.id);
+                            }
+                            LoadingSpinner.hide('table_digits');
+
+                            if (!response.history) {
+                                _context.next = 11;
+                                break;
+                            }
+
+                            _context.next = 7;
+                            return getUnderlyingPipSize(response.echo_req.ticks_history);
+
+                        case 7:
+                            pip_size = _context.sent;
+
+                            response.history.times.some(function (time, idx) {
+                                if (+time >= +contract.entry_tick_time) {
+                                    updateTable(addComma(response.history.prices[idx], pip_size), time);
+                                    tick_count += 1;
+                                }
+                                return tick_count > contract.tick_count;
+                            });
+                            _context.next = 16;
+                            break;
+
+                        case 11:
+                            if (!response.tick) {
+                                _context.next = 16;
+                                break;
+                            }
+
+                            _context.next = 14;
+                            return getUnderlyingPipSize(response.tick.symbol);
+
+                        case 14:
+                            _pip_size = _context.sent;
+
+                            if (tick_count <= contract.tick_count && +response.tick.epoch >= +contract.entry_tick_time) {
+                                // Pass in response object to changeNumberToString and get string quote
+                                updateTable(addComma(response.tick.quote, _pip_size), response.tick.epoch);
+                                tick_count += 1;
+                            }
+
+                        case 16:
+
+                            showLocalTimeOnHover('.digit-spot-time');
+
+                        case 17:
+                        case 'end':
+                            return _context.stop();
+                    }
                 }
-                return tick_count > contract.tick_count;
-            });
-        } else if (response.tick) {
-            if (tick_count <= contract.tick_count && +response.tick.epoch >= +contract.entry_tick_time) {
-                updateTable(response.tick.quote, response.tick.epoch);
-                tick_count += 1;
-            }
-        }
-        showLocalTimeOnHover('.digit-spot-time');
-    };
+            }, _callee, undefined);
+        }));
+
+        return function update(_x) {
+            return _ref.apply(this, arguments);
+        };
+    }();
 
     var end = function end(proposal_open_contract) {
         if (proposal_open_contract.status !== 'open') {
@@ -25449,6 +25529,8 @@ module.exports = Process;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var isCallputspread = __webpack_require__(/*! ./callputspread */ "./src/javascript/app/pages/trade/callputspread.js").isCallputspread;
 var Contract = __webpack_require__(/*! ./contract */ "./src/javascript/app/pages/trade/contract.js");
@@ -25466,6 +25548,7 @@ var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/
 var Header = __webpack_require__(/*! ../../base/header */ "./src/javascript/app/base/header.js");
 var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var formatMoney = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").formatMoney;
+var changePocNumbersToString = __webpack_require__(/*! ../../common/request_middleware */ "./src/javascript/app/common/request_middleware.js").changePocNumbersToString;
 var TopUpVirtualPopup = __webpack_require__(/*! ../../pages/user/account/top_up_virtual/pop_up */ "./src/javascript/app/pages/user/account/top_up_virtual/pop_up.js");
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var CommonFunctions = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js");
@@ -25726,27 +25809,47 @@ var Purchase = function () {
                 contract_id: receipt.contract_id,
                 subscribe: 1
             };
-            BinarySocket.send(request, { callback: function callback(response) {
-                    var contract = response.proposal_open_contract;
-                    if (contract) {
-                        status = contract.status;
-                        profit_value = contract.profit;
-                        TickDisplay.setStatus(contract);
-                        if (/^digit/i.test(contract.contract_type)) {
-                            if (contract.status !== 'open') {
-                                digitShowExitTime(contract.status, contract.exit_tick);
-                            }
-                        }
-                        if (!/^digit/i.test(contract.contract_type) && contract.exit_tick_time && +contract.exit_tick_time < contract.date_expiry) {
-                            TickDisplay.updateChart({ is_sold: true }, contract);
-                        }
+            BinarySocket.send(request, { callback: function () {
+                    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
+                        var mw_response, contract;
+                        return regeneratorRuntime.wrap(function _callee$(_context) {
+                            while (1) {
+                                switch (_context.prev = _context.next) {
+                                    case 0:
+                                        mw_response = response.proposal_open_contract ? changePocNumbersToString(response) : undefined;
+                                        contract = mw_response ? mw_response.proposal_open_contract : undefined;
 
-                        // force to sell the expired contract, in order to get the final status
-                        if (+contract.is_settleable === 1 && !contract.is_sold) {
-                            sellExpired();
-                        }
-                    }
-                } });
+                                        if (contract) {
+                                            status = contract.status;
+                                            profit_value = contract.profit;
+                                            TickDisplay.setStatus(contract);
+                                            if (/^digit/i.test(contract.contract_type)) {
+                                                if (contract.status !== 'open') {
+                                                    digitShowExitTime(contract.status, contract.exit_tick);
+                                                }
+                                            }
+                                            if (!/^digit/i.test(contract.contract_type) && contract.exit_tick_time && +contract.exit_tick_time < contract.date_expiry) {
+                                                TickDisplay.updateChart({ is_sold: true }, contract);
+                                            }
+
+                                            // force to sell the expired contract, in order to get the final status
+                                            if (+contract.is_settleable === 1 && !contract.is_sold) {
+                                                sellExpired();
+                                            }
+                                        }
+
+                                    case 3:
+                                    case 'end':
+                                        return _context.stop();
+                                }
+                            }
+                        }, _callee, undefined);
+                    }));
+
+                    return function callback(_x) {
+                        return _ref.apply(this, arguments);
+                    };
+                }() });
         }
     };
 
@@ -25828,7 +25931,7 @@ var Purchase = function () {
         for (var s = 0; s < epoches.length; s++) {
             var tick_d = {
                 epoch: epoches[s],
-                quote: spots2[epoches[s]]
+                quote: addComma(spots2[epoches[s]], Tick.pipSize())
             };
 
             if (CommonFunctions.isVisible(spots) && tick_d.epoch && tick_d.epoch > purchase_data.buy.start_time) {
@@ -25856,8 +25959,7 @@ var Purchase = function () {
                 if (!tick_config.is_digit) {
                     fragment.appendChild(el2);
                 }
-                var tick_with_comma = addComma(tick_d.quote, countDecimalPlaces(tick_d.quote));
-                var tick = '<div class=\'quote\'>' + tick_with_comma.replace(/\d$/, makeBold) + '</div>';
+                var tick = '<div class=\'quote\'>' + tick_d.quote.replace(/\d$/, makeBold) + '</div>';
                 var el3 = createElement('div', { class: 'col' });
                 CommonFunctions.elementInnerHtml(el3, tick);
 
@@ -26168,7 +26270,9 @@ module.exports = {
 "use strict";
 
 
+var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var ActiveSymbols = __webpack_require__(/*! ../../common/active_symbols */ "./src/javascript/app/common/active_symbols.js");
+var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 
 /*
  * Symbols object parses the active_symbols json that we get from socket.send({active_symbols: 'brief'}
@@ -26200,6 +26304,17 @@ var Symbols = function () {
         names = ActiveSymbols.getSymbolNames(all_symbols);
     };
 
+    var getUnderlyingPipSize = function getUnderlyingPipSize(underlying) {
+        return new Promise(function (resolve) {
+            BinarySocket.send({ active_symbols: 'brief' }).then(function (active_symbols) {
+                details(active_symbols);
+                var market = ActiveSymbols.getSymbols(active_symbols);
+
+                resolve(countDecimalPlaces(market[underlying].pip));
+            });
+        });
+    };
+
     return {
         details: details,
         markets: function markets(list) {
@@ -26213,7 +26328,8 @@ var Symbols = function () {
         },
         getAllSymbols: function getAllSymbols() {
             return names;
-        }
+        },
+        getUnderlyingPipSize: getUnderlyingPipSize
     };
 }();
 
@@ -26234,6 +26350,7 @@ module.exports = Symbols;
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var displayPriceMovement = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").displayPriceMovement;
+var underlyings = __webpack_require__(/*! ./symbols */ "./src/javascript/app/pages/trade/symbols.js").underlyings;
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var elementTextContent = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").elementTextContent;
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
@@ -26261,6 +26378,7 @@ var Tick = function () {
     var _epoch = '';
     var error_message = '';
     var _spots = {};
+    var pip_size = 2;
 
     var details = function details(data) {
         error_message = '';
@@ -26269,6 +26387,12 @@ var Tick = function () {
             if (data.error) {
                 error_message = data.error.message;
             } else {
+                var all_underlyings = underlyings();
+                Object.keys(all_underlyings).forEach(function (key) {
+                    if (Object.prototype.hasOwnProperty.call(all_underlyings[key], data.tick.symbol)) {
+                        pip_size = countDecimalPlaces(all_underlyings[key][data.tick.symbol].pip);
+                    }
+                });
                 var tick = data.tick;
                 _quote = tick.quote;
                 _id = tick.id;
@@ -26293,8 +26417,7 @@ var Tick = function () {
             message = error_message;
             message_number = error_message;
         } else {
-            var decimal_places = parseInt(countDecimalPlaces(Tick.quote()));
-            message = addComma(_quote, decimal_places);
+            message = addComma(_quote, pip_size);
             message_number = _quote;
         }
 
@@ -26408,6 +26531,9 @@ var Tick = function () {
         },
         setQuote: function setQuote(q) {
             _quote = q;
+        },
+        pipSize: function pipSize() {
+            return pip_size;
         }
     };
 }();
@@ -30430,6 +30556,7 @@ var SelfExclusion = function () {
     var timeout_time_id = '#timeout_until_time';
     var exclude_until_id = '#exclude_until';
     var max_30day_turnover_id = '#max_30day_turnover';
+    var max_deposit_end_date_id = '#max_deposit_end_date';
     var error_class = 'errorfield';
     var TURNOVER_LIMIT = 999999999999999; // 15 digits
 
@@ -30490,6 +30617,10 @@ var SelfExclusion = function () {
                         $form.find('label[for="timeout_until_date"]').text(localize('Timed out until'));
                         return;
                     }
+                    if (key === 'max_deposit_end_date') {
+                        setDateTimePicker(max_deposit_end_date_id, value);
+                        return;
+                    }
                     if (key === 'exclude_until') {
                         setDateTimePicker(exclude_until_id, value);
                         $form.find('label[for="exclude_until"]').text(localize('Excluded from the website until'));
@@ -30534,7 +30665,7 @@ var SelfExclusion = function () {
         $form.find('input[type="text"]').each(function () {
             var id = $(this).attr('id');
 
-            if (/timeout_until|exclude_until/.test(id)) return;
+            if (/timeout_until|exclude_until|max_deposit_end_date/.test(id)) return;
 
             var checks = [];
             var options = { min: 0 };
@@ -30594,6 +30725,12 @@ var SelfExclusion = function () {
                 }, message: localize('Exclude time cannot be less than 6 months.') }], ['custom', { func: function func(value) {
                     return !value.length || getMoment(exclude_until_id).isBefore(moment().add(5, 'years'));
                 }, message: localize('Exclude time cannot be for more than 5 years.') }]]
+        }, {
+            selector: max_deposit_end_date_id,
+            exclude_if_empty: 1,
+            value: function value() {
+                return getDate(max_deposit_end_date_id);
+            }
         });
 
         FormManager.init(form_id, validations);
@@ -30635,6 +30772,14 @@ var SelfExclusion = function () {
             minDate: 0,
             maxDate: 6 * 7 // 6 weeks
         });
+
+        if (Client.get('landing_company_shortcode') === 'iom') {
+            // max_deposit_until
+            DatePicker.init({
+                selector: max_deposit_end_date_id,
+                minDate: moment().add(1, 'day').toDate()
+            });
+        }
 
         // exclude_until
         DatePicker.init({
@@ -32064,7 +32209,7 @@ var MetaTraderConfig = function () {
             var volatility_config = {
                 account_type: '',
                 leverage: 500,
-                short_title: localize('Volatility Indices')
+                short_title: localize('Synthetic Indices')
             };
 
             return {
@@ -32076,9 +32221,9 @@ var MetaTraderConfig = function () {
                     real_mamm: { mt5_account_type: 'mamm_advanced', max_leverage: advanced_config.leverage, title: localize('MAM Advanced'), short_title: advanced_config.short_title }
                 },
                 gaming: {
-                    demo_volatility: { mt5_account_type: volatility_config.account_type, max_leverage: volatility_config.leverage, title: localize('Demo Volatility Indices'), short_title: volatility_config.short_title },
-                    real_volatility: { mt5_account_type: volatility_config.account_type, max_leverage: volatility_config.leverage, title: localize('Real Volatility Indices'), short_title: volatility_config.short_title },
-                    real_mamm: { mt5_account_type: 'mamm', max_leverage: volatility_config.leverage, title: localize('MAM Volatility Indices'), short_title: volatility_config.short_title }
+                    demo_volatility: { mt5_account_type: volatility_config.account_type, max_leverage: volatility_config.leverage, title: localize('Demo Synthetic Indices'), short_title: volatility_config.short_title },
+                    real_volatility: { mt5_account_type: volatility_config.account_type, max_leverage: volatility_config.leverage, title: localize('Real Synthetic Indices'), short_title: volatility_config.short_title },
+                    real_mamm: { mt5_account_type: 'mamm', max_leverage: volatility_config.leverage, title: localize('MAM Synthetic Indices'), short_title: volatility_config.short_title }
                 }
             };
         };
@@ -32178,10 +32323,10 @@ var MetaTraderConfig = function () {
                     var has_financial_account = Client.hasAccountType('financial', 1);
                     var is_maltainvest = State.getResponse('landing_company.mt_financial_company.' + getMTFinancialAccountType(acc_type) + '.shortcode') === 'maltainvest';
                     var is_financial = accounts_info[acc_type].account_type === 'financial';
-                    var is_demo = accounts_info[acc_type].account_type === 'demo';
+                    var is_demo_financial = accounts_info[acc_type].account_type === 'demo' && accounts_info[acc_type].mt5_account_type; // is not demo vol account
                     var is_ok = true;
 
-                    if (is_maltainvest && (is_financial || is_demo) && !has_financial_account) {
+                    if (is_maltainvest && (is_financial || is_demo_financial) && !has_financial_account) {
                         $message.find('.maltainvest').setVisibility(1);
                         is_ok = false;
                         $message.find(message_selector).setVisibility(1);
@@ -32245,7 +32390,7 @@ var MetaTraderConfig = function () {
                     if (is_volatility && !accounts_info[acc_type].is_demo && State.getResponse('landing_company.gaming_company.shortcode') === 'malta') {
                         Dialog.confirm({
                             id: 'confirm_new_account',
-                            localized_message: localize(['Trading Contracts for Difference (CFDs) on Volatility Indices may not be suitable for everyone. Please ensure that you fully understand the risks involved, including the possibility of losing all the funds in your MT5 account. Gambling can be addictive – please play responsibly.', 'Do you wish to continue?'])
+                            localized_message: localize(['Trading Contracts for Difference (CFDs) on Synthetic Indices may not be suitable for everyone. Please ensure that you fully understand the risks involved, including the possibility of losing all the funds in your MT5 account. Gambling can be addictive – please play responsibly.', 'Do you wish to continue?'])
                         }).then(function (is_ok) {
                             if (!is_ok) {
                                 BinaryPjax.load(Client.defaultRedirectUrl());
@@ -32358,8 +32503,6 @@ var MetaTraderConfig = function () {
                 return new Promise(function (resolve) {
                     if (Client.get('is_virtual')) {
                         resolve(needsRealMessage());
-                    } else if (Client.get('landing_company_shortcode') === 'iom') {
-                        resolve(needsFinancialMessage());
                     } else {
                         BinarySocket.send({ cashier_password: 1 }).then(function (response) {
                             if (!response.error && response.cashier_password === 1) {
@@ -32392,8 +32535,6 @@ var MetaTraderConfig = function () {
                 return new Promise(function (resolve) {
                     if (Client.get('is_virtual')) {
                         resolve(needsRealMessage());
-                    } else if (Client.get('landing_company_shortcode') === 'iom') {
-                        resolve(needsFinancialMessage());
                     } else if (accounts_info[acc_type].account_type === 'financial') {
                         BinarySocket.send({ get_account_status: 1 }).then(function () {
                             resolve(!isAuthenticated() ? $messages.find('#msg_authenticate').html() : '');
@@ -33215,8 +33356,6 @@ var MetaTraderUI = function () {
                 } else if (!Client.get('currency')) {
                     // client should set currency before accessing fund management section
                     msg = $templates.find('#msg_set_currency').html();
-                } else if (Client.get('landing_company_shortcode') === 'iom') {
-                    msg = MetaTraderConfig.needsFinancialMessage();
                 }
                 if (msg) {
                     displayMainMessage(msg, false);
@@ -34899,21 +35038,21 @@ module.exports = VideoFacility;
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var ViewPopupUI = __webpack_require__(/*! ./view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
 var Highchart = __webpack_require__(/*! ../../trade/charts/highchart */ "./src/javascript/app/pages/trade/charts/highchart.js");
 var Callputspread = __webpack_require__(/*! ../../trade/callputspread */ "./src/javascript/app/pages/trade/callputspread.js");
-var getHighestDecimalPlaceOfList = __webpack_require__(/*! ../../trade/common_independent */ "./src/javascript/app/pages/trade/common_independent.js").getHighestDecimalPlaceOfList;
 var DigitDisplay = __webpack_require__(/*! ../../trade/digit_trade */ "./src/javascript/app/pages/trade/digit_trade.js");
 var Lookback = __webpack_require__(/*! ../../trade/lookback */ "./src/javascript/app/pages/trade/lookback.js");
 var Reset = __webpack_require__(/*! ../../trade/reset */ "./src/javascript/app/pages/trade/reset.js");
 var TickDisplay = __webpack_require__(/*! ../../trade/tick_trade */ "./src/javascript/app/pages/trade/tick_trade.js");
 var Clock = __webpack_require__(/*! ../../../base/clock */ "./src/javascript/app/base/clock.js");
 var BinarySocket = __webpack_require__(/*! ../../../base/socket */ "./src/javascript/app/base/socket.js");
+var changePocNumbersToString = __webpack_require__(/*! ../../../common/request_middleware */ "./src/javascript/app/common/request_middleware.js").changePocNumbersToString;
 var getElementById = __webpack_require__(/*! ../../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var State = __webpack_require__(/*! ../../../../_common/storage */ "./src/javascript/_common/storage.js").State;
@@ -35669,42 +35808,71 @@ var ViewPopup = function () {
         getContract('no-subscribe');
     };
 
-    var responseProposal = function responseProposal(response) {
-        if (response.error) {
-            if (response.error.code !== 'AlreadySubscribed' && +response.echo_req.contract_id === contract_id) {
-                showErrorPopup(response, response.error.message);
-            }
-            return;
-        }
-        if (+response.proposal_open_contract.contract_id === contract_id) {
-            ViewPopupUI.storeSubscriptionID(response.proposal_open_contract.id);
-            responseContract(changeNumbersToString(response));
-        } else if (response.proposal_open_contract.id) {
-            BinarySocket.send({ forget: response.proposal_open_contract.id });
-        }
-        var dates = ['#trade_details_start_date', '#trade_details_end_date', '#trade_details_current_date', '#trade_details_live_date'];
-        for (var i = 0; i < dates.length; i++) {
-            Clock.showLocalTimeOnHover(dates[i]);
-            $(dates[i]).attr('data-balloon-pos', 'left');
-        }
-    };
+    var responseProposal = function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
+            var dates, i;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            if (!response.error) {
+                                _context.next = 3;
+                                break;
+                            }
+
+                            if (response.error.code !== 'AlreadySubscribed' && +response.echo_req.contract_id === contract_id) {
+                                showErrorPopup(response, response.error.message);
+                            }
+                            return _context.abrupt('return');
+
+                        case 3:
+                            if (!(+response.proposal_open_contract.contract_id === contract_id)) {
+                                _context.next = 12;
+                                break;
+                            }
+
+                            ViewPopupUI.storeSubscriptionID(response.proposal_open_contract.id);
+                            _context.t0 = responseContract;
+                            _context.next = 8;
+                            return changePocNumbersToString(response);
+
+                        case 8:
+                            _context.t1 = _context.sent;
+                            (0, _context.t0)(_context.t1);
+                            _context.next = 13;
+                            break;
+
+                        case 12:
+                            if (response.proposal_open_contract.id) {
+                                BinarySocket.send({ forget: response.proposal_open_contract.id });
+                            }
+
+                        case 13:
+                            dates = ['#trade_details_start_date', '#trade_details_end_date', '#trade_details_current_date', '#trade_details_live_date'];
+
+                            for (i = 0; i < dates.length; i++) {
+                                Clock.showLocalTimeOnHover(dates[i]);
+                                $(dates[i]).attr('data-balloon-pos', 'left');
+                            }
+
+                        case 15:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, undefined);
+        }));
+
+        return function responseProposal(_x3) {
+            return _ref.apply(this, arguments);
+        };
+    }();
 
     var viewButtonOnClick = function viewButtonOnClick(container_selector) {
         $(container_selector).on('click', '.open_contract_details', function (e) {
             e.preventDefault();
             init(this);
         });
-    };
-
-    var changeNumbersToString = function changeNumbersToString(response) {
-        var sell_price = response.proposal_open_contract.sell_price;
-
-
-        return $.extend({}, _extends({}, response, {
-            proposal_open_contract: _extends({}, response.proposal_open_contract, {
-                sell_price: sell_price ? addComma(sell_price.toString(), getHighestDecimalPlaceOfList(response.proposal_open_contract)) : undefined
-            })
-        }));
     };
 
     return {
