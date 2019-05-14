@@ -25816,7 +25816,24 @@ var Purchase = function () {
                             while (1) {
                                 switch (_context.prev = _context.next) {
                                     case 0:
-                                        mw_response = response.proposal_open_contract ? changePocNumbersToString(response) : undefined;
+                                        if (!response.proposal_open_contract) {
+                                            _context.next = 6;
+                                            break;
+                                        }
+
+                                        _context.next = 3;
+                                        return changePocNumbersToString(response);
+
+                                    case 3:
+                                        _context.t0 = _context.sent;
+                                        _context.next = 7;
+                                        break;
+
+                                    case 6:
+                                        _context.t0 = undefined;
+
+                                    case 7:
+                                        mw_response = _context.t0;
                                         contract = mw_response ? mw_response.proposal_open_contract : undefined;
 
                                         if (contract) {
@@ -25838,7 +25855,7 @@ var Purchase = function () {
                                             }
                                         }
 
-                                    case 3:
+                                    case 10:
                                     case 'end':
                                         return _context.stop();
                                 }
