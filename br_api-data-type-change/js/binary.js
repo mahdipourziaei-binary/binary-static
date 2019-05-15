@@ -9878,6 +9878,7 @@ var pages_config = {
     cyberjaya: { module: StaticPages.Locations },
     detailsws: { module: PersonalDetails, is_authenticated: true, needs_currency: true },
     download: { module: MetatraderDownloadUI },
+    dubai: { module: StaticPages.Locations },
     economic_calendar: { module: EconomicCalendar },
     endpoint: { module: Endpoint },
     epg_forwardws: { module: DepositWithdraw, is_authenticated: true, only_real: true },
@@ -14079,22 +14080,33 @@ var addComma = __webpack_require__(/*! ../../_common/base/currency_base */ "./sr
 
 var changePocNumbersToString = function changePocNumbersToString(response) {
     var _response$proposal_op = response.proposal_open_contract,
+        barrier = _response$proposal_op.barrier,
         current_spot = _response$proposal_op.current_spot,
+        entry_spot = _response$proposal_op.entry_spot,
+        entry_tick = _response$proposal_op.entry_tick,
         exit_tick = _response$proposal_op.exit_tick,
-        sell_price = _response$proposal_op.sell_price;
+        sell_price = _response$proposal_op.sell_price,
+        sell_spot = _response$proposal_op.sell_spot,
+        profit_percentage = _response$proposal_op.profit_percentage;
 
 
     return new Promise(function (resolve) {
         getUnderlyingPipSize(response.proposal_open_contract.underlying).then(function (pip_size) {
             var toString = function toString(property) {
-                return property || property === 0 ? addComma(property, pip_size) : undefined;
+                var decimal_places = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : pip_size;
+                return property || property === 0 ? addComma(property, decimal_places) : undefined;
             };
 
             resolve($.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
+                    barrier: barrier.toString(),
                     sell_price: toString(sell_price),
+                    sell_spot: toString(sell_spot),
                     current_spot: toString(current_spot),
-                    exit_tick: toString(exit_tick)
+                    entry_spot: toString(entry_spot),
+                    entry_tick: toString(entry_tick),
+                    exit_tick: toString(exit_tick),
+                    profit_percentage: toString(profit_percentage, 2)
                 })
             })));
         });
