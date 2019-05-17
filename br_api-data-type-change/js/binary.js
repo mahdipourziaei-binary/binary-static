@@ -14099,7 +14099,7 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
 
             resolve($.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
-                    barrier: barrier.toString(),
+                    barrier: barrier ? barrier.toString() : undefined,
                     sell_price: toString(sell_price),
                     sell_spot: toString(sell_spot),
                     current_spot: toString(current_spot),
@@ -22294,10 +22294,14 @@ var DigitTicker = function () {
         if (!el_peek_box || !el_peek) {
             setElements();
         }
-        el_peek_box.classList.remove('digit-losing', 'digit-running');
-        el_peek_box.classList.add('digit-winning');
-        el_peek.classList.remove('digit-losing', 'digit-running');
-        el_peek.classList.add('digit-winning');
+        if (el_peek_box) {
+            el_peek_box.classList.remove('digit-losing', 'digit-running');
+            el_peek_box.classList.add('digit-winning');
+        }
+        if (el_peek) {
+            el_peek.classList.remove('digit-losing', 'digit-running');
+            el_peek.classList.add('digit-winning');
+        }
     };
 
     var setElements = function setElements() {
@@ -22329,13 +22333,12 @@ var DigitTicker = function () {
         el_container.classList.remove('invisible');
         adjustBoxSizes();
         current_spot = quote.toString().substr(-1);
-
-        el_mask.innerText = current_tick_count + ' / ' + total_tick_count;
-
-        el_peek_box.classList.add('digit-running');
-        el_peek.classList.add('digit-running');
-
-        el_peek_box.setAttribute('style', 'transform: translateX(' + calculateOffset() + 'px)');
+        if (el_mask) el_mask.innerText = current_tick_count + ' / ' + total_tick_count;
+        if (el_peek_box) {
+            el_peek_box.classList.add('digit-running');
+            el_peek_box.setAttribute('style', 'transform: translateX(' + calculateOffset() + 'px)');
+        }
+        if (el_peek) el_peek.classList.add('digit-running');
     };
 
     var remove = function remove() {
@@ -25853,7 +25856,7 @@ var Purchase = function () {
                                             profit_value = contract.profit;
                                             TickDisplay.setStatus(contract);
                                             if (/^digit/i.test(contract.contract_type)) {
-                                                if (contract.status !== 'open') {
+                                                if (contract.status !== 'open' || contract.is_sold || contract.is_settleable) {
                                                     digitShowExitTime(contract.status, contract.exit_tick);
                                                 }
                                             }
@@ -32343,58 +32346,68 @@ var MetaTraderConfig = function () {
                 resolve(needsRealMessage());
             } else {
                 BinarySocket.wait('get_settings').then(function () {
-                    var response_get_settings = State.getResponse('get_settings');
-
                     var showCitizenshipMessage = function showCitizenshipMessage() {
                         $message.find('.citizen').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'personal_details_redirect\', \'' + acc_type + '\')');
+                    };
+                    var showAssessment = function showAssessment() {
+                        $message.find('.assessment').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'financial_assessment_redirect\', \'' + urlFor('user/metatrader') + '#' + acc_type + '\')');
+                    };
+                    var resolveWithMessage = function resolveWithMessage() {
+                        $message.find(message_selector).setVisibility(1);
+                        resolve($message.html());
                     };
 
                     var has_financial_account = Client.hasAccountType('financial', 1);
                     var is_maltainvest = State.getResponse('landing_company.mt_financial_company.' + getMTFinancialAccountType(acc_type) + '.shortcode') === 'maltainvest';
                     var is_financial = accounts_info[acc_type].account_type === 'financial';
                     var is_demo_financial = accounts_info[acc_type].account_type === 'demo' && accounts_info[acc_type].mt5_account_type; // is not demo vol account
-                    var is_ok = true;
 
                     if (is_maltainvest && (is_financial || is_demo_financial) && !has_financial_account) {
                         $message.find('.maltainvest').setVisibility(1);
-                        is_ok = false;
-                        $message.find(message_selector).setVisibility(1);
-                        resolve($message.html());
+                        resolveWithMessage();
                     }
 
+                    var response_get_settings = State.getResponse('get_settings');
                     if (is_financial) {
-                        // financial accounts have their own checks
+                        var is_ok = true;
                         BinarySocket.wait('get_account_status', 'landing_company').then(function () {
-                            if (!(is_maltainvest && !has_financial_account)) {
-                                var response_get_account_status = State.getResponse('get_account_status');
-                                if (/(financial_assessment|trading_experience)_not_complete/.test(response_get_account_status.status)) {
-                                    $message.find('.assessment').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'financial_assessment_redirect\', \'' + urlFor('user/metatrader') + '#' + acc_type + '\')');
-                                    is_ok = false;
-                                }
-                                if (+State.getResponse('landing_company.config.tax_details_required') === 1 && (!response_get_settings.tax_residence || !response_get_settings.tax_identification_number)) {
-                                    $message.find('.tax').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'personal_details_redirect\', \'' + acc_type + '\')');
-                                    is_ok = false;
-                                }
-                                if (!response_get_settings.citizen) {
-                                    showCitizenshipMessage();
-                                    is_ok = false;
-                                }
-                                if (is_ok && !isAuthenticated()) {
-                                    $new_account_financial_authenticate_msg.setVisibility(1);
-                                }
+                            if (is_maltainvest && !has_financial_account) resolve();
+
+                            var response_get_account_status = State.getResponse('get_account_status');
+                            if (/(financial_assessment|trading_experience)_not_complete/.test(response_get_account_status.status)) {
+                                showAssessment();
+                                is_ok = false;
                             }
-                            if (is_ok) {
-                                resolve();
-                            } else {
-                                $message.find(message_selector).setVisibility(1);
-                                resolve($message.html());
+                            if (+State.getResponse('landing_company.config.tax_details_required') === 1 && (!response_get_settings.tax_residence || !response_get_settings.tax_identification_number)) {
+                                $message.find('.tax').setVisibility(1).find('a').attr('onclick', 'localStorage.setItem(\'personal_details_redirect\', \'' + acc_type + '\')');
+                                is_ok = false;
                             }
+                            if (!response_get_settings.citizen) {
+                                showCitizenshipMessage();
+                                is_ok = false;
+                            }
+                            if (is_ok && !isAuthenticated()) {
+                                $new_account_financial_authenticate_msg.setVisibility(1);
+                            }
+
+                            if (is_ok) resolve();else resolveWithMessage();
                         });
-                    } else if (!is_virtual && !response_get_settings.citizen) {
-                        // all accounts need to have citizenship set - if current client is virtual we don't have citizenship
-                        showCitizenshipMessage();
-                        $message.find(message_selector).setVisibility(1);
-                        resolve($message.html());
+                    } else if (accounts_info[acc_type].account_type === 'gaming') {
+                        var _is_ok = true;
+                        BinarySocket.wait('get_account_status', 'landing_company').then(function () {
+                            var response_get_account_status = State.getResponse('get_account_status');
+                            if (/financial_assessment_not_complete/.test(response_get_account_status.status) && !accounts_info[acc_type].mt5_account_type // is_volatility
+                            && /high/.test(response_get_account_status.risk_classification)) {
+                                showAssessment();
+                                _is_ok = false;
+                            }
+                            if (!response_get_settings.citizen && !(is_maltainvest && !has_financial_account)) {
+                                showCitizenshipMessage();
+                                _is_ok = false;
+                            }
+
+                            if (_is_ok) resolve();else resolveWithMessage();
+                        });
                     } else {
                         resolve();
                     }
@@ -35321,7 +35334,7 @@ var ViewPopup = function () {
 
         var is_digit = /digit/i.test(contract.contract_type);
         if (is_digit) {
-            if (!chart_started) {
+            if (!chart_started && contract.entry_tick_time) {
                 DigitDisplay.init(id_tick_chart, contract);
                 chart_started = true;
             }
