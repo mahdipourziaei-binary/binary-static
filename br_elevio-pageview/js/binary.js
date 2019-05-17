@@ -846,8 +846,13 @@ var localize = __webpack_require__(/*! ../localize */ "./src/javascript/_common/
 var createElement = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").createElement;
 
 var Elevio = function () {
+    var el_shell_id = 'elevio-shell';
+    var el_shell = void 0;
+
     var init = function init() {
-        document.getElementById('elevio-shell').addEventListener('click', function () {
+        el_shell = document.getElementById(el_shell_id);
+
+        el_shell.addEventListener('click', function () {
             var account_id = '5bbc2de0b7365';
             window._elev = {}; // eslint-disable-line no-underscore-dangle
             window._elev.account_id = account_id; // eslint-disable-line no-underscore-dangle
@@ -859,9 +864,10 @@ var Elevio = function () {
             script.id = 'loaded-elevio-script';
             document.body.appendChild(script);
 
-            window._elev.q = [];
+            window._elev.q = []; // eslint-disable-line no-underscore-dangle
             window._elev.on = function (z, y) {
-                window._elev.q.push([z, y]);
+                // eslint-disable-line no-underscore-dangle
+                window._elev.q.push([z, y]); // eslint-disable-line no-underscore-dangle
             };
 
             script.onload = loadElevio;
@@ -870,7 +876,9 @@ var Elevio = function () {
 
     var loadElevio = function loadElevio() {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
-        document.getElementById('elevio-shell').parentNode.removeChild(document.getElementById('elevio-shell'));
+        el_shell.parentNode.removeChild(el_shell);
+        el_shell = undefined;
+
         window._elev.on('load', function (elev) {
             // eslint-disable-line no-underscore-dangle
             var available_elev_languages = ['es', 'id', 'pt', 'ru'];
