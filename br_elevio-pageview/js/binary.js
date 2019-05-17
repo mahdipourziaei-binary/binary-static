@@ -876,11 +876,12 @@ var Elevio = function () {
 
     var loadElevio = function loadElevio() {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
-        el_shell.parentNode.removeChild(el_shell);
-        el_shell = undefined;
 
         window._elev.on('load', function (elev) {
             // eslint-disable-line no-underscore-dangle
+            el_shell.parentNode.removeChild(el_shell);
+            el_shell = undefined;
+
             var available_elev_languages = ['es', 'id', 'pt', 'ru'];
             var current_language = getLanguage().toLowerCase();
             if (available_elev_languages.indexOf(current_language) !== -1) {
