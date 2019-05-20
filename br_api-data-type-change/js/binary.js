@@ -20152,7 +20152,7 @@ var Highchart = function () {
                             error = response.error;
 
                             if (!(/history|candles|tick|ohlc/.test(type) && !error)) {
-                                _context2.next = 31;
+                                _context2.next = 29;
                                 break;
                             }
 
@@ -20188,7 +20188,7 @@ var Highchart = function () {
                             }
 
                             if (!(history || candles)) {
-                                _context2.next = 27;
+                                _context2.next = 25;
                                 break;
                             }
 
@@ -20215,24 +20215,20 @@ var Highchart = function () {
                             // only initialize chart if it hasn't already been initialized
 
                             if (!(!chart && !is_initialized)) {
-                                _context2.next = 25;
+                                _context2.next = 23;
                                 break;
                             }
 
-                            _context2.next = 21;
-                            return initChart(options);
-
-                        case 21:
-                            chart_promise = _context2.sent;
+                            chart_promise = initChart(options);
 
                             if (!(!chart_promise || typeof chart_promise.then !== 'function')) {
-                                _context2.next = 24;
+                                _context2.next = 22;
                                 break;
                             }
 
                             return _context2.abrupt('return');
 
-                        case 24:
+                        case 22:
                             chart_promise.then(function () {
                                 if (!chart) return;
 
@@ -20256,18 +20252,18 @@ var Highchart = function () {
                                 }
                             });
 
-                        case 25:
-                            _context2.next = 28;
+                        case 23:
+                            _context2.next = 26;
                             break;
 
-                        case 27:
+                        case 25:
                             if ((tick || ohlc) && !stop_streaming) {
                                 if (chart && chart.series) {
                                     updateChart(options);
                                 }
                             }
 
-                        case 28:
+                        case 26:
                             if (chart_promise && typeof chart_promise.then === 'function') {
                                 if (entry_tick_time && !is_entry_tick_barrier_selected) {
                                     chart_promise.then(selectEntryTickBarrier);
@@ -20279,15 +20275,15 @@ var Highchart = function () {
                                     });
                                 }
                             }
-                            _context2.next = 32;
+                            _context2.next = 30;
                             break;
 
-                        case 31:
+                        case 29:
                             if (type === 'ticks_history' && error) {
                                 HighchartUI.showError('', error.message);
                             }
 
-                        case 32:
+                        case 30:
                         case 'end':
                             return _context2.stop();
                     }
