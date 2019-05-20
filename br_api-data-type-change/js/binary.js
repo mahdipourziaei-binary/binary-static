@@ -844,23 +844,74 @@ var BinarySocket = __webpack_require__(/*! ./socket_base */ "./src/javascript/_c
 var getLanguage = __webpack_require__(/*! ../language */ "./src/javascript/_common/language.js").get;
 var localize = __webpack_require__(/*! ../localize */ "./src/javascript/_common/localize.js").localize;
 var createElement = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").createElement;
+var isLoginPages = __webpack_require__(/*! ../../_common/base/login */ "./src/javascript/_common/base/login.js").isLoginPages;
 
 var Elevio = function () {
+    var el_shell_id = 'elevio-shell';
+    var el_shell = void 0;
+
     var init = function init() {
+        if (isLoginPages()) return;
+
+        el_shell = document.getElementById(el_shell_id);
+
+        el_shell.addEventListener('click', function () {
+            return injectElevio(true);
+        });
+    };
+
+    var injectElevio = function injectElevio() {
+        var is_open = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+        var account_id = '5bbc2de0b7365';
+        window._elev = {}; // eslint-disable-line no-underscore-dangle
+        window._elev.account_id = account_id; // eslint-disable-line no-underscore-dangle
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = 1;
+        script.src = 'https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=' + account_id;
+        script.id = 'loaded-elevio-script';
+        document.body.appendChild(script);
+
+        window._elev.q = []; // eslint-disable-line no-underscore-dangle
+        window._elev.on = function (z, y) {
+            // eslint-disable-line no-underscore-dangle
+            window._elev.q.push([z, y]); // eslint-disable-line no-underscore-dangle
+        };
+
+        script.onload = function () {
+            return loadElevio(is_open);
+        };
+    };
+
+    var loadElevio = function loadElevio() {
+        var is_open = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
+
         window._elev.on('load', function (elev) {
             // eslint-disable-line no-underscore-dangle
+            if (el_shell) {
+                el_shell.parentNode.removeChild(el_shell);
+                el_shell = undefined;
+            }
+
             var available_elev_languages = ['es', 'id', 'pt', 'ru'];
             var current_language = getLanguage().toLowerCase();
             if (available_elev_languages.indexOf(current_language) !== -1) {
-                window._elev.setLanguage(current_language); // eslint-disable-line no-underscore-dangle
+                elev.setLanguage(current_language);
             } else {
-                window._elev.setLanguage('en'); // eslint-disable-line no-underscore-dangle
+                elev.setLanguage('en');
             }
             setUserInfo(elev);
             setTranslations(elev);
             addEventListenerGTM();
             makeLauncherVisible();
+
+            if (is_open) {
+                elev.open();
+            }
         });
     };
 
@@ -911,6 +962,7 @@ var Elevio = function () {
 
     return {
         init: init,
+        injectElevio: injectElevio,
         createComponent: createComponent
     };
 }();
@@ -14099,7 +14151,7 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
 
             resolve($.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
-                    barrier: barrier ? barrier.toString() : undefined,
+                    barrier: toString(barrier),
                     sell_price: toString(sell_price),
                     sell_spot: toString(sell_spot),
                     current_spot: toString(current_spot),
@@ -19842,8 +19894,11 @@ module.exports = DigitInfo;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var HighchartUI = __webpack_require__(/*! ./highchart.ui */ "./src/javascript/app/pages/trade/charts/highchart.ui.js");
 var getHighstock = __webpack_require__(/*! ../common */ "./src/javascript/app/pages/trade/common.js").requireHighstock;
+var getUnderlyingPipSize = __webpack_require__(/*! ../symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
 var MBContract = __webpack_require__(/*! ../../mb_trade/mb_contract */ "./src/javascript/app/pages/mb_trade/mb_contract.js");
 var MBDefaults = __webpack_require__(/*! ../../mb_trade/mb_defaults */ "./src/javascript/app/pages/mb_trade/mb_defaults.js");
 var Callputspread = __webpack_require__(/*! ../../trade/callputspread */ "./src/javascript/app/pages/trade/callputspread.js");
@@ -19912,104 +19967,137 @@ var Highchart = function () {
     };
 
     // initialize the chart only once with ticks or candles data
-    var initChart = function initChart(init_options) {
-        var data = [];
-        var type = '';
-        var i = void 0;
+    var initChart = function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(init_options) {
+            var data, type, i, pushTicks, history, candles, times, prices, current_time, el, display_decimals;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            data = [];
+                            type = '';
+                            i = void 0;
 
-        var pushTicks = function pushTicks(time, price) {
-            // we need to add the marker as we are pushing the data points
-            // since for large arrays, data doesn't get pushed to series[0].data
-            // and we can't update markers if data is empty
-            var int_time = parseInt(time);
-            var is_match_entry = int_time === entry_tick_time;
-            var is_match_exit = contract.status !== 'sold' && int_time === exit_tick_time;
-            var tick_type = is_match_entry ? 'entry' : 'exit';
-            data.push({
-                x: int_time * 1000,
-                y: price * 1,
-                marker: is_match_entry || is_match_exit ? HighchartUI.getMarkerObject(tick_type) : ''
-            });
-        };
+                            pushTicks = function pushTicks(time, price) {
+                                // we need to add the marker as we are pushing the data points
+                                // since for large arrays, data doesn't get pushed to series[0].data
+                                // and we can't update markers if data is empty
+                                var int_time = parseInt(time);
+                                var is_match_entry = int_time === entry_tick_time;
+                                var is_match_exit = contract.status !== 'sold' && int_time === exit_tick_time;
+                                var tick_type = is_match_entry ? 'entry' : 'exit';
+                                data.push({
+                                    x: int_time * 1000,
+                                    y: price * 1,
+                                    marker: is_match_entry || is_match_exit ? HighchartUI.getMarkerObject(tick_type) : ''
+                                });
+                            };
 
-        var history = '';
-        var candles = '';
-        if (init_options.history) {
-            // indicates line chart
-            type = 'line';
-            history = init_options.history;
-            var times = history.times;
-            var prices = history.prices;
-            if (is_chart_delayed) {
-                for (i = 0; i < times.length; ++i) {
-                    pushTicks(times[i], prices[i]);
-                }
-            } else if (min_point && max_point) {
-                var current_time = void 0;
-                for (i = 0; i < times.length; ++i) {
-                    current_time = parseInt(times[i]);
-                    // only display the first tick before entry spot and one tick after exit spot
-                    // as well as the set of ticks between them
-                    if (current_time >= min_point && current_time <= max_point) {
-                        pushTicks(current_time, prices[i]);
+                            history = '';
+                            candles = '';
+
+                            if (init_options.history) {
+                                // indicates line chart
+                                type = 'line';
+                                history = init_options.history;
+                                times = history.times;
+                                prices = history.prices;
+
+                                if (is_chart_delayed) {
+                                    for (i = 0; i < times.length; ++i) {
+                                        pushTicks(times[i], prices[i]);
+                                    }
+                                } else if (min_point && max_point) {
+                                    current_time = void 0;
+
+                                    for (i = 0; i < times.length; ++i) {
+                                        current_time = parseInt(times[i]);
+                                        // only display the first tick before entry spot and one tick after exit spot
+                                        // as well as the set of ticks between them
+                                        if (current_time >= min_point && current_time <= max_point) {
+                                            pushTicks(current_time, prices[i]);
+                                        }
+                                    }
+                                }
+                            } else if (init_options.candles) {
+                                // indicates candle chart
+                                candles = init_options.candles;
+                                type = 'candlestick';
+                                data = candles.map(function (c) {
+                                    return [c.epoch * 1000, c.open * 1, c.high * 1, c.low * 1, c.close * 1];
+                                });
+                            }
+
+                            // element where chart is to be displayed
+                            el = document.getElementById('analysis_live_chart');
+
+                            if (el) {
+                                _context.next = 11;
+                                break;
+                            }
+
+                            chart = null;
+                            return _context.abrupt('return', null);
+
+                        case 11:
+
+                            HighchartUI.updateLabels(chart, getHighchartLabelParams());
+
+                            // const display_decimals = (history ? history.prices[0] : candles[0].open).toString().split('.')[1].length || 3;
+                            _context.next = 14;
+                            return getUnderlyingPipSize(contract.underlying);
+
+                        case 14:
+                            display_decimals = _context.sent;
+
+
+                            chart_options = {
+                                data: data,
+                                display_decimals: display_decimals,
+                                type: type,
+                                entry_time: (entry_tick_time || start_time) * 1000,
+                                exit_time: exit_time ? exit_time * 1000 : null,
+                                has_zone: true,
+                                height: Math.max(el.parentElement.offsetHeight, 450),
+                                radius: 2,
+                                title: init_options.title,
+                                tooltip: {
+                                    valueDecimals: display_decimals,
+                                    xDateFormat: '%A, %b %e, %H:%M:%S GMT'
+                                },
+                                user_sold: contract.status === 'sold',
+                                x_axis: { label: { format: '{value:%H:%M:%S}', overflow: 'justify' } }
+                            };
+                            if (Callputspread.isCallputspread(contract.contract_type)) {
+                                $.extend(chart_options, Callputspread.getChartOptions(contract));
+                            }
+                            HighchartUI.setChartOptions(chart_options);
+
+                            return _context.abrupt('return', getHighstock(function (Highcharts) {
+                                Highcharts.setOptions(HighchartUI.getHighchartOptions());
+                                if (!el) chart = null;else {
+                                    chart = Highcharts.StockChart(el, HighchartUI.getChartOptions());
+                                    is_initialized = true;
+
+                                    $(window).on('resize', updateHighchartOptions);
+                                    if (Callputspread.isCallputspread(contract.contract_type)) {
+                                        Callputspread.init(chart, contract);
+                                    }
+                                }
+                            }));
+
+                        case 19:
+                        case 'end':
+                            return _context.stop();
                     }
                 }
-            }
-        } else if (init_options.candles) {
-            // indicates candle chart
-            candles = init_options.candles;
-            type = 'candlestick';
-            data = candles.map(function (c) {
-                return [c.epoch * 1000, c.open * 1, c.high * 1, c.low * 1, c.close * 1];
-            });
-        }
+            }, _callee, undefined);
+        }));
 
-        // element where chart is to be displayed
-        var el = document.getElementById('analysis_live_chart');
-        if (!el) {
-            chart = null;
-            return null;
-        }
-
-        HighchartUI.updateLabels(chart, getHighchartLabelParams());
-
-        var display_decimals = (history ? history.prices[0] : candles[0].open).toString().split('.')[1].length || 3;
-
-        chart_options = {
-            data: data,
-            display_decimals: display_decimals,
-            type: type,
-            entry_time: (entry_tick_time || start_time) * 1000,
-            exit_time: exit_time ? exit_time * 1000 : null,
-            has_zone: true,
-            height: Math.max(el.parentElement.offsetHeight, 450),
-            radius: 2,
-            title: init_options.title,
-            tooltip: {
-                valueDecimals: display_decimals,
-                xDateFormat: '%A, %b %e, %H:%M:%S GMT'
-            },
-            user_sold: contract.status === 'sold',
-            x_axis: { label: { format: '{value:%H:%M:%S}', overflow: 'justify' } }
+        return function initChart(_x) {
+            return _ref.apply(this, arguments);
         };
-        if (Callputspread.isCallputspread(contract.contract_type)) {
-            $.extend(chart_options, Callputspread.getChartOptions(contract));
-        }
-        HighchartUI.setChartOptions(chart_options);
-
-        return getHighstock(function (Highcharts) {
-            Highcharts.setOptions(HighchartUI.getHighchartOptions());
-            if (!el) chart = null;else {
-                chart = Highcharts.StockChart(el, HighchartUI.getChartOptions());
-                is_initialized = true;
-
-                $(window).on('resize', updateHighchartOptions);
-                if (Callputspread.isCallputspread(contract.contract_type)) {
-                    Callputspread.init(chart, contract);
-                }
-            }
-        });
-    };
+    }();
 
     var getHighchartLabelParams = function getHighchartLabelParams(is_reset_barrier) {
         return {
@@ -20053,100 +20141,164 @@ var Highchart = function () {
         $(window).off('resize', updateHighchartOptions);
     };
 
-    var handleResponse = function handleResponse(response) {
-        var type = response.msg_type;
-        var error = response.error;
+    var handleResponse = function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(response) {
+            var type, error, history, candles, tick, ohlc, page_underlying, length, history_times;
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            type = response.msg_type;
+                            error = response.error;
 
-        if (/history|candles|tick|ohlc/.test(type) && !error) {
-            options = { title: contract.display_name };
-            options[type] = response[type];
-            var history = response.history;
-            var candles = response.candles;
-            var tick = response.tick;
-            var ohlc = response.ohlc;
-            response_id = response[type].id;
-            is_tick_type = !isEmptyObject(history) || !isEmptyObject(tick);
-            // send view popup the response ID so view popup can forget the calls if it's closed before contract ends
-            if (response_id && !is_response_id_set) {
-                if (State.get('is_trading') || State.get('is_mb_trading')) {
-                    var page_underlying = State.get('is_mb_trading') ? MBDefaults.get('underlying') : Defaults.get('underlying');
-                    if (page_underlying !== (tick || ohlc).symbol) {
-                        ViewPopupUI.storeSubscriptionID(response_id, true);
-                        ViewPopupUI.setOnCloseFunction(onClose);
-                    } else {
-                        ViewPopupUI.setOnCloseFunction(function () {
-                            return onClose(GetTicks.request);
-                        });
-                    }
-                } else {
-                    ViewPopupUI.storeSubscriptionID(response_id, true);
-                    ViewPopupUI.setOnCloseFunction(onClose);
-                }
-                is_response_id_set = true;
-            } else {
-                ViewPopupUI.setOnCloseFunction(onClose);
-            }
-            if (history || candles) {
-                var length = (history ? history.times : candles).length;
-                if (length === 0) {
-                    HighchartUI.showError('missing');
-                    return;
-                }
-                if (history) {
-                    var history_times = history.times;
-                    getMinHistory(history_times);
-                    getMaxHistory(history_times);
-                } else if (candles) {
-                    getMinCandle(candles);
-                    getMaxCandle(candles);
-                }
-                // only initialize chart if it hasn't already been initialized
-                if (!chart && !is_initialized) {
-                    chart_promise = initChart(options);
-                    if (!chart_promise || typeof chart_promise.then !== 'function') return;
-                    chart_promise.then(function () {
-                        if (!chart) return;
+                            if (!(/history|candles|tick|ohlc/.test(type) && !error)) {
+                                _context2.next = 31;
+                                break;
+                            }
 
-                        if (purchase_time !== start_time) {
-                            drawLineX({
-                                value: purchase_time,
-                                label: localize('Purchase Time'),
-                                color: '#7cb5ec'
+                            options = { title: contract.display_name };
+                            options[type] = response[type];
+                            history = response.history;
+                            candles = response.candles;
+                            tick = response.tick;
+                            ohlc = response.ohlc;
+
+                            response_id = response[type].id;
+                            is_tick_type = !isEmptyObject(history) || !isEmptyObject(tick);
+                            // send view popup the response ID so view popup can forget the calls if it's closed before contract ends
+                            if (response_id && !is_response_id_set) {
+                                if (State.get('is_trading') || State.get('is_mb_trading')) {
+                                    page_underlying = State.get('is_mb_trading') ? MBDefaults.get('underlying') : Defaults.get('underlying');
+
+                                    if (page_underlying !== (tick || ohlc).symbol) {
+                                        ViewPopupUI.storeSubscriptionID(response_id, true);
+                                        ViewPopupUI.setOnCloseFunction(onClose);
+                                    } else {
+                                        ViewPopupUI.setOnCloseFunction(function () {
+                                            return onClose(GetTicks.request);
+                                        });
+                                    }
+                                } else {
+                                    ViewPopupUI.storeSubscriptionID(response_id, true);
+                                    ViewPopupUI.setOnCloseFunction(onClose);
+                                }
+                                is_response_id_set = true;
+                            } else {
+                                ViewPopupUI.setOnCloseFunction(onClose);
+                            }
+
+                            if (!(history || candles)) {
+                                _context2.next = 27;
+                                break;
+                            }
+
+                            length = (history ? history.times : candles).length;
+
+                            if (!(length === 0)) {
+                                _context2.next = 17;
+                                break;
+                            }
+
+                            HighchartUI.showError('missing');
+                            return _context2.abrupt('return');
+
+                        case 17:
+                            if (history) {
+                                history_times = history.times;
+
+                                getMinHistory(history_times);
+                                getMaxHistory(history_times);
+                            } else if (candles) {
+                                getMinCandle(candles);
+                                getMaxCandle(candles);
+                            }
+                            // only initialize chart if it hasn't already been initialized
+
+                            if (!(!chart && !is_initialized)) {
+                                _context2.next = 25;
+                                break;
+                            }
+
+                            _context2.next = 21;
+                            return initChart(options);
+
+                        case 21:
+                            chart_promise = _context2.sent;
+
+                            if (!(!chart_promise || typeof chart_promise.then !== 'function')) {
+                                _context2.next = 24;
+                                break;
+                            }
+
+                            return _context2.abrupt('return');
+
+                        case 24:
+                            chart_promise.then(function () {
+                                if (!chart) return;
+
+                                if (purchase_time !== start_time) {
+                                    drawLineX({
+                                        value: purchase_time,
+                                        label: localize('Purchase Time'),
+                                        color: '#7cb5ec'
+                                    });
+                                }
+
+                                // don't draw start time for contracts that are sold before contract starts
+                                if (sell_time < start_time) {
+                                    HighchartUI.updateLabels(chart, getHighchartLabelParams());
+                                } else {
+                                    drawLineX({ value: start_time });
+                                }
+
+                                if (Reset.isReset(contract.contract_type)) {
+                                    drawResetTimeLine();
+                                }
                             });
-                        }
 
-                        // don't draw start time for contracts that are sold before contract starts
-                        if (sell_time < start_time) {
-                            HighchartUI.updateLabels(chart, getHighchartLabelParams());
-                        } else {
-                            drawLineX({ value: start_time });
-                        }
+                        case 25:
+                            _context2.next = 28;
+                            break;
 
-                        if (Reset.isReset(contract.contract_type)) {
-                            drawResetTimeLine();
-                        }
-                    });
+                        case 27:
+                            if ((tick || ohlc) && !stop_streaming) {
+                                if (chart && chart.series) {
+                                    updateChart(options);
+                                }
+                            }
+
+                        case 28:
+                            if (chart_promise && typeof chart_promise.then === 'function') {
+                                if (entry_tick_time && !is_entry_tick_barrier_selected) {
+                                    chart_promise.then(selectEntryTickBarrier);
+                                }
+                                if (contract.is_sold || contract.is_settleable) {
+                                    chart_promise.then(function () {
+                                        updateZone('exit');
+                                        endContract();
+                                    });
+                                }
+                            }
+                            _context2.next = 32;
+                            break;
+
+                        case 31:
+                            if (type === 'ticks_history' && error) {
+                                HighchartUI.showError('', error.message);
+                            }
+
+                        case 32:
+                        case 'end':
+                            return _context2.stop();
+                    }
                 }
-            } else if ((tick || ohlc) && !stop_streaming) {
-                if (chart && chart.series) {
-                    updateChart(options);
-                }
-            }
-            if (chart_promise && typeof chart_promise.then === 'function') {
-                if (entry_tick_time && !is_entry_tick_barrier_selected) {
-                    chart_promise.then(selectEntryTickBarrier);
-                }
-                if (contract.is_sold || contract.is_settleable) {
-                    chart_promise.then(function () {
-                        updateZone('exit');
-                        endContract();
-                    });
-                }
-            }
-        } else if (type === 'ticks_history' && error) {
-            HighchartUI.showError('', error.message);
-        }
-    };
+            }, _callee2, undefined);
+        }));
+
+        return function handleResponse(_x3) {
+            return _ref2.apply(this, arguments);
+        };
+    }();
 
     var showChart = function showChart(proposal_contract, update) {
         contract = proposal_contract;
@@ -35334,9 +35486,9 @@ var ViewPopup = function () {
 
         var is_digit = /digit/i.test(contract.contract_type);
         if (is_digit) {
-            if (!chart_started && contract.entry_tick_time) {
+            if (!chart_started) {
                 DigitDisplay.init(id_tick_chart, contract);
-                chart_started = true;
+                if (contract.entry_tick_time) chart_started = true;
             }
         } else if (!chart_started && !contract.tick_count) {
             if (!chart_init) {
@@ -36329,6 +36481,7 @@ var Elevio = __webpack_require__(/*! ../../_common/base/elevio */ "./src/javascr
 var Contact = function () {
     var onLoad = function onLoad() {
         initPhoneNumber(true);
+        Elevio.injectElevio();
         window._elev.on('ready', embedElevioComponents); // eslint-disable-line no-underscore-dangle
 
         $('#contact_loading').remove();
