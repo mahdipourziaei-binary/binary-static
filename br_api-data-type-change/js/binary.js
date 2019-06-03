@@ -26355,7 +26355,7 @@ var Reset = function () {
     };
 
     var isNewBarrier = function isNewBarrier(entry_barrier, current_barrier) {
-        return +entry_barrier !== +current_barrier;
+        return +entry_barrier.toString().replace(',', '') !== +current_barrier.toString().replace(',', '');
     };
 
     var isReset = function isReset(contract_type) {
