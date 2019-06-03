@@ -844,7 +844,7 @@ var BinarySocket = __webpack_require__(/*! ./socket_base */ "./src/javascript/_c
 var getLanguage = __webpack_require__(/*! ../language */ "./src/javascript/_common/language.js").get;
 var localize = __webpack_require__(/*! ../localize */ "./src/javascript/_common/localize.js").localize;
 var createElement = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").createElement;
-var isLoginPages = __webpack_require__(/*! ../../_common/base/login */ "./src/javascript/_common/base/login.js").isLoginPages;
+var isLoginPages = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").isLoginPages;
 
 var Elevio = function () {
     var el_shell_id = 'elevio-shell';
@@ -986,7 +986,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var Cookies = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var ClientBase = __webpack_require__(/*! ./client_base */ "./src/javascript/_common/base/client_base.js");
-var Login = __webpack_require__(/*! ./login */ "./src/javascript/_common/base/login.js");
 var ServerTime = __webpack_require__(/*! ./server_time */ "./src/javascript/_common/base/server_time.js");
 var BinarySocket = __webpack_require__(/*! ./socket_base */ "./src/javascript/_common/base/socket_base.js");
 var getElementById = __webpack_require__(/*! ../common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
@@ -994,6 +993,7 @@ var isVisible = __webpack_require__(/*! ../common_functions */ "./src/javascript
 var getLanguage = __webpack_require__(/*! ../language */ "./src/javascript/_common/language.js").get;
 var State = __webpack_require__(/*! ../storage */ "./src/javascript/_common/storage.js").State;
 var getPropertyValue = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").getPropertyValue;
+var isLoginPages = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").isLoginPages;
 var getAppId = __webpack_require__(/*! ../../config */ "./src/javascript/config.js").getAppId;
 
 var GTM = function () {
@@ -1016,7 +1016,7 @@ var GTM = function () {
     };
 
     var pushDataLayer = function pushDataLayer(data) {
-        if (isGtmApplicable() && !Login.isLoginPages()) {
+        if (isGtmApplicable() && !isLoginPages()) {
             dataLayer.push(_extends({}, getCommonVariables(), data));
         }
     };
@@ -1220,12 +1220,15 @@ module.exports = GTM;
 "use strict";
 
 
+var Cookies = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
 var Client = __webpack_require__(/*! ./client_base */ "./src/javascript/_common/base/client_base.js");
 var getLanguage = __webpack_require__(/*! ../language */ "./src/javascript/_common/language.js").get;
 var isMobile = __webpack_require__(/*! ../os_detect */ "./src/javascript/_common/os_detect.js").isMobile;
 var isStorageSupported = __webpack_require__(/*! ../storage */ "./src/javascript/_common/storage.js").isStorageSupported;
 var LocalStore = __webpack_require__(/*! ../storage */ "./src/javascript/_common/storage.js").LocalStore;
 var urlForCurrentDomain = __webpack_require__(/*! ../url */ "./src/javascript/_common/url.js").urlForCurrentDomain;
+var isLoginPages = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").isLoginPages;
+var TrafficSource = __webpack_require__(/*! ../../app/common/traffic_source */ "./src/javascript/app/common/traffic_source.js");
 var getAppId = __webpack_require__(/*! ../../config */ "./src/javascript/config.js").getAppId;
 
 var Login = function () {
@@ -1246,27 +1249,31 @@ var Login = function () {
         return server_url && /qa/.test(server_url) ? 'https://' + server_url + '/oauth2/authorize?app_id=' + getAppId() + '&l=' + language + marketing_queries : urlForCurrentDomain('https://oauth.binary.com/oauth2/authorize?app_id=' + getAppId() + '&l=' + language + marketing_queries);
     };
 
-    var isLoginPages = function isLoginPages() {
-        return (/logged_inws|redirect/i.test(window.location.pathname)
-        );
-    };
-
-    var socialLoginUrl = function socialLoginUrl(brand) {
-        return loginUrl() + '&social_signup=' + brand;
+    var socialLoginUrl = function socialLoginUrl(brand, affiliate_token, utm_source, utm_medium, utm_campaign) {
+        return loginUrl() + '&social_signup=' + brand + affiliate_token + utm_source + utm_medium + utm_campaign;
     };
 
     var initOneAll = function initOneAll() {
         ['google', 'facebook'].forEach(function (provider) {
             $('#button_' + provider).off('click').on('click', function (e) {
                 e.preventDefault();
-                window.location.href = socialLoginUrl(provider);
+
+                var affiliate_tracking = Cookies.getJSON('affiliate_tracking');
+                var utm_data = TrafficSource.getData();
+                var utm_source = TrafficSource.getSource(utm_data);
+                var utm_source_link = utm_source ? '&utm_source=' + utm_source : '';
+                var utm_medium_link = utm_data.utm_medium ? '&utm_medium=' + utm_data.utm_medium : '';
+                var utm_campaign_link = utm_data.utm_campaign ? '&utm_campaign=' + utm_data.utm_campaign : '';
+                var affiliate_token_link = affiliate_tracking ? '&affiliate_token=' + affiliate_tracking.t : '';
+                var social_login_url = socialLoginUrl(provider, affiliate_token_link, utm_source_link, utm_medium_link, utm_campaign_link);
+
+                window.location.href = social_login_url;
             });
         });
     };
 
     return {
         redirectToLogin: redirectToLogin,
-        isLoginPages: isLoginPages,
         initOneAll: initOneAll
     };
 }();
@@ -8027,11 +8034,12 @@ var BinaryPushwoosh = function () {
     var sendTags = function sendTags() {
         pw.push(function (api) {
             api.getTags().then(function (result) {
-                if (!result.result['Login ID'] || !result.result['Site Language']) {
+                if (!result.result['Login ID'] || !result.result['Site Language'] || !result.result['Residence']) {
                     // send login id and site language
                     return api.setTags({
                         'Login ID': Client.get('loginid'),
-                        'Site Language': getLanguage()
+                        'Site Language': getLanguage(),
+                        'Residence': Client.get('residence')
                     });
                 }
                 return null;
@@ -8884,6 +8892,8 @@ var TabSelector = function () {
         applyToAllElements('.go-right', function (element) {
             element.addEventListener('click', goRight);
         });
+
+        setMobileHeader();
     };
 
     var repositionSelector = function repositionSelector() {
@@ -8919,6 +8929,14 @@ var TabSelector = function () {
         Url.updateParamsWithoutReload(_defineProperty({}, selector, tab_id), true);
     };
 
+    var setMobileHeader = function setMobileHeader() {
+        var el_mobile_tab = getElementById('tab_mobile_header');
+        if (el_mobile_tab) {
+            var active_tab = document.getElementsByClassName('a-active');
+            el_mobile_tab.innerHTML = active_tab[0].innerHTML;
+        }
+    };
+
     var goLeft = function goLeft(e) {
         changeTab({ selector: e.target.getAttribute('data-parent'), direction: 'left' });
     };
@@ -8950,6 +8968,7 @@ var TabSelector = function () {
         selectCircle(options.selector, current_index, index_to_show);
         slideSelector(options.selector, options.el_to_show);
         options.el_to_show.getElementsByTagName('a')[0].click();
+        setMobileHeader();
 
         if (params_hash.section) {
             setTimeout(function () {
@@ -9429,6 +9448,11 @@ var isEmptyObject = function isEmptyObject(obj) {
     return is_empty;
 };
 
+var isLoginPages = function isLoginPages() {
+    return (/logged_inws|redirect/i.test(window.location.pathname)
+    );
+};
+
 var cloneObject = function cloneObject(obj) {
     return !isEmptyObject(obj) ? extend(true, Array.isArray(obj) ? [] : {}, obj) : obj;
 };
@@ -9595,6 +9619,7 @@ module.exports = {
     downloadCSV: downloadCSV,
     template: template,
     isEmptyObject: isEmptyObject,
+    isLoginPages: isLoginPages,
     cloneObject: cloneObject,
     isDeepEqual: isDeepEqual,
     unique: unique,
@@ -9779,7 +9804,7 @@ var BinaryLoader = function () {
             return;
         }
 
-        var div_container = createElement('div', { class: 'logged_out_title_container', html: content.getElementsByTagName('h1')[0] });
+        var div_container = createElement('div', { class: 'logged_out_title_container', html: content.getElementsByTagName('h1')[0] || '' });
         var div_notice = createElement('p', { class: 'center-text notice-msg', html: localized_message });
 
         div_container.appendChild(div_notice);
@@ -9963,7 +9988,6 @@ var pages_config = {
     securityws: { module: Settings, is_authenticated: true },
     self_exclusionws: { module: SelfExclusion, is_authenticated: true, only_real: true },
     settingsws: { module: Settings, is_authenticated: true },
-    signup: { module: TabSelector }, // for /affiliate/signup.html
     statementws: { module: Statement, is_authenticated: true, needs_currency: true },
     tnc_approvalws: { module: TNCApproval, is_authenticated: true, only_real: true },
     top_up_virtualws: { module: TopUpVirtual, is_authenticated: true, only_virtual: true },
@@ -9974,6 +9998,7 @@ var pages_config = {
     welcome: { module: WelcomePage, is_authenticated: true, only_virtual: true },
     withdrawws: { module: PaymentAgentWithdraw, is_authenticated: true, only_real: true },
 
+    'affiliate-ib': { module: StaticPages.AffiliatesIb },
     'binary-in-numbers': { module: StaticPages.BinaryInNumbers },
     'binary-options': { module: GetStarted.BinaryOptions },
     'binary-options-mt5': { module: GetStarted.BinaryOptionsForMT5 },
@@ -9982,7 +10007,6 @@ var pages_config = {
     'get-started': { module: TabSelector },
     'how-to-trade-mt5': { module: TabSelector },
     'ib-faq': { module: StaticPages.IBProgrammeFAQ },
-    'ib-signup': { module: TabSelector },
     'job-details': { module: JobDetails },
     'keep-safe': { module: KeepSafe },
     'new-account': { module: NewAccount, not_authenticated: true },
@@ -11382,6 +11406,7 @@ var scrollToTop = __webpack_require__(/*! ../../_common/scroll */ "./src/javascr
 var toISOFormat = __webpack_require__(/*! ../../_common/string_util */ "./src/javascript/_common/string_util.js").toISOFormat;
 var Url = __webpack_require__(/*! ../../_common/url */ "./src/javascript/_common/url.js");
 var createElement = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").createElement;
+var isLoginPages = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").isLoginPages;
 var isProduction = __webpack_require__(/*! ../../config */ "./src/javascript/config.js").isProduction;
 __webpack_require__(/*! ../../_common/lib/polyfills/array.includes */ "./src/javascript/_common/lib/polyfills/array.includes.js");
 __webpack_require__(/*! ../../_common/lib/polyfills/string.includes */ "./src/javascript/_common/lib/polyfills/string.includes.js");
@@ -11435,7 +11460,7 @@ var Page = function () {
             updateLinksURL('#content');
         } else {
             init();
-            if (!Login.isLoginPages()) {
+            if (!isLoginPages()) {
                 Language.setCookie(Language.urlLang());
 
                 if (!ClientBase.get('is_virtual')) {
@@ -11638,7 +11663,6 @@ var setCurrencies = __webpack_require__(/*! ../common/currency */ "./src/javascr
 var SessionDurationLimit = __webpack_require__(/*! ../common/session_duration_limit */ "./src/javascript/app/common/session_duration_limit.js");
 var updateBalance = __webpack_require__(/*! ../pages/user/update_balance */ "./src/javascript/app/pages/user/update_balance.js");
 var GTM = __webpack_require__(/*! ../../_common/base/gtm */ "./src/javascript/_common/base/gtm.js");
-var Login = __webpack_require__(/*! ../../_common/base/login */ "./src/javascript/_common/base/login.js");
 var SubscriptionManager = __webpack_require__(/*! ../../_common/base/subscription_manager */ "./src/javascript/_common/base/subscription_manager.js").default;
 var Crowdin = __webpack_require__(/*! ../../_common/crowdin */ "./src/javascript/_common/crowdin.js");
 var localize = __webpack_require__(/*! ../../_common/localize */ "./src/javascript/_common/localize.js").localize;
@@ -11646,12 +11670,13 @@ var LocalStore = __webpack_require__(/*! ../../_common/storage */ "./src/javascr
 var State = __webpack_require__(/*! ../../_common/storage */ "./src/javascript/_common/storage.js").State;
 var urlFor = __webpack_require__(/*! ../../_common/url */ "./src/javascript/_common/url.js").urlFor;
 var getPropertyValue = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
+var isLoginPages = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").isLoginPages;
 
 var BinarySocketGeneral = function () {
     var onOpen = function onOpen(is_ready) {
         Header.hideNotification();
         if (is_ready) {
-            if (!Login.isLoginPages()) {
+            if (!isLoginPages()) {
                 if (!Client.isValidLoginid()) {
                     Client.sendLogoutRequest();
                     return;
@@ -11703,7 +11728,7 @@ var BinarySocketGeneral = function () {
                         Dialog.alert({ id: 'authorize_error_alert', localized_message: response.error.message });
                     }
                     Client.sendLogoutRequest(is_active_tab);
-                } else if (!Login.isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
+                } else if (!isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
                     if (response.authorize.loginid !== Client.get('loginid')) {
                         Client.sendLogoutRequest(true);
                     } else {
@@ -12033,9 +12058,11 @@ var AccountOpening = function () {
     };
     var handleNewAccount = function handleNewAccount(response, message_type) {
         if (response.error) {
-            var errorMessage = response.error.message;
+            var error_message = response.error.message;
+            var $notice_box = $('#client_message').find('.notice-msg');
             $('#submit-message').empty();
-            $('#client_message').find('.notice-msg').text(response.msg_type === 'sanity_check' ? localize('There was some invalid character in an input field.') : errorMessage).end().setVisibility(1);
+            $notice_box.text(response.msg_type === 'sanity_check' ? localize('There was some invalid character in an input field.') : error_message).end().setVisibility(1);
+            $.scrollTo($notice_box, 500, { offset: -150 });
         } else {
             localStorage.setItem('is_new_account', 1);
             Client.processNewAccount({
@@ -14129,9 +14156,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var getUnderlyingPipSize = __webpack_require__(/*! ../pages/trade/symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
 var addComma = __webpack_require__(/*! ../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
+var isEmptyObject = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").isEmptyObject;
 
 var changePocNumbersToString = function changePocNumbersToString(response) {
     var _response$proposal_op = response.proposal_open_contract,
+        audit_details = _response$proposal_op.audit_details,
         barrier = _response$proposal_op.barrier,
         current_spot = _response$proposal_op.current_spot,
         entry_spot = _response$proposal_op.entry_spot,
@@ -14149,7 +14178,7 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
                 return property || property === 0 ? addComma(property, decimal_places) : undefined;
             };
 
-            resolve($.extend({}, _extends({}, response, {
+            var new_response = $.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
                     barrier: barrier ? addComma(barrier) : undefined, // Because `barrier` must not be displayed when zero
                     sell_price: toString(sell_price),
@@ -14160,7 +14189,25 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
                     exit_tick: toString(exit_tick),
                     profit_percentage: toString(profit_percentage, 2)
                 })
-            })));
+            }));
+
+            if (!isEmptyObject(audit_details)) {
+                if (!isEmptyObject(audit_details.all_ticks)) {
+                    var formatAuditDetails = function formatAuditDetails(obj) {
+                        return _extends({}, obj, { all_ticks: obj.all_ticks.map(function (tick_obj) {
+                                return _extends({}, tick_obj, { tick: toString(tick_obj.tick) });
+                            }) });
+                    };
+
+                    new_response = $.extend({}, _extends({}, new_response, {
+                        proposal_open_contract: _extends({}, new_response.proposal_open_contract, {
+                            audit_details: formatAuditDetails(audit_details)
+                        })
+                    }));
+                }
+            }
+
+            resolve(new_response);
         });
     });
 };
@@ -15735,7 +15782,7 @@ var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascrip
 var getDecimalPlaces = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").getDecimalPlaces;
 var getPaWithdrawalLimit = __webpack_require__(/*! ../../common/currency */ "./src/javascript/app/common/currency.js").getPaWithdrawalLimit;
 var FormManager = __webpack_require__(/*! ../../common/form_manager */ "./src/javascript/app/common/form_manager.js");
-var validEmailToken = __webpack_require__(/*! ../../common/form_validation */ "./src/javascript/app/common/form_validation.js").validEmailToken;
+var Validation = __webpack_require__(/*! ../../common/form_validation */ "./src/javascript/app/common/form_validation.js");
 var handleVerifyCode = __webpack_require__(/*! ../../common/verification_code */ "./src/javascript/app/common/verification_code.js").handleVerifyCode;
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var Url = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js");
@@ -15759,6 +15806,7 @@ var PaymentAgentWithdraw = function () {
     var $agent_error = void 0,
         $ddl_agents = void 0,
         $txt_agents = void 0,
+        $txt_amount = void 0,
         $views = void 0,
         agent_name = void 0,
         currency = void 0,
@@ -15790,7 +15838,7 @@ var PaymentAgentWithdraw = function () {
             } else {
                 setActiveView(view_ids.notice);
             }
-        } else if (!validEmailToken(token)) {
+        } else if (!Validation.validEmailToken(token)) {
             showPageError('token_error');
         } else {
             insertListOption($ddl_agents, localize('Select payment agent'), '');
@@ -15801,17 +15849,34 @@ var PaymentAgentWithdraw = function () {
 
             var form_id = '#' + $(view_ids.form).find('form').attr('id');
             var $form = $(form_id);
-            var min = getPaWithdrawalLimit(currency, 'min');
-            var max = getPaWithdrawalLimit(currency, 'max');
+
+            var getAPILimit = function getAPILimit(limit) {
+                var selected_val = getPALoginID();
+                if (selected_val) {
+                    var selected_pa = pa_list.find(function (pa) {
+                        return pa.paymentagent_loginid === selected_val;
+                    });
+                    if (selected_pa) return selected_pa[limit + '_withdrawal'];
+                }
+                return getPaWithdrawalLimit(currency, limit);
+            };
+
+            var min = function min() {
+                return getAPILimit('min');
+            };
+            var max = function max() {
+                return getAPILimit('max');
+            };
 
             $agent_error = $('.row-agent').find('.error-msg');
             $txt_agents = $(field_ids.txt_agents);
+            $txt_amount = $(field_ids.txt_amount);
 
             $form.find('.wrapper-row-agent').find('label').append($('<span />', { text: '*', class: 'required_field_asterisk' }));
             $form.find('label[for="txtAmount"]').text(localize('Amount in') + ' ' + currency);
             trimDescriptionContent();
             FormManager.init(form_id, [{ selector: field_ids.txt_amount, validations: ['req', ['number', { type: 'float', decimals: getDecimalPlaces(currency), min: min, max: max }], ['custom', { func: function func() {
-                        return +Client.get('balance') >= +$(field_ids.txt_amount).val();
+                        return +Client.get('balance') >= +$txt_amount.val();
                     }, message: localize('Insufficient balance.') }]], request_field: 'amount' }, { selector: field_ids.txt_desc, validations: ['general'], request_field: 'description' }, { request_field: 'currency', value: currency }, { request_field: 'paymentagent_loginid', value: getPALoginID }, { request_field: 'paymentagent_withdraw', value: 1 }, { request_field: 'dry_run', value: 1 }], true);
 
             $ddl_agents.on('change', function () {
@@ -15823,6 +15888,7 @@ var PaymentAgentWithdraw = function () {
                     // error handling
                     $agent_error.setVisibility(1);
                 }
+                validateAmount();
             });
 
             $txt_agents.on('keyup', function () {
@@ -15836,6 +15902,16 @@ var PaymentAgentWithdraw = function () {
                     $agent_error.setVisibility(1);
                 }
             });
+
+            $txt_agents.on('focusout', function () {
+                validateAmount();
+            });
+
+            var validateAmount = function validateAmount() {
+                if ($txt_amount.val()) {
+                    Validation.validate(form_id);
+                }
+            };
 
             FormManager.handleSubmit({
                 form_selector: form_id,
@@ -19284,7 +19360,7 @@ var Barriers = function () {
     var validateBarrier = function validateBarrier() {
         var barrier_element = getElementById('barrier');
         var barrier_high_element = getElementById('barrier_high');
-        var empty = isNaN(parseFloat(barrier_element.value)) || parseFloat(barrier_element.value) === 0;
+        var empty = isNaN(parseFloat(barrier_element.value)) || isAbsoluteZero(barrier_element.value);
 
         if (isVisible(barrier_element) && empty) {
             barrier_element.classList.add('error-field');
@@ -19313,6 +19389,10 @@ var Barriers = function () {
                 el.removeAttribute('data-balloon-length');
             }
         });
+    };
+
+    var isAbsoluteZero = function isAbsoluteZero(num) {
+        return !(parseFloat(num) !== 0 || /\+|-/.test(num.toString().charAt(0)));
     };
 
     return {
@@ -24984,7 +25064,7 @@ var Price = function () {
             proposal.duration_unit = 'm';
         }
 
-        if (barrier && CommonFunctions.isVisible(barrier) && barrier.value) {
+        if (barrier && CommonFunctions.isVisible(barrier)) {
             proposal.barrier = barrier.value;
         }
 
@@ -25829,22 +25909,18 @@ var Purchase = function () {
                             } else if (/Random/.test(error.code)) {
                                 additional_message = localize('Try our other markets.');
                             }
+
                             message = error.message + '. ' + additional_message;
                         } else if (/ClientUnwelcome/.test(error.code) && /gb/.test(Client.get('residence'))) {
-                            var _message_text2 = '';
-                            var _additional_message = '';
-
                             if (!Client.hasAccountType('real') && Client.get('is_virtual')) {
-                                _message_text2 = localize('Please complete the [_1]Real Account form[_2] to verify your age as required by the [_3]UK Gambling[_4] Commission (UKGC).', ['<a href=\'' + urlFor('new_account/realws') + '\'>', '</a>', '<strong>', '</strong>']);
-                                message = _message_text2;
+                                message = localize('Please complete the [_1]Real Account form[_2] to verify your age as required by the [_3]UK Gambling[_4] Commission (UKGC).', ['<a href=\'' + urlFor('new_account/realws') + '\'>', '</a>', '<strong>', '</strong>']);
                             } else if (Client.hasAccountType('real') && /^virtual|iom$/i.test(Client.get('landing_company_shortcode'))) {
-                                _message_text2 = localize('Your age verification failed. Please contact customer service for assistance. [_1][_1] [_2]Telephone:[_3] [_1] United Kingdom [_1] +44 (0) 1666 800042 [_1] 0800 011 9847 (Toll Free)', ['<br/>', '<strong>', '</strong>']);
-                                _additional_message = localize('[_1]Telephone numbers in other locations[_2]', ['<a href=\'' + urlFor('contact') + '\'>', '</a>']);
-                                message = _message_text2 + ' <br/><br/> ' + _additional_message;
+                                message = localize('The system failed to verify your identity. Please check your email for details and the next steps.');
                             } else {
                                 message = error.message;
                             }
                         }
+
                         CommonFunctions.elementInnerHtml(confirmation_error, message);
                     });
                 }
@@ -36939,6 +37015,11 @@ var Platforms = function () {
                 el_button.setAttribute('href', os.download_url);
             });
         });
+        fetch('https://grid.binary.me/version.json').then(function (response) {
+            return response.json();
+        }).then(function (gridapp) {
+            $('.download-grid-app').attr('href', 'https://grid.binary.me/download/' + gridapp.name);
+        });
     };
 
     return {
@@ -37040,6 +37121,7 @@ module.exports = Regulation;
 var tabListener = __webpack_require__(/*! @binary-com/binary-style */ "./node_modules/@binary-com/binary-style/binary.js").tabListener;
 var ImageSlider = __webpack_require__(/*! ../../_common/image_slider */ "./src/javascript/_common/image_slider.js");
 var MenuSelector = __webpack_require__(/*! ../../_common/menu_selector */ "./src/javascript/_common/menu_selector.js");
+var TabSelector = __webpack_require__(/*! ../../_common/tab_selector */ "./src/javascript/_common/tab_selector.js");
 var Scroll = __webpack_require__(/*! ../../_common/scroll */ "./src/javascript/_common/scroll.js");
 var handleHash = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").handleHash;
 var BinaryPjax = __webpack_require__(/*! ../../app/base/binary_pjax */ "./src/javascript/app/base/binary_pjax.js");
@@ -37093,6 +37175,14 @@ module.exports = {
             } else {
                 Header.upgradeMessageVisibility();
             }
+        }
+    },
+    AffiliatesIb: {
+        onLoad: function onLoad() {
+            $('.has-tabs').tabs();TabSelector.onLoad();
+        },
+        onUnload: function onUnload() {
+            TabSelector.onUnload();
         }
     },
     AffiliatesFAQ: {
