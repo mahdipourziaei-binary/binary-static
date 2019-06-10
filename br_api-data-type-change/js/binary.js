@@ -513,8 +513,7 @@ var ClientBase = function () {
                 });
             };
 
-            // TODO [->svg]
-            can_upgrade_to = canUpgrade('costarica', 'svg', 'iom', 'malta', 'maltainvest');
+            can_upgrade_to = canUpgrade('iom', 'svg', 'malta', 'maltainvest');
             if (can_upgrade_to) {
                 type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }
@@ -1068,8 +1067,7 @@ var GTM = function () {
             data.event = login_event;
             BinarySocket.wait('mt5_login_list').then(function (response) {
                 (response.mt5_login_list || []).forEach(function (obj) {
-                    var acc_type = (ClientBase.getMT5AccountType(obj.group) || '').replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/costarica|svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
-                    // TODO [->svg]
+                    var acc_type = (ClientBase.getMT5AccountType(obj.group) || '').replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
                     if (acc_type) {
                         data['mt5_' + acc_type + '_id'] = obj.login;
                     }
@@ -10387,9 +10385,8 @@ var Client = function () {
 
         var upgrade_link = void 0;
         if (upgrade_info.can_upgrade_to) {
-            // TODO [->svg]
             var upgrade_link_map = {
-                realws: ['costarica', 'svg', 'iom', 'malta'],
+                realws: ['svg', 'iom', 'malta'],
                 maltainvestws: ['maltainvest']
             };
             upgrade_link = Object.keys(upgrade_link_map).find(function (link) {
@@ -10934,8 +10931,7 @@ var Header = function () {
         BinarySocket.wait('authorize', 'landing_company').then(function () {
             var get_account_status = void 0,
                 status = void 0;
-            // TODO [->svg]
-            var is_svg = Client.get('landing_company_shortcode') === 'costarica' || Client.get('landing_company_shortcode') === 'svg';
+            var is_svg = Client.get('landing_company_shortcode') === 'svg';
             var necessary_withdrawal_fields = is_svg ? State.getResponse('landing_company.financial_company.requirements.withdrawal') : [];
             var necessary_signup_fields = is_svg ? State.getResponse('landing_company.financial_company.requirements.signup').map(function (field) {
                 return field === 'residence' ? 'country' : field;
@@ -14162,6 +14158,7 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
     var _response$proposal_op = response.proposal_open_contract,
         audit_details = _response$proposal_op.audit_details,
         barrier = _response$proposal_op.barrier,
+        bid_price = _response$proposal_op.bid_price,
         current_spot = _response$proposal_op.current_spot,
         entry_spot = _response$proposal_op.entry_spot,
         entry_tick = _response$proposal_op.entry_tick,
@@ -14173,21 +14170,22 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
 
     return new Promise(function (resolve) {
         getUnderlyingPipSize(response.proposal_open_contract.underlying).then(function (pip_size) {
-            var toString = function toString(property) {
-                var decimal_places = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : pip_size;
-                return property || property === 0 ? addComma(property, decimal_places) : undefined;
+            var toString = function toString(property, has_comma) {
+                var decimal_places = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : pip_size;
+                return property || property === 0 ? has_comma ? addComma(property, decimal_places) : addComma(property).replace(',', '') : undefined;
             };
 
             var new_response = $.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
                     barrier: barrier ? addComma(barrier) : undefined, // Because `barrier` must not be displayed when zero
+                    bid_price: toString(bid_price),
                     sell_price: toString(sell_price),
                     sell_spot: toString(sell_spot),
                     current_spot: toString(current_spot),
-                    entry_spot: toString(entry_spot),
+                    entry_spot: toString(entry_spot, false),
                     entry_tick: toString(entry_tick),
                     exit_tick: toString(exit_tick),
-                    profit_percentage: toString(profit_percentage, 2)
+                    profit_percentage: toString(profit_percentage, true, 2)
                 })
             }));
 
@@ -19696,10 +19694,13 @@ module.exports = Callputspread;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var CreateDropdown = __webpack_require__(/*! @binary-com/binary-style */ "./node_modules/@binary-com/binary-style/binary.js").selectDropdown;
 var getHighstock = __webpack_require__(/*! ../common */ "./src/javascript/app/pages/trade/common.js").requireHighstock;
 var Symbols = __webpack_require__(/*! ../symbols */ "./src/javascript/app/pages/trade/symbols.js");
 var BinarySocket = __webpack_require__(/*! ../../../base/socket */ "./src/javascript/app/base/socket.js");
+var addComma = __webpack_require__(/*! ../../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var localize = __webpack_require__(/*! ../../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var template = __webpack_require__(/*! ../../../../_common/utility */ "./src/javascript/_common/utility.js").template;
 
@@ -19834,47 +19835,113 @@ var DigitInfo = function () {
                     stream_id = null;
                 }
             }
-            BinarySocket.send(request, { callback: function callback(response) {
-                    var type = response.msg_type;
-                    if (type === 'tick') {
-                        updateChart(response);
-                    } else if (type === 'history') {
-                        showChart(response.echo_req.ticks_history, response.history.prices);
-                    }
-                } });
+            BinarySocket.send(request, { callback: function () {
+                    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
+                        var type;
+                        return regeneratorRuntime.wrap(function _callee$(_context) {
+                            while (1) {
+                                switch (_context.prev = _context.next) {
+                                    case 0:
+                                        type = response.msg_type;
+
+                                        if (!(type === 'tick')) {
+                                            _context.next = 5;
+                                            break;
+                                        }
+
+                                        updateChart(response);
+                                        _context.next = 8;
+                                        break;
+
+                                    case 5:
+                                        if (!(type === 'history')) {
+                                            _context.next = 8;
+                                            break;
+                                        }
+
+                                        _context.next = 8;
+                                        return showChart(response.echo_req.ticks_history, response.history.prices);
+
+                                    case 8:
+                                    case 'end':
+                                        return _context.stop();
+                                }
+                            }
+                        }, _callee, undefined);
+                    }));
+
+                    return function callback(_x) {
+                        return _ref.apply(this, arguments);
+                    };
+                }() });
         };
         $('#digit_underlying, #tick_count').off('change').on('change', getLatest);
     };
 
-    var showChart = function showChart(underlying, underlying_spots) {
-        if (underlying_spots.length !== +$('#tick_count').val()) return;
-        getHighstock(function (Highcharts) {
-            var new_spots = underlying_spots;
-            if (typeof new_spots === 'undefined' || new_spots.length <= 0) {
-                return;
-            }
-            var dec = new_spots[0].split('.')[1].length;
-            for (var i = 0; i < new_spots.length; i++) {
-                var val = parseFloat(new_spots[i]).toFixed(dec);
-                new_spots[i] = val.substr(val.length - 1);
-            }
+    var showChart = function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(underlying, underlying_spots) {
+            var decimal_places, formatted_underlying_spots;
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            if (!(underlying_spots.length !== +$('#tick_count').val())) {
+                                _context2.next = 2;
+                                break;
+                            }
 
-            var getTitle = function getTitle() {
-                return {
-                    text: template($('#last_digit_title').html(), [new_spots.length, $('#digit_underlying option:selected').text()])
-                };
-            };
+                            return _context2.abrupt('return');
 
-            spots = new_spots;
-            if (chart) chart.destroy();
-            addContent(underlying); // this creates #last_digit_title
-            chart_config.xAxis.title = getTitle();
-            chart = new Highcharts.Chart(chart_config);
-            chart.addSeries({ name: underlying, data: [] });
-            onLatest();
-            update();
-        });
-    };
+                        case 2:
+                            _context2.next = 4;
+                            return Symbols.getUnderlyingPipSize(underlying);
+
+                        case 4:
+                            decimal_places = _context2.sent;
+                            formatted_underlying_spots = underlying_spots.map(function (price) {
+                                return addComma(price, decimal_places).replace(',', '');
+                            });
+
+
+                            getHighstock(function (Highcharts) {
+                                var new_spots = formatted_underlying_spots;
+                                if (typeof new_spots === 'undefined' || new_spots.length <= 0) {
+                                    return;
+                                }
+                                var dec = new_spots[0].split('.')[1].length;
+                                for (var i = 0; i < new_spots.length; i++) {
+                                    var val = parseFloat(new_spots[i]).toFixed(dec);
+                                    new_spots[i] = val.substr(val.length - 1);
+                                }
+
+                                var getTitle = function getTitle() {
+                                    return {
+                                        text: template($('#last_digit_title').html(), [new_spots.length, $('#digit_underlying option:selected').text()])
+                                    };
+                                };
+
+                                spots = new_spots;
+                                if (chart) chart.destroy();
+                                addContent(underlying); // this creates #last_digit_title
+                                chart_config.xAxis.title = getTitle();
+                                chart = new Highcharts.Chart(chart_config);
+                                chart.addSeries({ name: underlying, data: [] });
+                                onLatest();
+                                update();
+                            });
+
+                        case 7:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, undefined);
+        }));
+
+        return function showChart(_x2, _x3) {
+            return _ref2.apply(this, arguments);
+        };
+    }();
 
     var update = function update(symbol, latest_spot) {
         if (typeof chart === 'undefined') {
@@ -19939,18 +20006,42 @@ var DigitInfo = function () {
         return series.setData(filtered_spots);
     };
 
-    var updateChart = function updateChart(tick) {
-        if (stream_id) {
-            if (chart.series[0].name === tick.tick.symbol) {
-                stream_id = tick.tick.id || null;
-                update(tick.tick.symbol, tick.tick.quote);
-            } else {
-                BinarySocket.send({ forget: tick.tick.id.toString() });
-            }
-        } else {
-            update(tick.tick.symbol, tick.tick.quote);
-        }
-    };
+    var updateChart = function () {
+        var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(tick) {
+            var decimal_places;
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                while (1) {
+                    switch (_context3.prev = _context3.next) {
+                        case 0:
+                            _context3.next = 2;
+                            return Symbols.getUnderlyingPipSize(tick.tick.symbol);
+
+                        case 2:
+                            decimal_places = _context3.sent;
+
+                            if (stream_id) {
+                                if (chart.series[0].name === tick.tick.symbol) {
+                                    stream_id = tick.tick.id || null;
+                                    update(tick.tick.symbol, tick.tick.quote);
+                                } else {
+                                    BinarySocket.send({ forget: tick.tick.id.toString() });
+                                }
+                            } else {
+                                update(tick.tick.symbol, addComma(tick.tick.quote, decimal_places).replace(',', ''));
+                            }
+
+                        case 4:
+                        case 'end':
+                            return _context3.stop();
+                    }
+                }
+            }, _callee3, undefined);
+        }));
+
+        return function updateChart(_x4) {
+            return _ref3.apply(this, arguments);
+        };
+    }();
 
     return {
         showChart: showChart,
@@ -24044,6 +24135,8 @@ module.exports = {
 "use strict";
 
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var Barriers = __webpack_require__(/*! ./barriers */ "./src/javascript/app/pages/trade/barriers.js");
 var updateWarmChart = __webpack_require__(/*! ./common */ "./src/javascript/app/pages/trade/common.js").updateWarmChart;
 var DigitInfo = __webpack_require__(/*! ./charts/digit_info */ "./src/javascript/app/pages/trade/charts/digit_info.js");
@@ -24073,30 +24166,76 @@ var GetTicks = function () {
                     count: 20,
                     subscribe: 1
                 }, {
-                    callback: function callback(response) {
-                        var type = response.msg_type;
+                    callback: function () {
+                        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
+                            var type;
+                            return regeneratorRuntime.wrap(function _callee$(_context) {
+                                while (1) {
+                                    switch (_context.prev = _context.next) {
+                                        case 0:
+                                            type = response.msg_type;
 
-                        if (typeof _callback === 'function') {
-                            _callback(response);
-                        }
 
-                        if (State.get('is_mb_trading')) {
-                            MBTick.processTickStream(response);
-                            return;
-                        }
+                                            if (typeof _callback === 'function') {
+                                                _callback(response);
+                                            }
 
-                        if (type === 'tick') {
-                            processTick(response);
-                            if (getActiveTab() === 'tab_last_digit') {
-                                DigitInfo.updateChart(response);
-                            }
-                        } else if (type === 'history') {
-                            processHistory(response);
-                            if (getActiveTab() === 'tab_last_digit') {
-                                DigitInfo.showChart(response.echo_req.ticks_history, response.history.prices);
-                            }
-                        }
-                    }
+                                            if (!State.get('is_mb_trading')) {
+                                                _context.next = 5;
+                                                break;
+                                            }
+
+                                            MBTick.processTickStream(response);
+                                            return _context.abrupt('return');
+
+                                        case 5:
+                                            if (!(type === 'tick')) {
+                                                _context.next = 12;
+                                                break;
+                                            }
+
+                                            processTick(response);
+
+                                            if (!(getActiveTab() === 'tab_last_digit')) {
+                                                _context.next = 10;
+                                                break;
+                                            }
+
+                                            _context.next = 10;
+                                            return DigitInfo.updateChart(response);
+
+                                        case 10:
+                                            _context.next = 17;
+                                            break;
+
+                                        case 12:
+                                            if (!(type === 'history')) {
+                                                _context.next = 17;
+                                                break;
+                                            }
+
+                                            processHistory(response);
+
+                                            if (!(getActiveTab() === 'tab_last_digit')) {
+                                                _context.next = 17;
+                                                break;
+                                            }
+
+                                            _context.next = 17;
+                                            return DigitInfo.showChart(response.echo_req.ticks_history, response.history.prices);
+
+                                        case 17:
+                                        case 'end':
+                                            return _context.stop();
+                                    }
+                                }
+                            }, _callee, undefined);
+                        }));
+
+                        return function callback(_x) {
+                            return _ref.apply(this, arguments);
+                        };
+                    }()
                 });
             };
 
@@ -26355,7 +26494,7 @@ var Reset = function () {
     };
 
     var isNewBarrier = function isNewBarrier(entry_barrier, current_barrier) {
-        return +entry_barrier.toString().replace(',', '') !== +current_barrier.toString().replace(',', '');
+        return (entry_barrier || entry_barrier === 0) && (current_barrier || current_barrier === 0) ? +entry_barrier.toString().replace(',', '') !== +current_barrier.toString().replace(',', '') : entry_barrier !== current_barrier;
     };
 
     var isReset = function isReset(contract_type) {
@@ -29539,9 +29678,8 @@ var FinancialAssessment = function () {
             event.preventDefault();
             submitForm();
         });
-        // TODO [->svg]
         BinarySocket.wait('landing_company').then(function () {
-            if (/^(costarica|svg|maltainvest)$/.test(Client.get('landing_company_shortcode'))) {
+            if (/^(svg|maltainvest)$/.test(Client.get('landing_company_shortcode'))) {
                 getElementById('risk_disclaimer').setVisibility(1);
             }
         });
@@ -29913,8 +30051,7 @@ var LimitsInit = function () {
                 elementTextContent(el_withdraw_limit, localize('Your [_1] day withdrawal limit is currently [_2] [_3] (or equivalent in other currency).', [limits.num_of_days, currency, days_limit]));
                 elementTextContent(el_withdrawn, localize('You have already withdrawn the equivalent of [_1] [_2] in aggregate over the last [_3] days.', [currency, limits.withdrawal_for_x_days_monetary, limits.num_of_days]));
                 elementTextContent(el_withdraw_limit_agg, localize('Therefore your current immediate maximum withdrawal (subject to your account having sufficient funds) is [_1] [_2] (or equivalent in other currency).', [currency, remainder]));
-            } else if (Client.get('landing_company_shortcode') === 'costarica' || Client.get('landing_company_shortcode') === 'svg') {
-                // TODO [->svg]
+            } else if (Client.get('landing_company_shortcode') === 'svg') {
                 elementTextContent(el_withdraw_limit, localize('Your withdrawal limit is [_1] [_2].', [currency, days_limit]));
                 elementTextContent(el_withdrawn, localize('You have already withdrawn [_1] [_2].', [currency, limits.withdrawal_since_inception_monetary]));
                 elementTextContent(el_withdraw_limit_agg, localize('Therefore your current immediate maximum withdrawal (subject to your account having sufficient funds) is [_1] [_2].', [currency, remainder]));
@@ -30553,8 +30690,7 @@ var PersonalDetails = function () {
             var account_status = State.getResponse('get_account_status').status;
             get_settings_data = State.getResponse('get_settings');
             is_fully_authenticated = checkStatus(account_status, 'authenticated');
-            // TODO [->svg]
-            has_changeable_fields = (Client.get('landing_company_shortcode') === 'costarica' || Client.get('landing_company_shortcode') === 'svg') && !is_fully_authenticated;
+            has_changeable_fields = Client.get('landing_company_shortcode') === 'svg' && !is_fully_authenticated;
 
             if (!residence) {
                 displayResidenceList();
@@ -34213,12 +34349,11 @@ var RealAccOpening = function () {
             if (AccountOpening.redirectAccount()) return;
 
             BinarySocket.wait('landing_company', 'get_account_status').then(function () {
-                // TODO [->svg]
                 var is_unwelcome_uk = State.getResponse('get_account_status.status').some(function (status) {
                     return status === 'unwelcome';
                 }) && /gb/.test(Client.get('residence'));
 
-                if (State.getResponse('authorize.upgradeable_landing_companies').indexOf('svg') !== -1 || State.getResponse('authorize.upgradeable_landing_companies').indexOf('costarica') !== -1) {
+                if (State.getResponse('authorize.upgradeable_landing_companies').indexOf('svg') !== -1) {
                     getElementById('risk_disclaimer').setVisibility(1);
                 }
                 if (is_unwelcome_uk) {
@@ -34957,8 +35092,7 @@ var SetCurrency = function () {
             var landing_company = State.getResponse('landing_company');
             var currencies = State.getResponse('payout_currencies');
 
-            // TODO [->svg]
-            if (Client.get('landing_company_shortcode') === 'costarica' || Client.get('landing_company_shortcode') === 'svg') {
+            if (Client.get('landing_company_shortcode') === 'svg') {
                 currencies = getCurrencies(landing_company);
             }
             var $fiat_currencies = $('<div/>');
