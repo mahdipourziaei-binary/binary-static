@@ -1689,7 +1689,7 @@ var BinarySocketBase = function () {
             var response = SocketCache.get(data, msg_type);
             if (response) {
                 State.set(['response', msg_type], cloneObject(response));
-                if (isReady() && is_available) {
+                if (isReady() && is_available && !options.skip_cache_update) {
                     // make the request to keep the cache updated
                     binary_socket.send(JSON.stringify(data));
                 }
@@ -26690,6 +26690,7 @@ var Symbols = function () {
     var trade_markets_list = {};
     var trade_underlyings = {};
     var names = {};
+    var is_active_symbols_cached = false;
 
     var details = function details(data) {
         var all_symbols = data.active_symbols;
@@ -26701,9 +26702,12 @@ var Symbols = function () {
 
     var getUnderlyingPipSize = function getUnderlyingPipSize(underlying) {
         return new Promise(function (resolve) {
-            BinarySocket.send({ active_symbols: 'brief' }).then(function (active_symbols) {
+            var req = { active_symbols: 'brief' };
+            var options = { skip_cache_update: is_active_symbols_cached };
+            BinarySocket.send(req, options).then(function (active_symbols) {
                 details(active_symbols);
                 var market = ActiveSymbols.getSymbols(active_symbols);
+                is_active_symbols_cached = true;
 
                 resolve(countDecimalPlaces(market[underlying].pip));
             });
