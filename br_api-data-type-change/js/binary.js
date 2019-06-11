@@ -14170,14 +14170,15 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
 
     return new Promise(function (resolve) {
         getUnderlyingPipSize(response.proposal_open_contract.underlying).then(function (pip_size) {
-            var toString = function toString(property, has_comma) {
+            var toString = function toString(property) {
+                var has_comma = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
                 var decimal_places = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : pip_size;
-                return property || property === 0 ? has_comma ? addComma(property, decimal_places) : addComma(property).replace(',', '') : undefined;
+                return property || property === 0 ? has_comma ? addComma(property, decimal_places) : addComma(property, decimal_places).replace(',', '') : undefined;
             };
 
             var new_response = $.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
-                    barrier: barrier ? addComma(barrier) : undefined, // Because `barrier` must not be displayed when zero
+                    barrier: barrier ? addComma(barrier).replace(',', '') : undefined, // Because `barrier` must not be displayed when zero
                     bid_price: toString(bid_price),
                     sell_price: toString(sell_price),
                     sell_spot: toString(sell_spot),
