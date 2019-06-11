@@ -14191,19 +14191,23 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
             }));
 
             if (!isEmptyObject(audit_details)) {
-                if (!isEmptyObject(audit_details.all_ticks)) {
-                    var formatAuditDetails = function formatAuditDetails(obj) {
-                        return _extends({}, obj, { all_ticks: obj.all_ticks.map(function (tick_obj) {
-                                return _extends({}, tick_obj, { tick: toString(tick_obj.tick) });
-                            }) });
-                    };
+                var formatAuditDetails = function formatAuditDetails(obj) {
+                    var modded_obj = _extends({}, obj);
 
-                    new_response = $.extend({}, _extends({}, new_response, {
-                        proposal_open_contract: _extends({}, new_response.proposal_open_contract, {
-                            audit_details: formatAuditDetails(audit_details)
-                        })
-                    }));
-                }
+                    Object.keys(obj).forEach(function (key) {
+                        modded_obj[key] = modded_obj[key].map(function (tick_obj) {
+                            return tick_obj.tick ? _extends({}, tick_obj, { tick: toString(tick_obj.tick) }) : tick_obj;
+                        });
+                    });
+
+                    return modded_obj;
+                };
+
+                new_response = $.extend({}, _extends({}, new_response, {
+                    proposal_open_contract: _extends({}, new_response.proposal_open_contract, {
+                        audit_details: formatAuditDetails(audit_details)
+                    })
+                }));
             }
 
             resolve(new_response);
