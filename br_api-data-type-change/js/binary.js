@@ -9931,6 +9931,7 @@ var Regulation = __webpack_require__(/*! ../../static/pages/regulation */ "./src
 var StaticPages = __webpack_require__(/*! ../../static/pages/static_pages */ "./src/javascript/static/pages/static_pages.js");
 var TermsAndConditions = __webpack_require__(/*! ../../static/pages/tnc */ "./src/javascript/static/pages/tnc.js");
 var WhyUs = __webpack_require__(/*! ../../static/pages/why_us */ "./src/javascript/static/pages/why_us.js");
+var AffiliatesIBLanding = __webpack_require__(/*! ../../static/pages/affiliate_ib_landing */ "./src/javascript/static/pages/affiliate_ib_landing.js");
 
 /* eslint-disable max-len */
 var pages_config = {
@@ -9996,7 +9997,7 @@ var pages_config = {
     welcome: { module: WelcomePage, is_authenticated: true, only_virtual: true },
     withdrawws: { module: PaymentAgentWithdraw, is_authenticated: true, only_real: true },
 
-    'affiliate-ib': { module: StaticPages.AffiliatesIb },
+    'affiliate-ib': { module: AffiliatesIBLanding },
     'binary-in-numbers': { module: StaticPages.BinaryInNumbers },
     'binary-options': { module: GetStarted.BinaryOptions },
     'binary-options-mt5': { module: GetStarted.BinaryOptionsForMT5 },
@@ -20108,11 +20109,11 @@ var Highchart = function () {
         purchase_time = void 0,
         now_time = void 0,
         end_time = void 0,
+        exit_time = void 0,
         entry_tick_time = void 0,
         sell_time = void 0,
         is_sold_before_expiry = void 0,
         exit_tick_time = void 0,
-        exit_time = void 0,
         margin = void 0,
         is_initialized = void 0,
         is_chart_delayed = void 0,
@@ -20140,9 +20141,9 @@ var Highchart = function () {
         entry_tick_time = parseInt(contract.entry_tick_time);
         exit_tick_time = parseInt(contract.exit_tick_time);
         sell_time = +contract.is_path_dependent && contract.status !== 'sold' ? exit_tick_time : parseInt(contract.sell_time);
-        is_sold_before_expiry = sell_time < end_time;
-        exit_time = is_sold_before_expiry ? sell_time : exit_tick_time || end_time;
+        is_sold_before_expiry = end_time - sell_time > 1; // fix odd timings when date_expiry is 1 second after exit_tick_time
         prev_barriers = [];
+        exit_time = is_sold_before_expiry ? sell_time : exit_tick_time || end_time;
     };
 
     // initialize the chart only once with ticks or candles data
@@ -20229,13 +20230,12 @@ var Highchart = function () {
                         case 14:
                             display_decimals = _context.sent;
 
-
                             chart_options = {
                                 data: data,
                                 display_decimals: display_decimals,
                                 type: type,
                                 entry_time: (entry_tick_time || start_time) * 1000,
-                                exit_time: exit_time ? exit_time * 1000 : null,
+                                exit_time: exit_tick_time ? exit_tick_time * 1000 : exit_time ? exit_time * 1000 : null, // eslint-disable-line do-not-nest-ternary
                                 has_zone: true,
                                 height: Math.max(el.parentElement.offsetHeight, 450),
                                 radius: 2,
@@ -20587,7 +20587,7 @@ var Highchart = function () {
 
     var updateZone = function updateZone(type) {
         if (chart && type && contract.status !== 'sold') {
-            var value = type === 'entry' ? entry_tick_time : exit_time;
+            var value = type === 'entry' ? entry_tick_time : exit_tick_time;
             chart.series[0].zones[type === 'entry' ? 0 : 1].value = value * 1000;
         }
     };
@@ -20704,7 +20704,7 @@ var Highchart = function () {
         var history_times_length = history_times.length;
         if (contract.is_settleable || contract.is_sold) {
             var i = history_times.findIndex(function (time) {
-                return +time > exit_time;
+                return +time > exit_tick_time;
             });
             max_point = i > 0 ? +history_times[i] : end_time;
         }
@@ -22437,6 +22437,7 @@ module.exports = Defaults;
 
 var DigitTicker = function () {
     var barrier = void 0,
+        container_ref = void 0,
         el_container = void 0,
         el_peek = void 0,
         el_peek_box = void 0,
@@ -22446,6 +22447,7 @@ var DigitTicker = function () {
         type = void 0,
         current_spot = void 0;
     var style_offset_correction = 5;
+    var is_initialized = false;
 
     var array_of_digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -22457,6 +22459,8 @@ var DigitTicker = function () {
         type = contract_type;
         current_spot = '-';
         el_container = document.querySelector('#' + container_id);
+        container_ref = container_id;
+        is_initialized = true;
 
         setBarrierFromShortcode(type, shortcode);
         populateContainer(el_container);
@@ -22466,9 +22470,8 @@ var DigitTicker = function () {
 
     var populateContainer = function populateContainer(container_element) {
         // remove previous elements and start fresh.
-        while (container_element && container_element.firstChild) {
-            container_element.removeChild(container_element.firstChild);
-        }
+        if (!container_element) return;
+        container_element.innerHTML = '';
 
         var temp_epoch_el = document.createElement('div');
         temp_epoch_el.classList.add('epoch');
@@ -22572,6 +22575,7 @@ var DigitTicker = function () {
     };
 
     var highlightWinningNumbers = function highlightWinningNumbers(winning_numbers) {
+        if (!el_container) return;
         winning_numbers.forEach(function (digit) {
             var element = el_container.querySelector('.digit-' + digit);
             element.classList.remove('digit-losing');
@@ -22632,7 +22636,7 @@ var DigitTicker = function () {
     };
 
     var setElements = function setElements() {
-        el_peek = el_container ? el_container.querySelector('.peek') : null;
+        el_peek = el_container ? el_container.querySelector('.peek') : populateContainer(container_ref);
         el_peek_box = el_peek ? el_container.querySelector('.peek-box') : null;
         el_mask = el_peek_box ? el_peek_box.querySelector('.mask') : null;
     };
@@ -22711,6 +22715,10 @@ var DigitTicker = function () {
         requestAnimationFrame(renderTick);
     };
 
+    var isInitialized = function isInitialized() {
+        return is_initialized;
+    };
+
     return {
         init: init,
         update: update,
@@ -22720,7 +22728,8 @@ var DigitTicker = function () {
         markAsLost: markAsLost,
         markDigitAsLost: markDigitAsLost,
         markDigitAsWon: markDigitAsWon,
-        remove: remove
+        remove: remove,
+        isInitialized: isInitialized
     };
 }();
 
@@ -22738,175 +22747,136 @@ module.exports = DigitTicker;
 "use strict";
 
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var DigitTicker = __webpack_require__(/*! ./digit_ticker */ "./src/javascript/app/pages/trade/digit_ticker.js");
-var getUnderlyingPipSize = __webpack_require__(/*! ./symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
 var ViewPopupUI = __webpack_require__(/*! ../user/view_popup/view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
 var showLocalTimeOnHover = __webpack_require__(/*! ../../base/clock */ "./src/javascript/app/base/clock.js").showLocalTimeOnHover;
-var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
 var LoadingSpinner = __webpack_require__(/*! ../../components/loading-spinner */ "./src/javascript/app/components/loading-spinner.js");
 var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var localize = __webpack_require__(/*! ../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
-var getPropertyValue = __webpack_require__(/*! ../../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
 
 var DigitDisplay = function () {
-    var $container = void 0,
-        contract = void 0,
-        tick_count = void 0,
-        spot_times = void 0;
+    var $container = void 0;
 
-    // Subscribe if contract is still ongoing/running.
-    var subscribe = function subscribe(request) {
-        request.end = 'latest';
+    var initTable = function initTable(id_render, calculated_height, poc) {
+        $container = $('#' + id_render);
+        $container.addClass('normal-font').html($('<h5 />', {
+            text: poc.display_name,
+            class: 'center-text'
+        })).append($('<div />', {
+            class: 'gr-8 gr-centered gr-12-m',
+            style: 'height: ' + calculated_height + 'px;'
+        }).append($('<div />', {
+            class: 'gr-row',
+            id: 'table_digits'
+        }).append($('<strong />', {
+            class: 'gr-3',
+            text: localize('Tick')
+        })).append($('<strong />', {
+            class: 'gr-3',
+            text: localize('Spot')
+        })).append($('<strong />', {
+            class: 'gr-6',
+            text: localize('Spot Time (GMT)')
+        })))).append($('<div />', {
+            class: 'digit-ticker invisible',
+            id: 'digit_ticker_container'
+        }));
+        LoadingSpinner.show('table_digits');
+    };
 
-        if (contract.exit_tick_time) {
-            request.end = +contract.exit_tick_time;
-            request.count = +contract.tick_count;
-            if (+contract.tick_count === 1) {
-                request.end += 1; // TODO: API sends the improper response when end and start are the same for 1 tick contracts. remove this block on fix
-            }
-        } else {
-            request.subscribe = 1;
-            request.end = 'latest';
+    var calculateTableHeight = function calculateTableHeight(proposal_open_contract) {
+        return (proposal_open_contract.tick_count + 1) * 40;
+    };
+
+    var renderTable = function renderTable(id_render, poc) {
+        var el_tick_chart = document.getElementById(id_render);
+        if (!el_tick_chart || el_tick_chart.childElementCount < 3) return;
+
+        if (DigitTicker.isInitialized()) {
+            DigitTicker.update(poc.tick_stream.length, {
+                quote: poc.status !== 'open' ? poc.exit_tick : poc.current_spot,
+                epoch: +poc.exit_tick_time || +poc.current_spot_time
+            });
         }
+
+        var el_container = document.getElementById('table_digits');
+        if (el_container.childElementCount > 3) {
+            el_container.innerHTML = '';
+            el_container.append(createHeadingElements());
+        }
+
+        ViewPopupUI.storeSubscriptionID(poc.id);
+        LoadingSpinner.hide('table_digits');
+        poc.tick_stream.forEach(function (tick, index) {
+            $('#table_digits').append(renderRow(tick, index + 1, poc.tick_count));
+        });
+        showLocalTimeOnHover('.digit-spot-time');
+    };
+
+    var createCounterElement = function createCounterElement(csv_spot, index, total) {
+        var el_counter = document.createElement('p');
+        el_counter.classList.add('gr-3', 'gray');
+        el_counter.innerHTML = index === total ? csv_spot.slice(0, csv_spot.length - 1) + '<strong>' + csv_spot.substr(-1) + '</strong>' : csv_spot;
+        return el_counter;
+    };
+
+    var createIndexElement = function createIndexElement(index) {
+        var el_index = document.createElement('p');
+        el_index.classList.add('gr-3');
+        el_index.innerText = index;
+        return el_index;
+    };
+
+    var createSpotElement = function createSpotElement(tick) {
+        var el_spot = document.createElement('p');
+        'gr-6 gray digit-spot-time no-underline'.split(' ').forEach(function (class_name) {
+            el_spot.classList.add(class_name);
+        });
+        el_spot.innerText = moment(+tick.epoch * 1000).utc().format('YYYY-MM-DD HH:mm:ss');
+        return el_spot;
+    };
+
+    var renderRow = function renderRow(tick, index, total) {
+        var csv_spot = addComma(tick.tick);
+        var el_fragment = document.createDocumentFragment();
+        el_fragment.append(createIndexElement(index));
+        el_fragment.append(createCounterElement(csv_spot, index, total));
+        el_fragment.append(createSpotElement(tick));
+
+        return el_fragment;
+    };
+
+    var createHeadingElements = function createHeadingElements() {
+        var tick = document.createElement('strong');
+        var spot = document.createElement('strong');
+        var spot_time = document.createElement('strong');
+
+        tick.innerText = localize('Tick');
+        tick.classList.add('gr-3');
+
+        spot.innerText = localize('Spot');
+        spot.classList.add('gr-3');
+
+        spot_time.innerText = localize('Spot Time (GMT)');
+        spot_time.classList.add('gr-6');
+
+        var fragment = document.createDocumentFragment();
+        fragment.append(tick, spot, spot_time);
+
+        return fragment;
     };
 
     var init = function init(id_render, proposal_open_contract) {
-        var calculated_height = (proposal_open_contract.tick_count + 1) * 40;
-
-        tick_count = 1;
-        contract = proposal_open_contract;
-        spot_times = [];
-
-        $container = $('#' + id_render);
-        $container.addClass('normal-font').html($('<h5 />', { text: contract.display_name, class: 'center-text' })).append($('<div />', { class: 'gr-8 gr-centered gr-12-m', style: 'height: ' + calculated_height + 'px;' }).append($('<div />', { class: 'gr-row', id: 'table_digits' }).append($('<strong />', { class: 'gr-3', text: localize('Tick') })).append($('<strong />', { class: 'gr-3', text: localize('Spot') })).append($('<strong />', { class: 'gr-6', text: localize('Spot Time (GMT)') })))).append($('<div />', { class: 'digit-ticker invisible', id: 'digit_ticker_container' }));
-        LoadingSpinner.show('table_digits');
-
-        DigitTicker.init('digit_ticker_container', contract.contract_type, contract.shortcode, contract.tick_count, contract.status);
-
-        var request = {
-            ticks_history: contract.underlying,
-            start: +contract.entry_tick_time
-        };
-
-        subscribe(request);
-
-        BinarySocket.send(request, { callback: update });
+        initTable(id_render, calculateTableHeight(proposal_open_contract), proposal_open_contract);
+        DigitTicker.init('digit_ticker_container', proposal_open_contract.contract_type, proposal_open_contract.shortcode, proposal_open_contract.tick_count, proposal_open_contract.status);
+        renderTable(id_render, proposal_open_contract);
     };
-
-    var updateTable = function updateTable(spot, time) {
-        if (spot_times.some(function (item) {
-            return item.spot === spot && item.time === time;
-        })) {
-            return;
-        }
-        if (spot_times.filter(function (spot_time) {
-            return spot_time.spot === spot && spot_time.time === time;
-        }).length !== 0) {
-            return;
-        }
-
-        spot_times.push({
-            spot: spot,
-            time: time
-        });
-
-        $container.find('#table_digits').append($('<p />', { class: 'gr-3', text: tick_count })).append($('<p />', { class: 'gr-3 gray', html: tick_count === contract.tick_count ? spot.slice(0, spot.length - 1) + '<strong>' + spot.substr(-1) + '</strong>' : spot })).append($('<p />', { class: 'gr-6 gray digit-spot-time no-underline', text: moment(+time * 1000).utc().format('YYYY-MM-DD HH:mm:ss') }));
-
-        DigitTicker.update(tick_count, {
-            quote: contract.status !== 'open' ? contract.exit_tick : spot,
-            epoch: +contract.exit_tick_time || +contract.current_spot_time
-        });
-    };
-
-    var update = function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response) {
-            var pip_size, _pip_size;
-
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            if (!(!$container.is(':visible') || !response || !response.tick && !response.history)) {
-                                _context.next = 2;
-                                break;
-                            }
-
-                            return _context.abrupt('return');
-
-                        case 2:
-
-                            if (getPropertyValue(response, ['tick', 'id']) && document.getElementById('sell_content_wrapper')) {
-                                ViewPopupUI.storeSubscriptionID(response.tick.id);
-                            }
-                            LoadingSpinner.hide('table_digits');
-
-                            if (!response.history) {
-                                _context.next = 11;
-                                break;
-                            }
-
-                            _context.next = 7;
-                            return getUnderlyingPipSize(response.echo_req.ticks_history);
-
-                        case 7:
-                            pip_size = _context.sent;
-
-                            response.history.times.some(function (time, idx) {
-                                if (+time >= +contract.entry_tick_time) {
-                                    updateTable(addComma(response.history.prices[idx], pip_size), time);
-                                    tick_count += 1;
-                                }
-                                return tick_count > contract.tick_count;
-                            });
-                            _context.next = 16;
-                            break;
-
-                        case 11:
-                            if (!response.tick) {
-                                _context.next = 16;
-                                break;
-                            }
-
-                            _context.next = 14;
-                            return getUnderlyingPipSize(response.tick.symbol);
-
-                        case 14:
-                            _pip_size = _context.sent;
-
-                            if (tick_count <= contract.tick_count && +response.tick.epoch >= +contract.entry_tick_time) {
-                                // Pass in response object to changeNumberToString and get string quote
-                                updateTable(addComma(response.tick.quote, _pip_size), response.tick.epoch);
-                                tick_count += 1;
-                            }
-
-                        case 16:
-
-                            showLocalTimeOnHover('.digit-spot-time');
-
-                        case 17:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, undefined);
-        }));
-
-        return function update(_x) {
-            return _ref.apply(this, arguments);
-        };
-    }();
 
     var end = function end(proposal_open_contract) {
         if (proposal_open_contract.status !== 'open') {
-            // if there is no exit tick inside proposal open contract, select a fallback from history instead.
-            var fallback_exit_tick = spot_times.find(function (spot) {
-                return +spot.time === +proposal_open_contract.exit_tick_time;
-            });
             DigitTicker.update(proposal_open_contract.tick_count, {
-                quote: proposal_open_contract.exit_tick || fallback_exit_tick.spot,
+                quote: proposal_open_contract.exit_tick || proposal_open_contract.tick_stream.slice(-1).tick,
                 epoch: +proposal_open_contract.exit_tick_time
             });
         }
@@ -22921,9 +22891,11 @@ var DigitDisplay = function () {
     };
 
     return {
+        calculateTableHeight: calculateTableHeight,
         end: end,
         init: init,
-        update: update
+        initTable: initTable,
+        renderTable: renderTable
     };
 }();
 
@@ -35706,9 +35678,14 @@ var ViewPopup = function () {
 
         var is_digit = /digit/i.test(contract.contract_type);
         if (is_digit) {
-            if (!chart_started) {
+            if (!chart_started && contract.entry_tick_time) {
                 DigitDisplay.init(id_tick_chart, contract);
                 if (contract.entry_tick_time) chart_started = true;
+            } else if (!chart_started && !contract.entry_tick_time) {
+                // Since the contract not started yet, display the loading table:
+                DigitDisplay.initTable(id_tick_chart, DigitDisplay.calculateTableHeight(contract), contract);
+            } else if (chart_started) {
+                DigitDisplay.renderTable(id_tick_chart, contract);
             }
         } else if (!chart_started && !contract.tick_count) {
             if (!chart_init) {
@@ -36685,6 +36662,66 @@ $(window).on('pageshow', function (e) {
 
 /***/ }),
 
+/***/ "./src/javascript/static/pages/affiliate_ib_landing.js":
+/*!*************************************************************!*\
+  !*** ./src/javascript/static/pages/affiliate_ib_landing.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Url = __webpack_require__(/*! ../../../javascript/_common/url.js */ "./src/javascript/_common/url.js");
+var TabSelector = __webpack_require__(/*! ../../_common/tab_selector */ "./src/javascript/_common/tab_selector.js");
+
+var AffiliateIBLanding = function () {
+    var onLoad = function onLoad() {
+        initializeTypeOfPartnersTab();
+    };
+
+    var initializeTypeOfPartnersTab = function initializeTypeOfPartnersTab() {
+        var navigation_tabs = $('.has-tabs').children('ul').find('li');
+        var params_hash = Url.paramsHash();
+
+        if (params_hash.tabs === undefined) {
+            Url.updateParamsWithoutReload({ tabs: getTabAnchorWithoutHashTag(navigation_tabs.first()) }, true);
+            $('.has-tabs').tabs();
+        } else {
+            navigation_tabs.each(function (index, element) {
+                var tabIndex = params_hash.tabs === getTabAnchorWithoutHashTag(element) && index;
+                $('.has-tabs').tabs({ active: tabIndex });
+            });
+        }
+
+        navigation_tabs.each(function (index, element) {
+            $(element).on('click', function () {
+                Url.updateParamsWithoutReload({ tabs: getTabAnchorWithoutHashTag(element) }, true);
+                TabSelector.repositionSelector();
+            });
+        });
+
+        TabSelector.onLoad();
+    };
+
+    var getTabAnchorWithoutHashTag = function getTabAnchorWithoutHashTag(element) {
+        return $(element).find('a').attr('href').replace('#', '');
+    };
+
+    var onUnload = function onUnload() {
+        TabSelector.onUnload();
+    };
+
+    return {
+        onLoad: onLoad,
+        onUnload: onUnload
+    };
+}();
+
+module.exports = AffiliateIBLanding;
+
+/***/ }),
+
 /***/ "./src/javascript/static/pages/contact.js":
 /*!************************************************!*\
   !*** ./src/javascript/static/pages/contact.js ***!
@@ -37269,7 +37306,6 @@ module.exports = Regulation;
 var tabListener = __webpack_require__(/*! @binary-com/binary-style */ "./node_modules/@binary-com/binary-style/binary.js").tabListener;
 var ImageSlider = __webpack_require__(/*! ../../_common/image_slider */ "./src/javascript/_common/image_slider.js");
 var MenuSelector = __webpack_require__(/*! ../../_common/menu_selector */ "./src/javascript/_common/menu_selector.js");
-var TabSelector = __webpack_require__(/*! ../../_common/tab_selector */ "./src/javascript/_common/tab_selector.js");
 var Scroll = __webpack_require__(/*! ../../_common/scroll */ "./src/javascript/_common/scroll.js");
 var handleHash = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").handleHash;
 var BinaryPjax = __webpack_require__(/*! ../../app/base/binary_pjax */ "./src/javascript/app/base/binary_pjax.js");
@@ -37323,14 +37359,6 @@ module.exports = {
             } else {
                 Header.upgradeMessageVisibility();
             }
-        }
-    },
-    AffiliatesIb: {
-        onLoad: function onLoad() {
-            $('.has-tabs').tabs();TabSelector.onLoad();
-        },
-        onUnload: function onUnload() {
-            TabSelector.onUnload();
         }
     },
     AffiliatesFAQ: {
