@@ -14150,9 +14150,11 @@ module.exports = Guide;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var getDecimalPlaces = __webpack_require__(/*! ./currency */ "./src/javascript/app/common/currency.js").getDecimalPlaces;
 var getUnderlyingPipSize = __webpack_require__(/*! ../pages/trade/symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
 var addComma = __webpack_require__(/*! ../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var isEmptyObject = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").isEmptyObject;
+var Client = __webpack_require__(/*! ../base/client */ "./src/javascript/app/base/client.js");
 
 var changePocNumbersToString = function changePocNumbersToString(response) {
     var _response$proposal_op = response.proposal_open_contract,
@@ -14170,6 +14172,7 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
 
     return new Promise(function (resolve) {
         getUnderlyingPipSize(response.proposal_open_contract.underlying).then(function (pip_size) {
+            var currency_decimal_places = getDecimalPlaces(Client.get('currency'));
             var toString = function toString(property) {
                 var has_comma = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
                 var decimal_places = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : pip_size;
@@ -14179,8 +14182,8 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
             var new_response = $.extend({}, _extends({}, response, {
                 proposal_open_contract: _extends({}, response.proposal_open_contract, {
                     barrier: barrier ? addComma(barrier).replace(',', '') : undefined, // Because `barrier` must not be displayed when zero
-                    bid_price: toString(bid_price),
-                    sell_price: toString(sell_price),
+                    bid_price: toString(bid_price, true, currency_decimal_places),
+                    sell_price: toString(sell_price, true, currency_decimal_places),
                     sell_spot: toString(sell_spot),
                     current_spot: toString(current_spot),
                     entry_spot: toString(entry_spot, false),
