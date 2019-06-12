@@ -14168,6 +14168,7 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
         exit_tick = _response$proposal_op.exit_tick,
         sell_price = _response$proposal_op.sell_price,
         sell_spot = _response$proposal_op.sell_spot,
+        tick_stream = _response$proposal_op.tick_stream,
         profit_percentage = _response$proposal_op.profit_percentage;
 
 
@@ -14210,6 +14211,20 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
                 new_response = $.extend({}, _extends({}, new_response, {
                     proposal_open_contract: _extends({}, new_response.proposal_open_contract, {
                         audit_details: formatAuditDetails(audit_details)
+                    })
+                }));
+            }
+
+            if (!isEmptyObject(tick_stream)) {
+                var formatTickStream = function formatTickStream(arr) {
+                    return arr.map(function (tick_obj) {
+                        return tick_obj.tick ? _extends({}, tick_obj, { tick: toString(tick_obj.tick) }) : tick_obj;
+                    });
+                };
+
+                new_response = $.extend({}, _extends({}, new_response, {
+                    proposal_open_contract: _extends({}, new_response.proposal_open_contract, {
+                        tick_stream: formatTickStream(tick_stream)
                     })
                 }));
             }
