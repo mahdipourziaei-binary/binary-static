@@ -24809,11 +24809,14 @@ module.exports = Tick;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var HighchartUI = __webpack_require__(/*! ./charts/highchart.ui */ "./src/javascript/app/pages/trade/charts/highchart.ui.js");
 var requireHighstock = __webpack_require__(/*! ./common */ "./src/javascript/app/pages/trade/common.js").requireHighstock;
 var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var Reset = __webpack_require__(/*! ./reset */ "./src/javascript/app/pages/trade/reset.js");
+var getUnderlyingPipSize = __webpack_require__(/*! ./symbols */ "./src/javascript/app/pages/trade/symbols.js").getUnderlyingPipSize;
 var Tick = __webpack_require__(/*! ./tick */ "./src/javascript/app/pages/trade/tick.js");
 var updatePurchaseStatus = __webpack_require__(/*! ./update_values */ "./src/javascript/app/pages/trade/update_values.js").updatePurchaseStatus;
 var ViewPopupUI = __webpack_require__(/*! ../user/view_popup/view_popup.ui */ "./src/javascript/app/pages/user/view_popup/view_popup.ui.js");
@@ -25120,141 +25123,240 @@ var TickDisplay = function () {
         applicable_ticks = [];
     };
 
-    var dispatch = function dispatch(data) {
-        var tick_chart = CommonFunctions.getElementById(id_render);
+    var dispatch = function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(data) {
+            var tick_chart, epoches, spots2, chart_display_decimals, category, has_finished, has_sold, d, tick, current_tick_count, points, indicator_key;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            tick_chart = CommonFunctions.getElementById(id_render);
 
-        if (!CommonFunctions.isVisible(tick_chart) || !data || !data.tick && !data.history) {
-            return;
-        }
+                            if (!(!CommonFunctions.isVisible(tick_chart) || !data || !data.tick && !data.history)) {
+                                _context.next = 3;
+                                break;
+                            }
 
-        if (getPropertyValue(data, ['tick', 'id']) && document.getElementById('sell_content_wrapper')) {
-            response_id = data.tick.id;
-            ViewPopupUI.storeSubscriptionID(response_id);
-        }
+                            return _context.abrupt('return');
 
-        var epoches = void 0,
-            spots2 = void 0,
-            chart_display_decimals = void 0;
+                        case 3:
 
-        if (document.getElementById('sell_content_wrapper')) {
-            if (!chart_display_decimals) {
-                // We're getting the pip size based on standard `display_value` provided by API
-                chart_display_decimals = countDecimalPlaces(contract.display_value);
-            }
-            if (data.tick) {
-                Tick.details(data);
-            }
-            if (!tick_init && contract) {
-                var category = 'callput';
-                if (/asian/i.test(contract.shortcode)) {
-                    category = 'asian';
-                } else if (/touch/i.test(contract.shortcode)) {
-                    category = 'touchnotouch';
-                } else if (/reset/i.test(contract.shortcode)) {
-                    category = 'reset';
-                } else if (/^(tickhigh|ticklow)_/i.test(contract.shortcode)) {
-                    category = 'highlowticks';
-                } else if (/^(runhigh|runlow)/i.test(contract.shortcode)) {
-                    category = 'runs';
-                }
+                            if (getPropertyValue(data, ['tick', 'id']) && document.getElementById('sell_content_wrapper')) {
+                                response_id = data.tick.id;
+                                ViewPopupUI.storeSubscriptionID(response_id);
+                            }
 
-                initialize({
-                    barrier: barrier,
-                    symbol: contract.underlying,
-                    number_of_ticks: contract.tick_count,
-                    contract_category: category,
-                    longcode: contract.longcode,
-                    display_symbol: contract.display_name,
-                    contract_start: contract.date_start,
-                    display_decimals: chart_display_decimals,
-                    shortcode: contract.shortcode,
-                    show_contract_result: 0
-                }, data);
-                spots_list = {};
-                tick_init = 'initialized';
-                return;
-            }
-        }
+                            epoches = void 0, spots2 = void 0, chart_display_decimals = void 0;
 
-        if (data.tick) {
-            spots2 = Tick.spots();
-            epoches = Object.keys(spots2).sort(function (a, b) {
-                return a - b;
-            });
-        } else if (data.history) {
-            epoches = data.history.times;
-        }
+                            if (!document.getElementById('sell_content_wrapper')) {
+                                _context.next = 30;
+                                break;
+                            }
 
-        var has_finished = applicable_ticks && ticks_needed && applicable_ticks.length >= ticks_needed;
-        if (contract_category.match('runs')) {
-            has_finished = applicable_ticks.length && contract.exit_tick_time || false;
-        }
-        var has_sold = contract && contract.exit_tick_time && applicable_ticks && applicable_ticks.find(function (_ref) {
-            var epoch = _ref.epoch;
-            return +epoch === +contract.exit_tick_time;
-        }) !== undefined;
+                            if (chart_display_decimals) {
+                                _context.next = 22;
+                                break;
+                            }
 
-        if (!has_finished && !has_sold && (!data.tick || !contract.status || contract.status === 'open')) {
-            for (var d = 0; d < epoches.length; d++) {
-                var tick = void 0;
-                if (data.tick) {
-                    tick = {
-                        epoch: parseInt(epoches[d]),
-                        quote: parseFloat(spots2[epoches[d]])
-                    };
-                } else if (data.history) {
-                    tick = {
-                        epoch: parseInt(data.history.times[d]),
-                        quote: parseFloat(data.history.prices[d])
-                    };
-                }
+                            if (!(countDecimalPlaces(contract.display_value) || data.history)) {
+                                _context.next = 13;
+                                break;
+                            }
 
-                var current_tick_count = applicable_ticks.length + 1;
+                            _context.next = 10;
+                            return getUnderlyingPipSize(data.echo_req.ticks_history);
 
-                if (contract_start_moment && tick.epoch > contract_start_moment.unix() && !spots_list[tick.epoch]) {
-                    if (!chart || !chart.series) return;
-                    chart.series[0].addPoint([counter, tick.quote], true, false);
+                        case 10:
+                            _context.t0 = _context.sent;
+                            _context.next = 21;
+                            break;
 
-                    if (+selected_tick === current_tick_count) {
-                        var points = chart.series[0].points;
-                        points[points.length - 1].update({ marker: marker });
+                        case 13:
+                            if (!data.tick) {
+                                _context.next = 19;
+                                break;
+                            }
+
+                            _context.next = 16;
+                            return getUnderlyingPipSize(data.echo_req.ticks);
+
+                        case 16:
+                            _context.t1 = _context.sent;
+                            _context.next = 20;
+                            break;
+
+                        case 19:
+                            _context.t1 = Tick.pipSize();
+
+                        case 20:
+                            _context.t0 = _context.t1;
+
+                        case 21:
+                            chart_display_decimals = _context.t0;
+
+                        case 22:
+                            if (data.tick) {
+                                Tick.details(data);
+                            }
+
+                            if (!(!tick_init && contract)) {
+                                _context.next = 30;
+                                break;
+                            }
+
+                            category = 'callput';
+
+                            if (/asian/i.test(contract.shortcode)) {
+                                category = 'asian';
+                            } else if (/touch/i.test(contract.shortcode)) {
+                                category = 'touchnotouch';
+                            } else if (/reset/i.test(contract.shortcode)) {
+                                category = 'reset';
+                            } else if (/^(tickhigh|ticklow)_/i.test(contract.shortcode)) {
+                                category = 'highlowticks';
+                            } else if (/^(runhigh|runlow)/i.test(contract.shortcode)) {
+                                category = 'runs';
+                            }
+
+                            initialize({
+                                barrier: barrier,
+                                symbol: contract.underlying,
+                                number_of_ticks: contract.tick_count,
+                                contract_category: category,
+                                longcode: contract.longcode,
+                                display_symbol: contract.display_name,
+                                contract_start: contract.date_start,
+                                display_decimals: chart_display_decimals,
+                                shortcode: contract.shortcode,
+                                show_contract_result: 0
+                            }, data);
+                            spots_list = {};
+                            tick_init = 'initialized';
+                            return _context.abrupt('return');
+
+                        case 30:
+
+                            if (data.tick) {
+                                spots2 = Tick.spots();
+                                epoches = Object.keys(spots2).sort(function (a, b) {
+                                    return a - b;
+                                });
+                            } else if (data.history) {
+                                epoches = data.history.times;
+                            }
+
+                            has_finished = applicable_ticks && ticks_needed && applicable_ticks.length >= ticks_needed;
+
+                            if (contract_category.match('runs')) {
+                                has_finished = applicable_ticks.length && contract.exit_tick_time || false;
+                            }
+                            has_sold = contract && contract.exit_tick_time && applicable_ticks && applicable_ticks.find(function (_ref2) {
+                                var epoch = _ref2.epoch;
+                                return +epoch === +contract.exit_tick_time;
+                            }) !== undefined;
+
+                            if (!(!has_finished && !has_sold && (!data.tick || !contract.status || contract.status === 'open'))) {
+                                _context.next = 56;
+                                break;
+                            }
+
+                            d = 0;
+
+                        case 36:
+                            if (!(d < epoches.length)) {
+                                _context.next = 55;
+                                break;
+                            }
+
+                            tick = void 0;
+
+                            if (data.tick) {
+                                tick = {
+                                    epoch: parseInt(epoches[d]),
+                                    quote: parseFloat(spots2[epoches[d]])
+                                };
+                            } else if (data.history) {
+                                tick = {
+                                    epoch: parseInt(data.history.times[d]),
+                                    quote: parseFloat(data.history.prices[d])
+                                };
+                            }
+
+                            current_tick_count = applicable_ticks.length + 1;
+
+                            if (!(contract_start_moment && tick.epoch > contract_start_moment.unix() && !spots_list[tick.epoch])) {
+                                _context.next = 52;
+                                break;
+                            }
+
+                            if (!(!chart || !chart.series)) {
+                                _context.next = 43;
+                                break;
+                            }
+
+                            return _context.abrupt('return');
+
+                        case 43:
+                            chart.series[0].addPoint([counter, tick.quote], true, false);
+
+                            if (+selected_tick === current_tick_count) {
+                                points = chart.series[0].points;
+
+                                points[points.length - 1].update({ marker: marker });
+                            }
+
+                            applicable_ticks.push(tick);
+                            spots_list[tick.epoch] = tick.quote;
+                            indicator_key = '_' + counter;
+
+
+                            if (!x_indicators[indicator_key] && tick.epoch === +contract.exit_tick_time) {
+                                x_indicators[indicator_key] = {
+                                    index: counter,
+                                    label: localize('Exit Spot'),
+                                    dashStyle: 'Dash'
+                                };
+                            } else if (current_tick_count === ticks_needed) {
+                                HighchartUI.updateLabels(chart, {
+                                    contract_type: contract_category,
+                                    has_barrier: false,
+                                    is_reset_barrier: false,
+                                    is_tick_trade: true,
+                                    shortcode: contract.shortcode,
+                                    show_end_time: true
+                                });
+                            }
+
+                            if (typeof x_indicators[indicator_key] !== 'undefined') {
+                                x_indicators[indicator_key].index = counter;
+                                add(x_indicators[indicator_key]);
+                            }
+
+                            addBarrier();
+                            counter++;
+
+                        case 52:
+                            d++;
+                            _context.next = 36;
+                            break;
+
+                        case 55:
+                            if (Reset.isReset(contract_category) && data.history) {
+                                plotResetSpot();
+                            }
+
+                        case 56:
+                        case 'end':
+                            return _context.stop();
                     }
-
-                    applicable_ticks.push(tick);
-                    spots_list[tick.epoch] = tick.quote;
-                    var indicator_key = '_' + counter;
-
-                    if (!x_indicators[indicator_key] && tick.epoch === +contract.exit_tick_time) {
-                        x_indicators[indicator_key] = {
-                            index: counter,
-                            label: localize('Exit Spot'),
-                            dashStyle: 'Dash'
-                        };
-                    } else if (current_tick_count === ticks_needed) {
-                        HighchartUI.updateLabels(chart, {
-                            contract_type: contract_category,
-                            has_barrier: false,
-                            is_reset_barrier: false,
-                            is_tick_trade: true,
-                            shortcode: contract.shortcode,
-                            show_end_time: true
-                        });
-                    }
-
-                    if (typeof x_indicators[indicator_key] !== 'undefined') {
-                        x_indicators[indicator_key].index = counter;
-                        add(x_indicators[indicator_key]);
-                    }
-
-                    addBarrier();
-                    counter++;
                 }
-            }
-            if (Reset.isReset(contract_category) && data.history) {
-                plotResetSpot();
-            }
-        }
-    };
+            }, _callee, undefined);
+        }));
+
+        return function dispatch(_x) {
+            return _ref.apply(this, arguments);
+        };
+    }();
 
     var removePlotLine = function removePlotLine(id) {
         var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'y';
@@ -25311,8 +25413,8 @@ var TickDisplay = function () {
     var addExitSpot = function addExitSpot() {
         if (!applicable_ticks || !contract) return;
 
-        var index = applicable_ticks.findIndex(function (_ref2) {
-            var epoch = _ref2.epoch;
+        var index = applicable_ticks.findIndex(function (_ref3) {
+            var epoch = _ref3.epoch;
             return epoch === +contract.exit_tick_time;
         });
 
