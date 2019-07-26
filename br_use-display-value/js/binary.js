@@ -14146,14 +14146,23 @@ module.exports = Guide;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var getDecimalPlaces = __webpack_require__(/*! ./currency */ "./src/javascript/app/common/currency.js").getDecimalPlaces;
-var addComma = __webpack_require__(/*! ../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var Client = __webpack_require__(/*! ../base/client */ "./src/javascript/app/base/client.js");
+var addComma = __webpack_require__(/*! ../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
+var isEmptyObject = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").isEmptyObject;
 
 var changePocNumbersToString = function changePocNumbersToString(response) {
     var _response$proposal_op = response.proposal_open_contract,
+        audit_details = _response$proposal_op.audit_details,
         barrier = _response$proposal_op.barrier,
         bid_price = _response$proposal_op.bid_price,
+        current_spot_display_value = _response$proposal_op.current_spot_display_value,
+        display_value = _response$proposal_op.display_value,
+        entry_spot_display_value = _response$proposal_op.entry_spot_display_value,
+        entry_tick_display_value = _response$proposal_op.entry_tick_display_value,
+        exit_tick_display_value = _response$proposal_op.exit_tick_display_value,
         sell_price = _response$proposal_op.sell_price,
+        sell_spot_display_value = _response$proposal_op.sell_spot_display_value,
+        tick_stream = _response$proposal_op.tick_stream,
         profit_percentage = _response$proposal_op.profit_percentage;
 
 
@@ -14162,14 +14171,56 @@ var changePocNumbersToString = function changePocNumbersToString(response) {
         return property || property === 0 ? addComma(property, decimal_places) : undefined;
     };
 
-    return $.extend({}, _extends({}, response, {
+    var modded_response = $.extend({}, _extends({}, response, {
         proposal_open_contract: _extends({}, response.proposal_open_contract, {
             barrier: barrier ? addComma(barrier).replace(/,/g, '') : undefined, // Because `barrier` must not be displayed when zero
             bid_price: toString(bid_price, currency_decimal_places),
             sell_price: toString(sell_price, currency_decimal_places),
-            profit_percentage: toString(profit_percentage, 2)
+            profit_percentage: toString(profit_percentage, 2),
+            current_spot_display_value: current_spot_display_value ? addComma(current_spot_display_value) : undefined,
+            display_value: display_value ? addComma(display_value) : undefined,
+            entry_spot_display_value: entry_spot_display_value ? addComma(entry_spot_display_value) : undefined,
+            entry_tick_display_value: entry_tick_display_value ? addComma(entry_tick_display_value) : undefined,
+            exit_tick_display_value: exit_tick_display_value ? addComma(exit_tick_display_value) : undefined,
+            sell_spot_display_value: sell_spot_display_value ? addComma(sell_spot_display_value) : undefined
         })
     }));
+
+    if (!isEmptyObject(audit_details)) {
+        var formatAuditDetails = function formatAuditDetails(obj) {
+            var modded_obj = _extends({}, obj);
+
+            Object.keys(obj).forEach(function (key) {
+                modded_obj[key] = modded_obj[key].map(function (tick_obj) {
+                    return tick_obj.tick ? _extends({}, tick_obj, { tick_display_value: addComma(tick_obj.tick_display_value) }) : tick_obj;
+                });
+            });
+
+            return modded_obj;
+        };
+
+        modded_response = $.extend({}, _extends({}, modded_response, {
+            proposal_open_contract: _extends({}, modded_response.proposal_open_contract, {
+                audit_details: formatAuditDetails(audit_details)
+            })
+        }));
+    }
+
+    if (!isEmptyObject(tick_stream)) {
+        var formatTickStream = function formatTickStream(arr) {
+            return arr.map(function (tick_obj) {
+                return tick_obj.tick ? _extends({}, tick_obj, { tick_display_value: addComma(tick_obj.tick_display_value) }) : tick_obj;
+            });
+        };
+
+        modded_response = $.extend({}, _extends({}, modded_response, {
+            proposal_open_contract: _extends({}, modded_response.proposal_open_contract, {
+                tick_stream: formatTickStream(tick_stream)
+            })
+        }));
+    }
+
+    return modded_response;
 };
 
 module.exports = {
@@ -17103,6 +17154,7 @@ var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/
 var Contract = __webpack_require__(/*! ./contract */ "./src/javascript/app/pages/trade/contract.js");
 var Defaults = __webpack_require__(/*! ./defaults */ "./src/javascript/app/pages/trade/defaults.js");
 var Tick = __webpack_require__(/*! ./tick */ "./src/javascript/app/pages/trade/tick.js");
+var addComma = __webpack_require__(/*! ../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").addComma;
 var elementTextContent = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").elementTextContent;
 var getElementById = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var isVisible = __webpack_require__(/*! ../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").isVisible;
@@ -17164,7 +17216,7 @@ var Barriers = function () {
                         span.style.display = 'none';
                         tooltip.style.display = 'inherit';
                         if (current_tick && !isNaN(current_tick)) {
-                            elementTextContent(indicative_barrier_tooltip, (parseFloat(current_tick) + parseFloat(barrier_def)).toFixed(decimal_places));
+                            elementTextContent(indicative_barrier_tooltip, addComma(parseFloat(current_tick) + parseFloat(barrier_def), decimal_places));
                         } else {
                             elementTextContent(indicative_barrier_tooltip, '');
                         }
@@ -21960,11 +22012,11 @@ var getActiveTab = function getActiveTab(item) {
     var selected_tab = sessionStorage.getItem(tab) || default_tab;
     var selected_element = document.getElementById(selected_tab);
     if (!selected_element) {
-        selected_tab = 'tab_explanation';
+        selected_tab = default_tab;
         selected_element = document.getElementById(selected_tab);
     }
 
-    if (selected_element && selected_element.classList.contains('invisible') && item) {
+    if (selected_element && selected_element.classList.contains('invisible') || selected_element && selected_element.classList.contains('invisible') && item) {
         selected_tab = default_tab;
         sessionStorage.setItem(tab, selected_tab);
     }
@@ -24666,7 +24718,7 @@ var Tick = function () {
             if (isVisible(indicative_barrier_tooltip) && String(barrier_element.value).match(/^[+-]/)) {
                 var barrier_value = isNaN(parseFloat(barrier_element.value)) ? 0 : parseFloat(barrier_element.value);
 
-                indicative_barrier_tooltip.textContent = (parseFloat(current_tick) + barrier_value).toFixed(decimal_places);
+                indicative_barrier_tooltip.textContent = addComma(parseFloat(current_tick) + barrier_value, decimal_places);
                 tooltip.style.display = 'inherit';
                 span.style.display = 'none';
             } else {
