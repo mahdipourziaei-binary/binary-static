@@ -17150,7 +17150,6 @@ module.exports = TradingAnalysis;
 
 
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var Contract = __webpack_require__(/*! ./contract */ "./src/javascript/app/pages/trade/contract.js");
 var Defaults = __webpack_require__(/*! ./defaults */ "./src/javascript/app/pages/trade/defaults.js");
 var Tick = __webpack_require__(/*! ./tick */ "./src/javascript/app/pages/trade/tick.js");
@@ -17183,7 +17182,7 @@ var Barriers = function () {
             var barrier = barriers[form_name][is_daily ? 'daily' : 'intraday'];
             if (barrier) {
                 var current_tick = Tick.quote();
-                var decimal_places = countDecimalPlaces(current_tick);
+                var decimal_places = Tick.pipSize();
 
                 var indicative_barrier_tooltip = getElementById('indicative_barrier_tooltip');
                 var indicative_high_barrier_tooltip = getElementById('indicative_high_barrier_tooltip');
@@ -24714,7 +24713,7 @@ var Tick = function () {
 
         var end_time = getElementById('expiry_date');
         if (unit && (!isVisible(unit) || unit.value !== 'd') && current_tick && !isNaN(current_tick) && end_time && (!isVisible(end_time) || moment(end_time.getAttribute('data-value')).isBefore(moment().add(1, 'day'), 'day'))) {
-            var decimal_places = countDecimalPlaces(current_tick);
+            var decimal_places = Tick.pipSize();
             if (isVisible(indicative_barrier_tooltip) && String(barrier_element.value).match(/^[+-]/)) {
                 var barrier_value = isNaN(parseFloat(barrier_element.value)) ? 0 : parseFloat(barrier_element.value);
 
@@ -24813,6 +24812,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 var HighchartUI = __webpack_require__(/*! ./charts/highchart.ui */ "./src/javascript/app/pages/trade/charts/highchart.ui.js");
 var requireHighstock = __webpack_require__(/*! ./common */ "./src/javascript/app/pages/trade/common.js").requireHighstock;
+var countDecimalPlaces = __webpack_require__(/*! ./common_independent */ "./src/javascript/app/pages/trade/common_independent.js").countDecimalPlaces;
 var Reset = __webpack_require__(/*! ./reset */ "./src/javascript/app/pages/trade/reset.js");
 var Tick = __webpack_require__(/*! ./tick */ "./src/javascript/app/pages/trade/tick.js");
 var updatePurchaseStatus = __webpack_require__(/*! ./update_values */ "./src/javascript/app/pages/trade/update_values.js").updatePurchaseStatus;
@@ -25120,10 +25120,6 @@ var TickDisplay = function () {
         applicable_ticks = [];
     };
 
-    var getDecimalPlaces = function getDecimalPlaces(number) {
-        return number.toString().split('.')[1].length || 2;
-    };
-
     var dispatch = function dispatch(data) {
         var tick_chart = CommonFunctions.getElementById(id_render);
 
@@ -25141,15 +25137,12 @@ var TickDisplay = function () {
             chart_display_decimals = void 0;
 
         if (document.getElementById('sell_content_wrapper')) {
+            if (!chart_display_decimals) {
+                // We're getting the pip size based on standard `display_value` provided by API
+                chart_display_decimals = countDecimalPlaces(contract.display_value);
+            }
             if (data.tick) {
                 Tick.details(data);
-                if (!chart_display_decimals) {
-                    chart_display_decimals = getDecimalPlaces(data.tick.quote);
-                }
-            } else if (data.history) {
-                if (!chart_display_decimals) {
-                    chart_display_decimals = getDecimalPlaces(data.history.prices[0]);
-                }
             }
             if (!tick_init && contract) {
                 var category = 'callput';
