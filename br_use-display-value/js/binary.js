@@ -24036,17 +24036,7 @@ var Purchase = function () {
         if (show_chart && has_chart) {
             // calculate number of decimals needed to display tick-chart according to the spot
             // value of the underlying
-            var decimal_points = 2;
-            var tick_spots = Tick.spots();
-            var tick_spot_epochs = Object.keys(tick_spots);
-            if (tick_spot_epochs.length > 0) {
-                var last_quote = tick_spots[tick_spot_epochs[0]].toString();
-
-                if (last_quote.indexOf('.') !== -1) {
-                    decimal_points = last_quote.split('.')[1].length;
-                }
-            }
-
+            var decimal_points = Tick.pipSize();
             var category = sessionStorage.getItem('formname');
             if (/^(risefall|higherlower)$/.test(category)) {
                 category = 'callput';
@@ -25125,7 +25115,8 @@ var TickDisplay = function () {
 
     var dispatch = function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(data) {
-            var tick_chart, epoches, spots2, chart_display_decimals, category, has_finished, has_sold, d, tick, current_tick_count, points, indicator_key;
+            var tick_chart, epoches, spots2, chart_display_decimals, _contract, entry_spot_display_value, entry_tick_display_value, exit_tick_display_value, sell_spot_display_value, available_display_value, available_underlying, category, has_finished, has_sold, d, tick, current_tick_count, points, indicator_key;
+
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -25149,58 +25140,52 @@ var TickDisplay = function () {
                             epoches = void 0, spots2 = void 0, chart_display_decimals = void 0;
 
                             if (!document.getElementById('sell_content_wrapper')) {
-                                _context.next = 30;
+                                _context.next = 27;
                                 break;
                             }
 
                             if (chart_display_decimals) {
-                                _context.next = 22;
-                                break;
-                            }
-
-                            if (!(countDecimalPlaces(contract.display_value) || data.history)) {
-                                _context.next = 13;
-                                break;
-                            }
-
-                            _context.next = 10;
-                            return getUnderlyingPipSize(data.echo_req.ticks_history);
-
-                        case 10:
-                            _context.t0 = _context.sent;
-                            _context.next = 21;
-                            break;
-
-                        case 13:
-                            if (!data.tick) {
                                 _context.next = 19;
                                 break;
                             }
 
-                            _context.next = 16;
-                            return getUnderlyingPipSize(data.echo_req.ticks);
+                            // We're getting the pip size based on standard `display_value` provided by API
+                            _contract = contract, entry_spot_display_value = _contract.entry_spot_display_value, entry_tick_display_value = _contract.entry_tick_display_value, exit_tick_display_value = _contract.exit_tick_display_value, sell_spot_display_value = _contract.sell_spot_display_value;
+                            available_display_value = entry_spot_display_value || entry_tick_display_value || exit_tick_display_value || sell_spot_display_value;
+                            available_underlying = data.echo_req.ticks_history || data.echo_req.ticks || data.tick.symbol;
+                            _context.t1 = countDecimalPlaces(available_display_value);
 
-                        case 16:
+                            if (_context.t1) {
+                                _context.next = 15;
+                                break;
+                            }
+
+                            _context.next = 14;
+                            return getUnderlyingPipSize(available_underlying);
+
+                        case 14:
                             _context.t1 = _context.sent;
-                            _context.next = 20;
-                            break;
 
-                        case 19:
-                            _context.t1 = Tick.pipSize();
-
-                        case 20:
+                        case 15:
                             _context.t0 = _context.t1;
 
-                        case 21:
+                            if (_context.t0) {
+                                _context.next = 18;
+                                break;
+                            }
+
+                            _context.t0 = Tick.pipSize();
+
+                        case 18:
                             chart_display_decimals = _context.t0;
 
-                        case 22:
+                        case 19:
                             if (data.tick) {
                                 Tick.details(data);
                             }
 
                             if (!(!tick_init && contract)) {
-                                _context.next = 30;
+                                _context.next = 27;
                                 break;
                             }
 
@@ -25234,7 +25219,7 @@ var TickDisplay = function () {
                             tick_init = 'initialized';
                             return _context.abrupt('return');
 
-                        case 30:
+                        case 27:
 
                             if (data.tick) {
                                 spots2 = Tick.spots();
@@ -25256,15 +25241,15 @@ var TickDisplay = function () {
                             }) !== undefined;
 
                             if (!(!has_finished && !has_sold && (!data.tick || !contract.status || contract.status === 'open'))) {
-                                _context.next = 56;
+                                _context.next = 53;
                                 break;
                             }
 
                             d = 0;
 
-                        case 36:
+                        case 33:
                             if (!(d < epoches.length)) {
-                                _context.next = 55;
+                                _context.next = 52;
                                 break;
                             }
 
@@ -25285,18 +25270,18 @@ var TickDisplay = function () {
                             current_tick_count = applicable_ticks.length + 1;
 
                             if (!(contract_start_moment && tick.epoch > contract_start_moment.unix() && !spots_list[tick.epoch])) {
-                                _context.next = 52;
+                                _context.next = 49;
                                 break;
                             }
 
                             if (!(!chart || !chart.series)) {
-                                _context.next = 43;
+                                _context.next = 40;
                                 break;
                             }
 
                             return _context.abrupt('return');
 
-                        case 43:
+                        case 40:
                             chart.series[0].addPoint([counter, tick.quote], true, false);
 
                             if (+selected_tick === current_tick_count) {
@@ -25335,17 +25320,17 @@ var TickDisplay = function () {
                             addBarrier();
                             counter++;
 
-                        case 52:
+                        case 49:
                             d++;
-                            _context.next = 36;
+                            _context.next = 33;
                             break;
 
-                        case 55:
+                        case 52:
                             if (Reset.isReset(contract_category) && data.history) {
                                 plotResetSpot();
                             }
 
-                        case 56:
+                        case 53:
                         case 'end':
                             return _context.stop();
                     }
