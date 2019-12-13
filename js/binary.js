@@ -9894,6 +9894,7 @@ var Redirect = __webpack_require__(/*! ./redirect */ "./src/javascript/app/base/
 var AccountTransfer = __webpack_require__(/*! ../pages/cashier/account_transfer */ "./src/javascript/app/pages/cashier/account_transfer.js");
 var Cashier = __webpack_require__(/*! ../pages/cashier/cashier */ "./src/javascript/app/pages/cashier/cashier.js");
 var DepositWithdraw = __webpack_require__(/*! ../pages/cashier/deposit_withdraw */ "./src/javascript/app/pages/cashier/deposit_withdraw.js");
+var DP2P = __webpack_require__(/*! ../pages/cashier/dp2p */ "./src/javascript/app/pages/cashier/dp2p.js");
 var PaymentAgentList = __webpack_require__(/*! ../pages/cashier/payment_agent_list */ "./src/javascript/app/pages/cashier/payment_agent_list.js");
 var PaymentAgentWithdraw = __webpack_require__(/*! ../pages/cashier/payment_agent_withdraw */ "./src/javascript/app/pages/cashier/payment_agent_withdraw.js");
 var Endpoint = __webpack_require__(/*! ../pages/endpoint */ "./src/javascript/app/pages/endpoint.js");
@@ -9940,7 +9941,6 @@ var Contact = __webpack_require__(/*! ../../static/pages/contact */ "./src/javas
 var Contact2 = __webpack_require__(/*! ../../static/pages/contact_2 */ "./src/javascript/static/pages/contact_2.js");
 var GetStarted = __webpack_require__(/*! ../../static/pages/get_started */ "./src/javascript/static/pages/get_started.js");
 var Home = __webpack_require__(/*! ../../static/pages/home */ "./src/javascript/static/pages/home.js");
-var DP2P = __webpack_require__(/*! ../../static/pages/dp2p */ "./src/javascript/static/pages/dp2p.js");
 var JobDetails = __webpack_require__(/*! ../../static/pages/job_details */ "./src/javascript/static/pages/job_details.js");
 var Platforms = __webpack_require__(/*! ../../static/pages/platforms */ "./src/javascript/static/pages/platforms.js");
 var Regulation = __webpack_require__(/*! ../../static/pages/regulation */ "./src/javascript/static/pages/regulation.js");
@@ -9969,6 +9969,7 @@ var pages_config = {
     cyberjaya: { module: StaticPages.Locations },
     detailsws: { module: PersonalDetails, is_authenticated: true, needs_currency: true },
     download: { module: MetatraderDownloadUI },
+    dp2p: { module: DP2P, is_authenticated: true },
     dubai: { module: StaticPages.Locations },
     economic_calendar: { module: EconomicCalendar },
     endpoint: { module: Endpoint },
@@ -9977,7 +9978,6 @@ var pages_config = {
     forex: { module: GetStarted.Forex },
     forwardws: { module: DepositWithdraw, is_authenticated: true, only_real: true },
     home: { module: Home, not_authenticated: true },
-    dp2p: { module: DP2P, not_authenticated: true },
     iphistoryws: { module: IPHistory, is_authenticated: true },
     labuan: { module: StaticPages.Locations },
     landing_page: { module: StaticPages.LandingPage, is_authenticated: true, only_virtual: true },
@@ -15799,6 +15799,71 @@ var DepositWithdraw = function () {
 }();
 
 module.exports = DepositWithdraw;
+
+/***/ }),
+
+/***/ "./src/javascript/app/pages/cashier/dp2p.js":
+/*!**************************************************!*\
+  !*** ./src/javascript/app/pages/cashier/dp2p.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+var Client = __webpack_require__(/*! ../../base/client */ "./src/javascript/app/base/client.js");
+var BinarySocket = __webpack_require__(/*! ../../base/socket */ "./src/javascript/app/base/socket.js");
+var getLanguage = __webpack_require__(/*! ../../../_common/language */ "./src/javascript/_common/language.js").get;
+var urlForStatic = __webpack_require__(/*! ../../../_common/url */ "./src/javascript/_common/url.js").urlForStatic;
+
+var DP2P = function () {
+
+    var onLoad = function onLoad() {
+        var is_svg = Client.get('landing_company_shortcode') === 'svg';
+        if (is_svg) {
+            __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.t.bind(null, /*! @deriv/p2p */ "./node_modules/@deriv/p2p/lib/index.js", 7)).then(function (module) {
+                var el_dp2p_container = document.getElementById('binary-dp2p');
+                var shadowed_el_dp2p = el_dp2p_container.attachShadow({ mode: 'closed' });
+
+                var el_main_css = document.createElement('style');
+                el_main_css.innerHTML = '\n                @import url(' + urlForStatic('css/p2p.min.css') + ');\n                :host {\n                    --hem:10px;\n                }\n                :host .theme--light {\n                    --button-primary-default: #2e8836;\n                    --button-primary-hover: #14602b;\n                    --brand-red-coral: #2a3052;\n                    --state-active: #2a3052;\n                    --general-section-1: #ffffff;\n                    --text-profit-success: #2e8836;\n                }\n\n                .dc-button-menu__wrapper\n                .dc-button-menu__button:not(.dc-button-menu__button--active) {\n                    background-color: #f2f2f2 !important;\n                }\n\n                .link {\n                    color: #E88024 !important;\n                }\n\n                .dc-button-menu__wrapper\n                .dc-button-menu__button--active\n                .btn__text {\n                    color: #ffffff;\n                }\n\n                .dc-input__field {\n                    box-sizing:border-box;\n                }\n                .link {\n                    color: var(--brand-red-coral);\n                    font-weight: bold;\n                    text-decoration: none;\n                }\n                .link:hover {\n                    text-decoration: underline;\n                    cursor: pointer;\n                }\n                ';
+                el_main_css.rel = 'stylesheet';
+
+                var dp2p_props = {
+                    className: 'theme--light',
+                    websocket_api: BinarySocket,
+                    lang: getLanguage(),
+                    client: {
+                        currency: Client.get('currency'),
+                        is_virtual: Client.get('is_virtual')
+                    }
+                };
+
+                ReactDOM.render(
+                // eslint-disable-next-line no-console
+                React.createElement(module.default, dp2p_props), shadowed_el_dp2p);
+
+                shadowed_el_dp2p.prepend(el_main_css);
+            });
+        } else {
+            document.getElementById('message_cashier_unavailable').setVisibility(1);
+        }
+    };
+
+    var onUnload = function onUnload() {
+        // TODO: Look into clearance
+    };
+
+    return {
+        onLoad: onLoad,
+        onUnload: onUnload
+    };
+}();
+
+module.exports = DP2P;
 
 /***/ }),
 
@@ -35507,64 +35572,6 @@ var Contact = function () {
 }();
 
 module.exports = Contact;
-
-/***/ }),
-
-/***/ "./src/javascript/static/pages/dp2p.js":
-/*!*********************************************!*\
-  !*** ./src/javascript/static/pages/dp2p.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var urlForStatic = __webpack_require__(/*! ../../_common/url */ "./src/javascript/_common/url.js").urlForStatic;
-
-var DP2P = function () {
-
-    var onLoad = function onLoad() {
-        __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.t.bind(null, /*! @deriv/p2p */ "./node_modules/@deriv/p2p/lib/index.js", 7)).then(function (module) {
-            var el_dp2p_container = document.getElementById('binary-dp2p');
-            var shadowed_el_dp2p = el_dp2p_container.attachShadow({ mode: 'closed' });
-
-            // const el_head = document.querySelector('head');
-            // const el_main_css = document.createElement('link');
-            // el_main_css.href = urlForStatic('css/p2p.min.css');
-            // el_main_css.rel = 'stylesheet';
-            // el_main_css.type = 'text/css';
-            // el_dp2p_container.innerHTML = module.default;
-
-            var el_main_css = document.createElement('style');
-            el_main_css.innerHTML = '\n            @import url(' + urlForStatic('css/p2p.min.css') + ');\n            :host {\n                --hem:10px;\n            }\n            .dc-input__field {\n                box-sizing:border-box;\n            }\n            .link {\n                color: var(--brand-red-coral);\n                font-weight: bold;\n                text-decoration: none;\n            }\n            .link:hover {\n                text-decoration: underline;\n                cursor: pointer;\n            }\n            ';
-            el_main_css.rel = 'stylesheet';
-
-            ReactDOM.render(
-            // eslint-disable-next-line no-console
-            React.createElement(module.default, { className: 'theme--light', websocket_api: {
-                    send: function send(params) {
-                        console.log(params);return Promise.resolve(params);
-                    }
-                }, lang: 'EN' }), shadowed_el_dp2p);
-
-            shadowed_el_dp2p.prepend(el_main_css);
-        });
-    };
-
-    var onUnload = function onUnload() {
-        // TODO: Look into clearance
-    };
-
-    return {
-        onLoad: onLoad,
-        onUnload: onUnload
-    };
-}();
-
-module.exports = DP2P;
 
 /***/ }),
 
