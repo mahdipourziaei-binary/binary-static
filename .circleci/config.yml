@@ -57,17 +57,7 @@ commands:
     steps:
       - run:
           name: Building dist for << parameters.target >>
-          command: |
-            node_modules/grunt/bin/grunt releaseci --<< parameters.target >>
-            # Trigger Robot Framework testing on staging release
-            if [ << parameters.target >> = 'staging' ]
-            then
-                git config credential.helper 'cache --timeout=120'
-                git config user.email "E2E Trigger Bot <>"
-                git config user.name "E2E Trigger Bot"
-                git commit -m "Trigger deployment" /home/circleci/project/dist/version
-                git push -q https://${ROBOT_GITHUB_TOKEN}@github.com/regentmarkets/robot-framework.git master
-            fi
+          command: node_modules/grunt/bin/grunt releaseci --<< parameters.target >>
   docker_build:
     description: "Build Docker image"
     steps:
