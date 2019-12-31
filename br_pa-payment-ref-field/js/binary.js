@@ -16130,7 +16130,7 @@ var PaymentAgentWithdraw = function () {
             $form.find('label[for="txtAmount"]').text(localize('Amount in') + ' ' + currency);
             FormManager.init(form_id, [{ selector: field_ids.txt_amount, validations: ['req', ['number', { type: 'float', decimals: getDecimalPlaces(currency), min: min, max: max }], ['custom', { func: function func() {
                         return +Client.get('balance') >= +$txt_amount.val();
-                    }, message: localize('Insufficient balance.') }]], request_field: 'amount' }, { selector: field_ids.txt_payment_ref, validations: [['regular', { regex: /^[0-9A-Za-z .,'-]{0,30}$/, message: localize('Only letters, numbers, space, hyphen, period, comma, and apostrophe are allowed.') }], ['length', { min: 0, max: 30 }]], request_field: 'description' }, { request_field: 'currency', value: currency }, { request_field: 'paymentagent_loginid', value: getPALoginID }, { request_field: 'paymentagent_withdraw', value: 1 }, { request_field: 'dry_run', value: 1 }], true);
+                    }, message: localize('Insufficient balance.') }]], request_field: 'amount' }, { selector: field_ids.txt_payment_ref, validations: [['length', { min: 0, max: 30 }], ['regular', { regex: /^[0-9A-Za-z .,'-]{0,30}$/, message: localize('Only letters, numbers, space, hyphen, period, comma, and apostrophe are allowed.') }]], request_field: 'description' }, { request_field: 'currency', value: currency }, { request_field: 'paymentagent_loginid', value: getPALoginID }, { request_field: 'paymentagent_withdraw', value: 1 }, { request_field: 'dry_run', value: 1 }], true);
 
             $ddl_agents.on('change', function () {
                 $agent_error.setVisibility(0);
@@ -16218,7 +16218,7 @@ var PaymentAgentWithdraw = function () {
                         $('#lblPaymentRefContainer').setVisibility(1);
                     }
 
-                    FormManager.init(view_ids.confirm, [{ request_field: 'paymentagent_loginid', value: request.paymentagent_loginid }, { request_field: 'amount', value: getNumberFormat(request.amount, request.currency) }, { request_field: 'currency', value: request.currency }, { request_field: 'paymentagent_withdraw', value: 1 }], true);
+                    FormManager.init(view_ids.confirm, [{ request_field: 'amount', value: getNumberFormat(request.amount, request.currency) }, { request_field: 'currency', value: request.currency }, { request_field: 'description', value: request.description }, { request_field: 'paymentagent_loginid', value: request.paymentagent_loginid }, { request_field: 'paymentagent_withdraw', value: 1 }], true);
 
                     FormManager.handleSubmit({
                         form_selector: view_ids.confirm,
