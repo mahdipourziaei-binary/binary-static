@@ -16133,7 +16133,7 @@ var PaymentAgentWithdraw = function () {
             FormManager.init(form_id, [{ selector: field_ids.txt_amount, validations: ['req', ['number', { type: 'float', decimals: getDecimalPlaces(currency), min: min, max: max }], ['custom', { func: function func() {
                         return +Client.get('balance') >= +$txt_amount.val();
                     }, message: localize('Insufficient balance.') }]], request_field: 'amount' }, { selector: field_ids.txt_payment_ref, validations: [['length', { min: 0, max: 30 }], ['regular', { regex: /^[0-9A-Za-z .,'-]{0,30}$/, message: localize('Only letters, numbers, space, hyphen, period, comma, and apostrophe are allowed.') }]], request_field: 'description', value: function value() {
-                    return payment_ref_prefix + $txt_payment_ref.val();
+                    return $txt_payment_ref.val() ? payment_ref_prefix + $txt_payment_ref.val() : '';
                 } }, { request_field: 'currency', value: currency }, { request_field: 'paymentagent_loginid', value: getPALoginID }, { request_field: 'paymentagent_withdraw', value: 1 }, { request_field: 'dry_run', value: 1 }], true);
 
             $ddl_agents.on('change', function () {
@@ -16218,7 +16218,8 @@ var PaymentAgentWithdraw = function () {
                     $('#lblAmount').text(getNumberFormat(request.amount, request.currency));
 
                     if (request.description) {
-                        $('#lblPaymentRef').text(request.description);
+                        // This Regex operation gets everything after the prefix, and handles the prefix not existing
+                        $('#lblPaymentRef').text(/(payment-ref-)?(.*)/.exec(request.description)[2]);
                         $('#lblPaymentRefContainer').setVisibility(1);
                     }
 
