@@ -15864,6 +15864,7 @@ var urlForStatic = __webpack_require__(/*! ../../../_common/url */ "./src/javasc
 var SubscriptionManager = __webpack_require__(/*! ../../../_common/base/subscription_manager */ "./src/javascript/_common/base/subscription_manager.js").default;
 
 var DP2P = function () {
+    var shadowed_el_dp2p = void 0;
 
     var onLoad = function onLoad() {
         var is_svg = Client.get('landing_company_shortcode') === 'svg';
@@ -15878,7 +15879,7 @@ var DP2P = function () {
 
     var renderP2P = function renderP2P(module) {
         var el_dp2p_container = document.getElementById('binary-dp2p');
-        var shadowed_el_dp2p = el_dp2p_container.attachShadow({ mode: 'closed' });
+        shadowed_el_dp2p = el_dp2p_container.attachShadow({ mode: 'open' });
 
         var el_main_css = document.createElement('style');
         // These are styles that are to be injected into the Shadow DOM, so they are in JS and not stylesheets
@@ -15917,15 +15918,13 @@ var DP2P = function () {
             websocket_api: websocket_api
         };
 
-        ReactDOM.render(
-        // eslint-disable-next-line no-console
-        React.createElement(module, dp2p_props), shadowed_el_dp2p);
+        ReactDOM.render(React.createElement(module, dp2p_props), shadowed_el_dp2p);
 
         shadowed_el_dp2p.prepend(el_main_css);
     };
 
     var onUnload = function onUnload() {
-        // TODO: Look into clearance
+        ReactDOM.unmountComponentAtNode(shadowed_el_dp2p);
     };
 
     return {
